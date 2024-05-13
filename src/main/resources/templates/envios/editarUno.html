@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Editar y actualizar producto')"></head>
+<link rel="stylesheet" type="text/css" href="/css/uno.css">
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+
+    <main>
+        <h2 th:text="'Editar envio de id ' + ${idHtml}"></h2>
+        <form th:action="@{/pedidos/envios/editar/{id}(id=${idHtml})}" th:object="${envioDto}" method="post">
+            <table>
+                <tr>
+                    <td><label for="fechaEntregaLI">Fecha entrega:</label></td>
+                    <td><input type="datetime-local" id="fechaEntregaLI" th:field="*{fechaEntrega}"></td>
+                </tr>
+                <tr>
+                    <td><label for="numeroDocumentoIdentidadReceptor">N.º documento identidad receptor:</label></td>
+                    <td><input type="text" id="numeroDocumentoIdentidadReceptor" th:field="*{numeroDocumentoIdentidadReceptor}" required></td>
+                </tr>
+                 <tr>
+                    <td><label for="fechaEntregaVueltaAlmacenLI">Fecha entrega vuelta almacén:</label></td>
+                    <td><input type="datetime-local" id="fechaEntregaVueltaAlmacenLI" th:field="*{fechaEntregaVueltaAlmacen}"></td>
+                </tr>          
+            </table>
+            <br>
+            <div>
+               <label for="comentarioLTA">Comentario:</label><br>
+               <textarea id="comentarioLTA" th:field="*{comentario}" rows="5" cols="50"></textarea>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-warning">Actualizar envio</button>
+        </form>
+    </main>
+    <br>
+    <script src="/js/envio.js"></script>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Productos todos')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/lista.css">
+    <link rel="stylesheet" type="text/css" href="/css/busqueda.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+
+    <main>
+      <h2>Productos</h2>
+      
+      <div style="display:flex;">
+        <div style="text-align:left; width:33.3%">
+          <a class="btn btn-primary" href="/productos/crear">Crear producto</a>
+        </div>
+        <div style="text-align:center; width:33.3%">
+          <form class="example" th:action="@{/productos/buscar2}" method="get" style="margin:auto;max-width:500px">
+            <input type="text" name="query" placeholder="Buscar productos..">
+            <button type="submit"><i class="fa fa-search"></i></button>
+          </form>
+        </div>
+        <div style="text-align:right; width:33.3%">
+        </div>
+      </div>
+      
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Fabricante</th>
+                    <th>Imágenes</th>
+                    <th>Precio (€)</th>
+                    <th>Stock</th>
+                    <th>Subcategoría</th>
+                    <th>Novedad</th>
+                    <th>Tipo descuento</th>
+                    <th>Descuento</th>
+                    <th>V. media</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="producto : ${paginaProductos}">
+                    <td th:text="${producto.idProducto}"></td>
+                    <td th:text="${producto.nombre != null ? #strings.abbreviate(producto.nombre, 40) : 'N/A'}"></td>
+                    <td>
+                       <a class="btn btn-link" th:href="@{'/fabricantes/' + ${producto.fabricante.idFabricante}}" th:text="${producto.fabricante.nombre}"></a>
+                    </td>
+                     <td>
+                       <a class="btn btn-link" th:href="@{'productos/'+${producto.idProducto}+'/imagenes'}" th:text="imágenes"></a>
+                    </td>
+                    <td th:text="${producto.precio}"></td>
+                    <td th:text="${producto.stock}" style="text-align: center"></td>
+                    <td>
+                       <a class="btn btn-link" th:href="@{'/subcategorias/' + ${producto.subcategoria.idSubcategoria}}" th:text="${#strings.abbreviate(producto.subcategoria.nombre, 20)}"></a>
+                    </td>
+                    <td th:text="${producto.novedad ? 'Sí' : 'No'}"></td>
+                    <td th:text="${producto.tipoDescuento}"></td>
+                    <td th:text="${producto.descuento != null ? producto.descuento : 'NULL'}" style="text-align: center"></td>
+                    <td th:text="${producto.valoracionMedia != null ? #numbers.formatDecimal(producto.valoracionMedia, 1, 2) : 'NULL'}" style="text-align: center"></td>
+                    <td>
+                        <a class="btn btn-info" th:href="@{'/productos/' + ${producto.idProducto}}">Mostrar</a>
+                        <a class="btn btn-warning" th:href="@{'/productos/editar/' + ${producto.idProducto}}">Editar</a>
+                        <a class="btn btn-danger" th:href="@{'/productos/borrar/' + ${producto.idProducto}}" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Controles de paginación -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${paginaProductos.hasPrevious() ? '' : 'disabled'}">
+                <a class="page-link" th:href="@{/productos(page=${paginaProductos.number - 1}, size=${paginaProductos.size})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, paginaProductos.totalPages - 1)}" class="page-item" th:classappend="${i == paginaProductos.number ? 'active' : ''}">
+                <a class="page-link" th:href="@{/productos(page=${i}, size=${paginaProductos.size})}" th:text="${i + 1}">1</a>
+            </li>
+            <li class="page-item" th:classappend="${paginaProductos.hasNext() ? '' : 'disabled'}">
+                <a class="page-link" th:href="@{/productos(page=${paginaProductos.number + 1}, size=${paginaProductos.size})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+        
+    </main>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

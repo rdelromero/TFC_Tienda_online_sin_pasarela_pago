@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Nuevo Producto')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/uno.css">
+</head>
+
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+
+    <main>
+        <h2>Crear envío</h2>
+        <form th:action="@{/pedidos/envios/crear}" th:object="${envioDto}" method="post">
+            <table>
+                <tr>
+                    <td><label for="idPedidoLI">idPedido:</label></td>
+                    <td>
+                        <select id="idPedidoLI" th:field="*{idPedido}" required>
+                            <option th:each="pedido : ${pedidosPendientes}"
+                                    th:value="${pedido.idPedido}"
+                                    th:text="${pedido.idPedido}"></option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <div>
+               <label for="comentarioLTA">Comentario:</label><br>
+               <textarea id="comentarioLTA" th:field="*{comentario}" rows="5" cols="50"></textarea>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-success">Crear envío</button>
+        </form>
+    </main>
+    <br>
+
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,3 @@
+Inspirado en https://www.youtube.com/watch?v=kBtgDVzjFzs
+Cómo enviar mensajes a través de SpringBoot usando una cuenta gmail:
+https://www.youtube.com/watch?v=srGxqsPwAlw

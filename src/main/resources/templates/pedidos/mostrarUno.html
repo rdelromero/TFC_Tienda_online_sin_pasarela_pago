@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Detalles del Pedido')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/uno.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+    <h2 th:text="'Detalles del pedido de id ' + ${pedido.idPedido}"></h2>
+    <main>
+        <table>
+            <tr>
+                <th>ID</th>
+                <td th:text="${pedido.idPedido}"></td>
+            </tr>
+            <tr>
+                <th>idUsuario</th>
+                <td><a class="btn btn-link" th:href="@{'/usuarios/' + ${pedido.usuario.idUsuario}}" th:text="${pedido.usuario.idUsuario}"></a></td>
+            </tr>
+            <tr>
+                <th>Fecha pedido</th>
+                <td th:text="${pedido.fechaPedido}"></td>
+            </tr>
+            <tr>
+                <th>Método envío</th>
+                <td th:text="${pedido.metodoEnvio}"></td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td th:text="${pedido.estado}"></td>
+            </tr>
+            <tr>
+                <th>Fecha actualización</th>
+                <td th:text="${pedido.fechaActualizacion}"></td>
+            </tr>
+        </table>
+        <h4>Líneas de facturación</h4>
+        <table>
+            <tr>
+              <th style="text-align: center;">idProducto</th><th>Cantidad</th><th>Precio unitario (€)</th><th >Precio total (€)</th>
+            </tr>
+             <tr th:each="linea : ${pedido.lineasFacturacion}">
+                <td>
+                  <a class="btn btn-link" th:href="@{'/productos/' + ${linea.producto.idProducto}}" th:text="${#strings.abbreviate(linea.producto.nombre, 45)}"></a>
+                </td>
+                <td style="text-align: center;" th:text="${linea.cantidad}"></td>
+                <td style="text-align: right;" th:text="${#numbers.formatDecimal(linea.precioUnitario, 1, 2)}"></td>
+                <td style="text-align: right;" th:text="${#numbers.formatDecimal(linea.precioLinea, 1, 2)}"></td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: right;">Gastos envío</td><td style="text-align: right;" th:text="${#numbers.formatDecimal(pedido.gastosEnvio, 1, 2)}"></td>
+            </tr>
+            <tr>
+              <td colspan="3" style="text-align: right;">Total (IVA incl.)</td><td style="background-color: lightblue; text-align: right;" th:text="${#numbers.formatDecimal(pedido.precioTotal, 1, 2)} + ' €'"></td>
+            </tr>
+        </table>
+        <h4>Datos de envío</h4>
+        <table>
+            <tr>
+                <th>Nombre</th>
+                <td th:text="${pedido.nombre}"></td>
+            </tr>
+            <tr>
+                <th>Apellidos</th>
+                <td th:text="${pedido.apellidos}"></td>
+            </tr>
+            <tr>
+                <th>Dirección</th>
+                <td th:text="${pedido.direccion}"></td>
+            </tr>
+            <tr>
+                <th>País</th>
+                <td th:text="${pedido.pais}"></td>
+            </tr>
+            <tr>
+                <th>Ciudad</th>
+                <td th:text="${pedido.ciudad}"></td>
+            </tr>
+            <tr>
+                <th>N.º teléfono móvil</th>
+                <td th:text="${pedido.numeroTelefonoMovil}"></td>
+            </tr>
+        </table>
+        <br>
+        <a th:href="@{/pedidos}" class="btn btn-secondary">Volver a la lista</a>
+    </main>
+    <br>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

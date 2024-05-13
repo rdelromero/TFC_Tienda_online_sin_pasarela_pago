@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <header th:fragment="header">
+        <nav>
+            <div id="navdiv1">
+              <div><a th:href="@{/}">Inicio</a></div>
+            </div>
+            <div id="navdiv2">
+              <div><a th:href="@{/fabricantes}">Fabricantes</a></div>
+              <div><a th:href="@{/productos}">Productos</a></div>
+              <div><a th:href="@{/pedidos}">Pedidos</a></div>
+              <div><a th:href="@{/pedidos/envios}">Envíos</a></div>
+              <div><a th:href="@{/usuarios}">Usuarios</a></div>
+            </div>
+            <div id="navdiv3">
+            </div>
+        </nav>
+    </header>
+</body>
+</html>
+

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Editar y actualizar producto')"></head>
+<link rel="stylesheet" type="text/css" href="/css/uno.css">
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+
+    <main>
+        <h2 th:text="'Editar producto de id ' "></h2>
+        <form th:action="@{/productos/editar/{id}(id=idHtml)}" th:object="${productoDto}" method="post">
+            <table>
+                <tr>
+                    <td><label for="nombre">Nombre:</label></td>
+                    <td><input type="text" id="nombre" th:field="*{nombre}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="fabricanteLS">Fabricante:</label></td>
+                    <td>
+                        <select id="fabricanteLS" th:field="*{idFabricante}">
+                            <option th:each="fabricante : ${fabricantes}"
+                                    th:value="${fabricante.idFabricante}" 
+                                    th:text="${fabricante.nombre}" 
+                                    th:selected="${idFabricante == productoDto.idFabricante}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="subcategoriaLS">Subcategoría:</label></td>
+                    <td>
+                        <select id="subcategoriaLS" th:field="*{idSubcategoria}">
+                            <option th:each="subcategoria : ${subcategorias}"
+                                    th:value="${subcategoria.idSubcategoria}" 
+                                    th:text="${subcategoria.nombre}" 
+                                    th:selected="${idSubcategoria == productoDto.idSubcategoria}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="precio">Precio (€):</label></td>
+                    <td><input type="number" step="0.01" id="precio" th:field="*{precio}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="stock">Stock:</label></td>
+                    <td><input type="number" id="stock" th:field="*{stock}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="novedad">Novedad:</label></td>
+                    <td><input type="checkbox" id="novedad" th:field="*{novedad}"></td>
+                </tr>
+                <tr>
+                    <td><label for="tipoDescuentoLS">Tipo descuento:</label></td>
+                    <td>
+                        <select id="tipoDescuentoLS" th:field="*{tipoDescuento}">
+                            <option value="sin_descuento">Sin Descuento</option>
+                            <option value="porcentual">Porcentual</option>
+                            <option value="absoluto">Absoluto</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="descuentoLI">Descuento:</label></td>
+                    <td><input type="number" id="descuentoLI" step="0.01" th:field="*{descuento}"></td>
+                </tr>
+            </table>
+            <br>
+            <div>
+               <label for="descripcionLTA">Descripción:</label><br>
+               <textarea id="descripcionLTA" th:field="*{descripcion}" rows="5" cols="50"></textarea>
+            </div>
+            <div>
+                <label for="detallesLTA">Detalles:</label><br>
+                <textarea id="detallesLTA" th:field="*{detalles}" rows="5" cols="50"></textarea>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-warning">Actualizar producto</button>
+        </form>
+    </main>
+
+    <script th:src="@{/js/producto.js}"></script>
+
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

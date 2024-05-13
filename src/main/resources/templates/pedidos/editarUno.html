@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Editar y actualizar producto')"></head>
+<link rel="stylesheet" type="text/css" href="/css/uno.css">
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+
+    <main>
+        <h2 th:text="'Editar pedido de id ' + ${idHtml}"></h2>
+        <form th:action="@{/pedidos/editar/{id}(id=${idHtml})}" th:object="${pedidoDto}" method="post">
+            <table>
+                <tr>
+                    <td><label for="nombreLI">Nombre:</label></td>
+                    <td><input type="text" id="nombreLI" th:field="*{nombre}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="nombreLI">Apellidos:</label></td>
+                    <td><input type="text" id="nombreLI" th:field="*{apellidos}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="nombreLI">Dirección:</label></td>
+                    <td><input type="text" id="nombreLI" th:field="*{direccion}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="paisLS">País:</label></td>
+                    <td>
+                      <select id="paisLS" th:field="*{pais}">
+                        <option th:each="pais : ${paises}" th:value="${pais}" th:text="${pais}"></option>
+                      </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="ciudadLI">Ciudad:</label></td>
+                    <td><input type="text" id="ciudadLI" th:field="*{ciudad}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="movilLI">N.º teléfono móvil:</label></td>
+                    <td><input type="text" id="movilLI" th:field="*{numeroTelefonoMovil}" required></td>
+                </tr>
+                
+                <tr>
+                    <td><label for="estadoLS">Estado:</label></td>
+                        <td>
+                        <select id="estadoLS" th:field="*{estado}" th:attr="data-current-state=${pedidoDto.estado.name()}">
+                          <option th:each="estado : ${T(com.nombreGrupo.modelo.entities.Pedido.EstadoPedido).values()}"
+                                  th:value="${estado}" th:text="${estado}">
+                          </option>
+                        </select>
+                        </td>
+                </tr>                    
+            </table>
+            <br>
+            <button type="submit" class="btn btn-warning">Actualizar pedido</button>
+        </form>
+    </main>
+    <br>
+    <script src="/js/pedido.js"></script>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

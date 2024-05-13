@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Pedidos todos')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/lista.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+
+    <main>
+      <h2>Pedidos</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>IdUsuario</th>
+                    <th>Fecha pedido</th>
+                    <th>Precio subtotal (€)</th>
+                    <th>Método envío</th>
+                    <th>G. envío (€)</th>
+                    <th>Precio total (€)</th>
+                    <th>Estado</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>País</th>
+                    <th>Ciudad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="pedido : ${paginaPedidosHtml}">
+                    <td th:text="${pedido.idPedido}"></td>
+                    <td>
+                       <a class="btn btn-link" th:href="@{'/usuarios/' + ${pedido.usuario.idUsuario}}" th:text="${pedido.usuario.idUsuario}"></a>
+                    </td>
+                    <td th:text="${pedido.fechaPedido}"></td>
+                    <td th:text="${pedido.precioSubtotal}" style="text-align: center"></td>
+                    <td th:text="${pedido.metodoEnvio}"></td>
+                    <td th:text="${pedido.gastosEnvio}" style="text-align: center"></td>
+                    <td th:text="${pedido.precioTotal}" style="text-align: center"></td>
+                    <td th:text="${pedido.estado}"></td>
+                    <td th:text="${pedido.nombre != null ? #strings.abbreviate(pedido.nombre, 10) : 'N/A'}"></td>
+                    <td th:text="${pedido.apellidos != null ? #strings.abbreviate(pedido.apellidos, 20) : 'N/A'}"></td>
+                    <td th:text="${pedido.pais}"></td>
+                    <td th:text="${pedido.ciudad}"></td>
+                    <td>
+                        <a class="btn btn-info" th:href="@{'/pedidos/' + ${pedido.idPedido}}">Mostrar</a>
+                        <a class="btn btn-warning" th:href="@{'/pedidos/editar/' + ${pedido.idPedido}}">Editar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Controles de paginación -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${paginaPedidosHtml.hasPrevious() ? '' : 'disabled'}">
+                <a class="page-link" th:href="@{/pedidos(page=${paginaPedidosHtml.number - 1}, size=${paginaPedidosHtml.size})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, paginaPedidosHtml.totalPages - 1)}" class="page-item" th:classappend="${i == paginaPedidosHtml.number ? 'active' : ''}">
+                <a class="page-link" th:href="@{/pedidos(page=${i}, size=${paginaPedidosHtml.size})}" th:text="${i + 1}">1</a>
+            </li>
+            <li class="page-item" th:classappend="${paginaPedidosHtml.hasNext() ? '' : 'disabled'}">
+                <a class="page-link" th:href="@{/pedidos(page=${paginaPedidosHtml.number + 1}, size=${paginaPedidosHtml.size})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+        
+    </main>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

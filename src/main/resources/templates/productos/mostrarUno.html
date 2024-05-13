@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Detalles del Producto')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/uno.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+    <h2 th:text="'Detalles del producto de id ' + ${producto.idProducto}"></h2>
+    <main>
+        <table>
+            <tr>
+                <th>ID</th>
+                <td th:text="${producto.idProducto}"></td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td th:text="${producto.nombre}"></td>
+            </tr>
+            <tr>
+                <th>Fabricante</th>
+                 <td>
+                     <a class="btn btn-link" th:href="@{'/fabricantes/' + ${producto.fabricante.idFabricante}}" th:text="${producto.fabricante.nombre}"></a>
+                 </td>
+            </tr>
+            <tr>
+                <th>Subcategoría</th>
+                    <td>
+                       <a class="btn btn-link" th:href="@{'/subcategorias/' + ${producto.subcategoria.idSubcategoria}}" th:text="${#strings.abbreviate(producto.subcategoria.nombre, 20)}"></a>
+                    </td>
+            </tr>
+            <tr>
+                <th>Descripción</th>
+                <td th:text="${producto.descripcion}"></td>
+            </tr>
+            <tr>
+                <th>Detalles</th>
+                <td th:text="${producto.detalles}"></td>
+            </tr>
+            <tr>
+                <th>Precio</th>
+                <td th:text="${producto.precio} + ' €'"></td>
+            </tr>
+            <tr>
+                <th>Stock</th>
+                <td th:text="${producto.stock}"></td>
+            </tr>
+            <tr>
+                <th>Novedad</th>
+                <td th:text="${producto.novedad ? 'Sí' : 'No'}"></td>
+            </tr>
+            <tr>
+                <th>Tipo descuento</th>
+                <td th:text="${producto.tipoDescuento}"></td>
+            </tr>
+            <tr>
+                <th>Descuento</th>
+                <td th:text="${producto.descuento != null ? producto.descuento : 'NULL'}"></td>
+            </tr>
+            <tr>
+                <th>Precio final</th>
+                <td th:text="${producto.precioFinal}+' €'"></td>
+            </tr>
+            <tr>
+                <th>N.º valoraciones</th>
+                <td th:text="${producto.numeroValoraciones}"></td>
+            </tr>
+            <tr>
+                <th>Valoración Media</th>
+                <td th:text="${producto.valoracionMedia != null ? #numbers.formatDecimal(producto.valoracionMedia, 1, 2) : 'NULL'}"></td>
+            </tr>
+            <tr>
+                <th>Fecha creación</th>
+                <td th:text="${producto.fechaCreacion}"></td>
+            </tr>
+             <tr>
+                <th>Fecha actualización</th>
+                <td th:text="${producto.fechaActualizacion}"></td>
+            </tr>
+        </table>
+        <br>
+        <a th:href="@{/productos}" class="btn btn-secondary">Volver a la lista</a>
+    </main>
+    <br>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

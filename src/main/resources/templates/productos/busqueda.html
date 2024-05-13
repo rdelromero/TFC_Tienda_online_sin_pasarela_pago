@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Productos todos')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/lista.css">
+    <link rel="stylesheet" type="text/css" href="/css/busqueda.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+  <div th:replace="layout/encabezado :: header"></div>
+  <main>
+     <h2>Productos</h2>
+
+
+          <form class="example" th:action="@{/productos/buscar2}" method="get" style="margin:auto;max-width:500px">
+            <input type="text" name="query" placeholder="Buscar productos..">
+            <button type="submit"><i class="fa fa-search"></i></button>
+          </form>
+
+
+    <h4>Resultados de la búsqueda</h4>
+
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Precio (€)</th>
+               <th>Stock</th>
+               <th>Fabricante</th>
+               <th>Subcategoría</th>
+               <th>Novedad</th>
+               <th>Tipo descuento</th>
+               <th>Descuento</th>
+               <th>V. media</th>
+               <th>Acciones</th>
+             </tr>
+           </thead>
+           <tbody>
+                <tr th:each="producto : ${productosHtml}">
+                    <td th:text="${producto.idProducto}"></td>
+                    <td th:text="${producto.nombre != null ? #strings.abbreviate(producto.nombre, 45) : 'N/A'}"></td>
+                    <td th:text="${producto.precio}"></td>
+                    <td th:text="${producto.stock}"></td>
+                    <td>
+                       <a class="btn btn-link" th:href="@{'/fabricantes/' + ${producto.fabricante.idFabricante}}" th:text="${producto.fabricante.nombre}"></a>
+                    </td>
+                    <td>
+                       <a class="btn btn-link" th:href="@{'/subcategorias/' + ${producto.subcategoria.idSubcategoria}}" th:text="${#strings.abbreviate(producto.subcategoria.nombre, 20)}"></a>
+                    </td>
+                    <td th:text="${producto.novedad ? 'Sí' : 'No'}"></td>
+                    <td th:text="${producto.tipoDescuento}"></td>
+                    <td th:text="${producto.descuento != null ? producto.descuento : 'NULL'}"></td>
+                    <td th:text="${producto.valoracionMedia != null ? #numbers.formatDecimal(producto.valoracionMedia, 1, 2) : 'NULL'}"></td>
+                    <td>
+                        <a class="btn btn-info" th:href="@{'/productos/' + ${producto.idProducto}}">Mostrar</a>
+                        <a class="btn btn-warning" th:href="@{'/productos/editar/' + ${producto.idProducto}}">Editar</a>
+                        <a class="btn btn-danger" th:href="@{'/productos/borrar/' + ${producto.idProducto}}" onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">Borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+       </main>
+       <br>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

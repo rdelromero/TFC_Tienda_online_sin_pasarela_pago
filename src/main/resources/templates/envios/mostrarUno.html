@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Detalles del envío')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/uno.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+    <h2 th:text="'Detalles del envío de id ' + ${envio.idEnvio}"></h2>
+    <main>
+        <table>
+            <tr>
+                <th>ID</th>
+                <td th:text="${envio.idEnvio}"></td>
+            </tr>
+            <tr>
+                <th>idPedido</th>
+                <td>
+                   <a class="btn btn-link" th:href="@{'/pedidos/' + ${envio.pedido.idPedido}}" th:text="${envio.pedido.idPedido}"></a>
+                </td>
+            </tr>
+            <tr>
+                <th>Fecha envío</th>
+                <td th:text="${envio.fechaEnvio}"></td>
+            </tr>
+            <tr>
+                <th>Fecha entrega</th>
+                <td th:text="${envio.fechaEntrega}"></td>
+            </tr>
+            <tr>
+                <th>N.º documento identidad receptor</th>
+                <td th:text="${envio.numeroDocumentoIdentidadReceptor}"></td>
+            </tr>
+            <tr>
+                <th>Fecha entrega vuelta almacén</th>
+                <td th:text="${envio.fechaEntregaVueltaAlmacen}"></td>
+            </tr>
+            <tr>
+                <th>Comentario</th>
+                <td th:text="${envio.comentario}"></td>
+            </tr>
+            <tr>
+                <th>Fecha actualización</th>
+                <td th:text="${envio.fechaActualizacion}"></td>
+            </tr>
+        </table>
+        
+        <br>
+        <a th:href="@{/pedidos/envios}" class="btn btn-secondary">Volver a la lista</a>
+    </main>
+    <br>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

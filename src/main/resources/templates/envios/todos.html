@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Envios todos')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/lista.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+
+    <main>
+      <h2>Envíos</h2>
+      
+        <div>
+          <a class="btn btn-primary" href="/pedidos/envios/crear">Crear envío</a>
+        </div>
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>IdPedido</th>
+                    <th>Fecha envio</th>
+                    <th>Fecha entrega</th>
+                    <th>Fecha entrega vuelta almacén</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="envio : ${paginaEnviosHtml}">
+                    <td th:text="${envio.idEnvio}"></td>
+                    <td>
+                       <a class="btn btn-link" th:href="@{'/pedidos/' + ${envio.pedido.idPedido}}" th:text="${envio.pedido.idPedido}"></a>
+                    </td>
+                    <td th:text="${envio.fechaEnvio}"></td>
+                    <td th:text="${envio.fechaEntrega != null ? envio.fechaEntrega : 'NULL'}"></td>
+                    <td th:text="${envio.fechaEntregaVueltaAlmacen != null ? envio.fechaEntregaVueltaAlmacen : 'NULL'}"></td>
+                    <td>
+                        <a class="btn btn-info" th:href="@{'/pedidos/envios/' + ${envio.idEnvio}}">Mostrar</a>
+                        <a class="btn btn-warning" th:href="@{'/pedidos/envios/editar/' + ${envio.idEnvio}}">Editar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Controles de paginación -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${paginaEnviosHtml.hasPrevious() ? '' : 'disabled'}">
+                <a class="page-link" th:href="@{/pedidos/envios(page=${paginaEnviosHtml.number - 1}, size=${paginaEnviosHtml.size})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, paginaEnviosHtml.totalPages - 1)}" class="page-item" th:classappend="${i == paginaEnviosHtml.number ? 'active' : ''}">
+                <a class="page-link" th:href="@{/pedidos/envios(page=${i}, size=${paginaEnviosHtml.size})}" th:text="${i + 1}">1</a>
+            </li>
+            <li class="page-item" th:classappend="${paginaEnviosHtml.hasNext() ? '' : 'disabled'}">
+                <a class="page-link" th:href="@{/pedidos/envios(page=${paginaEnviosHtml.number + 1}, size=${paginaEnviosHtml.size})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+        
+    </main>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

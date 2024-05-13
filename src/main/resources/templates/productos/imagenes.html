@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Productos todos')"></head>
+<head>
+
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+    <main>
+        <h2 th:text="'Producto de ID: ' + ${idProducto}"></h2>
+    <h4>Lista de imágenes</h4>
+    <div>
+        <div th:if="${imagenes.isEmpty()}">
+            <p>No hay imágenes disponibles para este producto.</p>
+        </div>
+
+        <div th:each="imagen : ${imagenes}">
+            <img style="border: 1px solid black" th:src="@{'/imagenes/productos/' + ${imagen.imagenUrl}}" th:alt="'Imagen del producto ' + ${idProducto}" />
+        </div>
+    </div>
+    <a class="btn btn-secondary" th:href="@{/productos}">Volver a la lista de productos</a>
+    </main>
+    <br>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>
