@@ -4,14 +4,21 @@
     <header th:fragment="header">
         <nav>
             <div id="navdiv1">
-              <div><a th:href="@{/}">Inicio</a></div>
+                <div class="nav-item"><a th:href="@{/}">Inicio</a></div>
             </div>
             <div id="navdiv2">
-              <div><a th:href="@{/fabricantes}">Fabricantes</a></div>
-              <div><a th:href="@{/productos}">Productos</a></div>
-              <div><a th:href="@{/pedidos}">Pedidos</a></div>
-              <div><a th:href="@{/pedidos/envios}">Envíos</a></div>
-              <div><a th:href="@{/usuarios}">Usuarios</a></div>
+                <div class="dropdown nav-item">
+                    <span>- - -</span>
+                    <div class="dropdown-content">
+                        <div><a th:href="@{/fabricantes}">Fabricantes</a></div>
+                        <div><a th:href="@{/categorias}">Categorías</a></div>
+                        <div><a th:href="@{/subcategorias}">Subcategorías</a></div>
+                    </div>
+                </div>
+                <div class="nav-item"><a th:href="@{/productos}">Productos</a></div>
+                <div class="nav-item"><a th:href="@{/pedidos}">Pedidos</a></div>
+                <div class="nav-item"><a th:href="@{/pedidos/envios}">Envíos</a></div>
+                <div class="nav-item"><a th:href="@{/usuarios}">Usuarios</a></div>
             </div>
             <div id="navdiv3">
             </div>
@@ -19,4 +26,3 @@
     </header>
 </body>
 </html>
-

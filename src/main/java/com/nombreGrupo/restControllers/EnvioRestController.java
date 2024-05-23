@@ -31,13 +31,13 @@ public class EnvioRestController {
     private EnvioService envioService;
     
     @GetMapping
-    public ResponseEntity<List<Envio>> getEncontrarTodos() {
+    public ResponseEntity<List<Envio>> getIndex() {
         List<Envio> pedidos = envioService.encontrarTodos();
         return ResponseEntity.ok(pedidos);
     }
     
     @GetMapping("/{idEnvio}")
-    public ResponseEntity<?> getEncontrarPorId(@PathVariable int idEnvio) {
+    public ResponseEntity<?> getShowPorId(@PathVariable int idEnvio) {
     	try {
             Envio envio = envioService.encontrarPorId(idEnvio);
             return ResponseEntity.ok(envio);
@@ -49,7 +49,7 @@ public class EnvioRestController {
     }
     
 	@PostMapping
-	public ResponseEntity<?> postCrearYGuardar(@RequestBody EnvioDtoCreacion envioDtoCreacion) {
+	public ResponseEntity<?> postStore(@RequestBody EnvioDtoCreacion envioDtoCreacion) {
         try {
             Envio envio = envioService.crearYGuardar(envioDtoCreacion);
             return ResponseEntity.ok(envio);
@@ -59,7 +59,7 @@ public class EnvioRestController {
 	}
 	
 	@PutMapping("/{idEnvio}")
-    public ResponseEntity<?> putActualizar(@PathVariable int idEnvio, @RequestBody EnvioDtoActualizacion envioDtoActualizacion) {
+    public ResponseEntity<?> putUpdate(@PathVariable int idEnvio, @RequestBody EnvioDtoActualizacion envioDtoActualizacion) {
         try {
             Envio envio = envioService.actualizar(idEnvio, envioDtoActualizacion);
             return ResponseEntity.ok(envio);

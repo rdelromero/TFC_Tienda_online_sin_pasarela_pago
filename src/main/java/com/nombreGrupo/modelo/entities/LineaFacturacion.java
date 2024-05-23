@@ -46,7 +46,7 @@ public class LineaFacturacion implements Serializable{
     
     @ManyToOne
     @JoinColumn(name = "identidad_pedido", nullable = false)
-    @JsonIgnore // Evita el ciclo infinito al hacer petición GET para mostrar un pedido
+    @JsonIgnore // Dado que en pedido quiero aparezcan las lineas de facturacion, no puede ser que en una línea de facturación aparezca también el pedido al que pertenece, por que habría recursión. de ahí que se ponga @JsonIgnote
     private Pedido pedido;
 
     @ManyToOne
@@ -64,9 +64,9 @@ public class LineaFacturacion implements Serializable{
 
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
-    private EstadoLineaFacturacion estado;
+    private Estado estado;
     
-    public enum EstadoLineaFacturacion {
+    public enum Estado {
         activo, cancelado;
     }
 }

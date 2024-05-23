@@ -11,7 +11,7 @@ CREATE TABLE categorias (
 
 CREATE TABLE fabricantes (
     id_fabricante INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50),
+    nombre VARCHAR(50) NOT NULL UNIQUE,
 	fecha_fundacion DATE,
     pais VARCHAR(50),
     pagina_web VARCHAR(50),
@@ -284,17 +284,58 @@ INSERT INTO categorias(nombre, imagen_url, descripcion) value
     'Los "elementos internos" se refieren a las partes y componentes que están dentro de la réplica de arma y que son esenciales para su funcionamiento. Estos 
     incluyen varios sistemas y piezas que influyen en el rendimiento del arma, como la precisión, la potencia y la fiabilidad.');
 
-INSERT INTO fabricantes(nombre, pais, pagina_web, descripcion, imagen_url) VALUES
-    ('Ares Amoeba', 'China', 'https://www.amoeba-airsoft.com/', 'descripción', '/imagenes/fabricantes/ares.jpg'),
-    ('BO Manufacture', 'Francia', 'https://bomanufacture.com/', 'descripción', '/imagenes/fabricantes/ares.jpg'),
-    ('DBOYS', 'N/A', 'https://dboysguns.com/', 'descripción', '/imagenes/fabricantes/dboys.jpg'),
-    ('Duel Code', 'España', 'N/A', 'descripción', '/imagenes/fabricantes/dual-code.jpg'),
-    ('G&G', 'Taiwán', 'https://www.guay2.com/', 'descripción', '/imagenes/fabricantes/gg.jpg'),
-    ('Krytac', 'EE.UU', 'https://krytac.com/', 'descripción', '/imagenes/fabricantes/krytac.jpg'),
-    ('Lancer tactical', 'EE.UU', 'https://www.lancertactical.com/', 'descripción', '/imagenes/fabricantes/lancer-tactical.png'),
-    ('Nimrod', 'N/A', 'https://nimrodtactical.com/', 'descripción', '/imagenes/fabricantes/nimrod-tactical.jpg'),
-    ('Saigo Defense', 'España', 'N/A', 'descripción', '/imagenes/fabricantes/saigo-defense.jpg'),
-    ('Tokyo Marui', 'Japón', 'https://www.tokyo-marui.co.jp/', 'descripción', '/imagenes/fabricantes/tokyo-marui.jpg');
+INSERT INTO fabricantes(nombre, pais, pagina_web, imagen_url, descripcion) VALUES
+    ('Ares Amoeba', 'China', 'https://www.amoeba-airsoft.com/', '/imagenes/fabricantes/ares.jpg', 
+    '<p>Ares Amoeba es una marca de réplicas de airsoft reconocida por su innovación y calidad. La marca se enfoca en ofrecer productos de alto rendimiento y durabilidad a precios accesibles para jugadores de todos los niveles.</p>
+    <p>Una de las principales características de las réplicas Ares Amoeba es su sistema de gearbox modular, que permite una fácil personalización y actualización de la réplica. Este sistema modular también hace que las réplicas Ares Amoeba sean fáciles de mantener y reparar.</p>
+    <p>Otra característica distintiva de las réplicas Ares Amoeba es su diseño ergonómico y estilizado, que las hace cómodas y fáciles de manejar durante las partidas de airsoft. Además, muchas de las réplicas Ares Amoeba vienen con características avanzadas como miras ópticas, guardamanos Keymod y sistemas de gatillo electrónico.</p>
+    <p>Ares Amoeba también se destaca por su compromiso con la innovación y el desarrollo constante de nuevas tecnologías para mejorar la experiencia de juego de los jugadores de airsoft.</p>
+    <p>En resumen, Ares Amoeba es una marca de réplicas de airsoft con una sólida reputación por su innovación, calidad y diseño ergonómico. Si buscas una réplica de airsoft que ofrezca alto rendimiento y personalización, Ares Amoeba es una excelente opción a considerar.</p>
+    <p>En nuestra tienda online Nombre Tienda tienes a tu disposición el catálogo completo de Ares Amoeba</p>'),
+    ('BO Manufacture', 'Francia', 'https://bomanufacture.com/', '/imagenes/fabricantes/bo-manufacture.jpg',
+    '<p>¿Quién es BO Manufacture? Esta es una empresa europea nacida y afincada en Francia. Desde sus inicios hace más de 20 años se especializaron, sobre todo, en réplicas de armas famosas de airsoft.</p>
+    <p>No obstante, y dado el éxito de la compañía, fueron ampliando su mercado con el diseño de otros productos para airsoft y para outdoor. Pronto, diversos accesorios, munición, cargadores, carabinas e incluso ampliaciones, complementos y partes separadas fueron apareciendo en su línea de producción para dar al experto y aficionado al tiro deportivo una experiencia única y de enorme calidad.</p>
+    <p>Esta marca no ha dejado de crecer con el paso del tiempo. Además de ser una gran diseñadora, y más allá de comercializar sus productos en todo el mundo, también ha creado otras líneas que, probablemente, te suenen bastante. Junto a BO Manufacture, se unen los nombres de BO Dynamics y Black Ops, con lo que cubren todo el mercado de necesidades de los aficionados y los expertos y profesionales del airsoft.</p>'),
+    ('DBOYS', 'N/A', 'https://dboysguns.com/', '/imagenes/fabricantes/dboys.jpg',
+    '<p>DBOYS es una de las primeras marcas que aparecieron en Airsoft, ofreciendo unos productos de gama media a unos precios imbatibles, poco a poco se a convertido en una de las marcas mas vendidas, pero desde hace unos años Dboys no se oía en el mercado. Según nos cuentan la empresa a sido traspasada, y sus nuevos directivos han decidido en apostar fuerte, manteniendo productos a precios imbatibles, pero ofreciendo un producto de mayor calidad, adaptándose al mercado de hoy en día. Han incorporado nuevos modelos y nuevos Gearboxs.</p>
+    <p>El fabricante DBOYS nos presenta sus nuevos modelos de armas de Airsoft AEG con su nuevo Gearbox Gen 2. Nos a sorprendido con un gearbox mas reforzado que sus versiones anteriores, cuenta con pistón con corredera metálica completa así como con un nuevo sistema de cambio rápido de muelle directamente desde la culata, el cual nos facilita mucho el cambio de potencia en nuestras AEG. Esto nos a sorprendido tanto que estamos orgullosos de poder disponer de un amplio catalogo en los nuevos modelos de DBOYS Airsoft en nuestra tienda online.</p>
+    <p>A diferencia de otras marcas, DBOYS nos a sorprendido con su nuevo Gearbox reforzado, ofreciendo replicas a unos precios imbatibles y ofreciendo un Gearbox que va a ser una excelente base para poder realizar cualquier futuro Upgrade.</p>
+    <p>Gracias a sus mejoras, pensamos que estas replicas van a dar mucho que hablar entre los nuevos jugadores que deseen comenzar en el Airsoft por muy poco dinero, y obtener una base perfecta para poder ir mejorando poco a poco.</p>'),
+    ('Duel Code', 'España', 'N/A', '/imagenes/fabricantes/dual-code.jpg',
+    '<p>DUEL CODE es una marca líder en el mundo del airsoft que se ha ganado su reputación gracias a sus productos de alta calidad y rendimiento excepcional. La marca ofrece una amplia variedad de armas de airsoft, piezas de repuesto y accesorios para satisfacer las necesidades de los jugadores de todos los niveles, desde principiantes hasta profesionales.</p>
+    <p>Los productos de Duel Code destacan por su durabilidad, precisión y fiabilidad, lo que los convierte en una elección popular entre los jugadores de airsoft de todo el mundo. Además, la marca se esfuerza por mantenerse al día con las últimas tecnologías y tendencias en el mundo del airsoft, asegurando que sus productos sean innovadores y de vanguardia.</p>
+    <p>Si estás buscando productos de airsoft de alta calidad y confiabilidad, Duel Code es la marca ideal para ti. Con su amplia gama de productos y su compromiso con la satisfacción del cliente, Duel Code es una marca que no puedes dejar de tener en cuenta.<p>'),
+    ('G&G', 'Taiwán', 'https://www.guay2.com/', '/imagenes/fabricantes/gg.jpg',
+    '<p>G&G Armament es una marca reconocida a nivel mundial por la fabricación de réplicas de airsoft de alta calidad. Sus productos son conocidos por su precisión, fiabilidad y durabilidad, lo que los hace ideales tanto para jugadores experimentados como para aquellos que se están iniciando en el mundo del airsoft.</p>
+    <p>La empresa fue fundada en Taiwán en 1986 y desde entonces se ha centrado en la innovación y la mejora continua de sus productos. G&G Armament cuenta con un equipo de ingenieros y diseñadores altamente capacitados que trabajan constantemente en el desarrollo de nuevas tecnologías y materiales para mejorar el rendimiento y la calidad de sus productos.</p>
+    <p>Entre los productos más populares de G&G Armament se encuentran las réplicas de fusiles de asalto, subfusiles y pistolas de airsoft. Estas réplicas están diseñadas para ser lo más fieles posible a las armas reales, tanto en su aspecto como en su funcionamiento.</p>
+    <p>Además, G&G Armament se preocupa por la seguridad de sus usuarios y por el cumplimiento de las normativas internacionales. Por esta razón, todos sus productos están fabricados con materiales de alta calidad y cumplen con los estándares de seguridad más exigentes.</p>
+    <p>En resumen, G&G Armament es una marca reconocida en el mundo del airsoft por la calidad y precisión de sus réplicas de airsoft. Sus productos son ideales tanto para jugadores experimentados como para aquellos que se están iniciando en este deporte, y están diseñados para cumplir con los estándares de seguridad más exigentes.</p>'),
+    ('Krytac', 'EE.UU.', 'https://krytac.com/', '/imagenes/fabricantes/krytac.jpg',
+    '<p>Krytac es una marca de airsoft con sede en California, Estados Unidos. La marca se especializa en la fabricación de réplicas de armas de fuego de alta calidad y rendimiento para el juego de airsoft. Krytac es una subsidiaria de la empresa matriz KRISS USA, que es conocida por su innovación en el diseño de armas de fuego.</p>
+    <p>La línea de productos de Krytac incluye rifles de asalto, pistolas de gas y accesorios de airsoft. Sus productos se destacan por su calidad de construcción y su rendimiento superior en el campo de juego. Krytac utiliza tecnología y materiales avanzados en la fabricación de sus productos para garantizar la máxima durabilidad y precisión.</p>
+    <p>Además de su enfoque en la calidad, Krytac también se enfoca en la ergonomía del diseño de sus productos. La marca ha ganado varios premios por sus diseños innovadores y ha sido reconocida por su atención al detalle en la fabricación de réplicas de armas de fuego.</p>
+    <p>En resumen, Krytac es una marca de airsoft con sede en California que se especializa en la fabricación de réplicas de armas de fuego de alta calidad y rendimiento. Sus productos se destacan por su atención al detalle, diseño ergonómico y rendimiento superior en el campo de juego, y han ganado varios premios por su innovación en la industria del airsoft.</p>
+    <p>Fabricante de armas de Airsoft de la mas alta calidad, con internos reforzados. Perfecta para jugadores veteranos que buscan un arma profesional para practicar el deporte.</p>'),
+    ('Lancer tactical', 'EE.UU.', 'https://www.lancertactical.com/', '/imagenes/fabricantes/lancer-tactical.png',
+    '<p>Lancer Tactical es una marca estadounidense de airsoft que se especializa en la producción de armas de Airsoft y accesorios de alta calidad . La marca se fundó en 2012 y se ha establecido como una de las marcas líderes en la industria de airsoft en los Estados Unidos.</p>
+    <p>Lancer Tactical es conocida por su compromiso con la calidad y la atención al detalle en la producción de sus productos. Sus réplicas de airsoft son conocidas por su buena construcción y rendimiento, y son ampliamente utilizadas tanto en partidas de airsoft como en entrenamiento de fuerzas de seguridad.</p>
+    <p>Lancer Tactical aparte de su amplia gama de replicas de Airsoft también ofrecen una amplia gama de accesorios personalizados para sus productos, como miras, cargadores y baterías.</p>
+    <p>Además, Lancer Tactical se ha comprometido a ser una marca responsable y comprometida con la seguridad en la industria de airsoft. Han trabajado en estrecha colaboración con organizaciones y reguladores para garantizar que sus productos cumplan con los estándares de seguridad y calidad.</p>
+    <p>En resumen, Lancer Tactical es una marca estadounidense de airsoft que se enfoca en la producción de réplicas de Airsoft y accesorios de alta calidad para airsoft. Su compromiso con la calidad y la seguridad ha llevado a la marca a ser reconocida como una de las principales marcas de airsoft en los Estados Unidos, desde entonces ha revolucionado el mercado Estadounidense con productos de alta calidad, ofreciendo las mejores garantías en sus armas de airsoft.</p>'),
+    ('Nimrod', 'N/A', 'https://nimrodtactical.com/', '/imagenes/fabricantes/nimrod-tactical.jpg',
+    '<p>Nimrod es una destacada marca en la industria del airsoft, especializada en suministrar una amplia gama de accesorios y equipos de alta calidad para satisfacer las necesidades de los jugadores más exigentes. Con un enfoque en la excelencia y el rendimiento, Nimrod se ha convertido en un nombre confiable en el mundo del airsoft.</p>
+    <p>La marca se destaca por su línea de productos que abarca desde gas de calidad premium, diseñado para maximizar el rendimiento de las réplicas de airsoft y asegurar una operación suave y consistente, hasta bolas de alta precisión que garantizan una trayectoria estable y confiable en el campo de juego. Además, Nimrod ofrece baterías de última generación que proporcionan la energía necesaria para mantener el funcionamiento óptimo de las réplicas eléctricas, así como motores de alto rendimiento que permiten un mejor control y respuesta en el disparo.</p>
+    <p>Los cronógrafos de Nimrod son herramientas esenciales para medir la velocidad de las bolas y asegurar que las réplicas cumplan con las regulaciones de campo, garantizando un juego seguro y justo. Las miras de precisión ofrecidas por la marca brindan a los jugadores una ventaja adicional al mejorar la puntería y la adquisición de objetivos. Además, los trazadores de Nimrod añaden un elemento de diversión y realismo al permitir que las bolas emitan una estela de luz en la oscuridad, lo que agrega un toque único a las partidas nocturnas.</p>'),
+    ('Saigo Defense', 'España', 'N/A', '/imagenes/fabricantes/saigo-defense.jpg',
+    '<p>Saigo Defense es una marca de airsoft con sede en España que se especializa en la producción de armas de airsoft. La marca se fundó en 2010 y se ha establecido como una de las principales marcas de airsoft en España.</p>
+    <p>Las replicas de airsoft de la marca Saigo Defense están diseñadas para jugadores que buscan calidad precio en sus productos. Gracias a Saigo Defense podemos ofrecer estos productos ofreciendo las mejores garantías post-venta. </p>
+    <p>Contamos con una amplia gama de productos, el abanico que nos ofrece la marca Saigo Defense cuenta con escopetas, pistolas de gas, pistolas de muelle, así como rifles de Airsoft. </p>'),
+    ('Tokyo Marui', 'Japón', 'https://www.tokyo-marui.co.jp/', '/imagenes/fabricantes/tokyo-marui.jpg',
+    '<p>Tokyo Marui es una marca líder en el mundo del airsoft y es reconocida por la calidad y precisión de sus réplicas de armas. Fundada en 1965 en Japón, la marca se ha especializado en la creación de réplicas de armas de fuego para el mercado del airsoft. Tokyo Marui utiliza tecnología avanzada en la fabricación de sus productos, lo que les permite ofrecer réplicas de armas precisas y de alta calidad. </p>
+    <p>Una de las características más destacadas de las réplicas de armas de Tokyo Marui es su sistema de hop-up ajustable, que permite una mayor precisión en los disparos a larga distancia. Además, la marca utiliza materiales de alta calidad en la fabricación de sus productos, lo que los hace duraderos y resistentes. Tokyo Marui ofrece una amplia variedad de modelos de réplicas de armas, desde pistolas hasta francotirador, para satisfacer las necesidades y gustos de los jugadores de airsoft más exigentes.</p>
+    <p>Otro aspecto que distingue a Tokyo Marui es su compromiso con la seguridad y la responsabilidad social. La marca ha desarrollado réplicas de armas que son seguras de usar y no causan daño a las personas o al medio ambiente.</p>
+    <p>En resumen, Tokyo Marui es una marca de réplicas de armas de airsoft de alta calidad y precisión que utiliza tecnología avanzada y materiales de alta calidad en la fabricación de sus productos. La marca se compromete con la seguridad y la responsabilidad social, lo que la convierte en una opción popular para los jugadores de airsoft de todo el mundo.</p>');
 
 INSERT INTO subcategorias(identidad_categoria, nombre, imagen_url, descripcion) VALUES
     (1, 'fusiles', '/imagenes/subcategorias/fusiles.jpg', 'Los fusiles de airsoft son la elección ideal para todo tipo de partidas de airsoft, ya que son las armas más versátiles, convirtiéndose
@@ -497,6 +538,7 @@ UPDATE envios SET fecha_entrega = '2024-04-15', numero_documento_identidad_recep
 UPDATE envios SET fecha_entrega = '2024-04-17', numero_documento_identidad_receptor = 'nif receptor' WHERE id_envio = 5;
 UPDATE envios SET fecha_entrega_vuelta_almacen = '2024-04-20', comentario = 'Tres intentos fallidos de entrega. Imposible contactar por teléfono. Devolvemos a almacén.' WHERE id_envio = 6;
 */
+SELECT * FROM fabricantes;
 SELECT * FROM usuarios;
 SELECT * FROM productos;
 SELECT * FROM resenas;

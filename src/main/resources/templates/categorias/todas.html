@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Todas las categorías')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/lista.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+
+    <main>
+        <h2>Categorías</h2>
+        <div>
+            <a class="btn btn-primary" th:href="@{/categorias/crear}">Crear Categoría</a>
+        </div>
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>URL de la imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="categoria : ${categoriasHtml}">
+                    <td th:text="${categoria.idCategoria}"></td>
+                    <td th:text="${categoria.nombre}"></td>
+                    <td th:text="${categoria.imagenUrl}"></td>
+                    <td>
+                        <a class="btn btn-info" th:href="@{'/categorias/' + ${categoria.idCategoria}}">Mostrar</a>
+                        <a class="btn btn-warning" th:href="@{'/categorias/editar/' + ${categoria.idCategoria}}">Editar</a>
+                        <a class="btn btn-danger" th:href="@{'/categorias/borrar/' + ${categoria.idCategoria}}" onclick="return confirm('¿Está seguro de que desea eliminar esta categoría?');">Borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+    <br>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

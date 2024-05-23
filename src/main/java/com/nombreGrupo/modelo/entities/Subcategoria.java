@@ -1,6 +1,7 @@
 package com.nombreGrupo.modelo.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -12,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,11 +44,14 @@ public class Subcategoria implements Serializable{
     @Column(nullable = false, length = 30)
     private String nombre;
 
-    @Column(nullable = false)
+    @Column
     @JsonIgnore // Pueden ser párrafos así que mejor que no salga en un json por
     private String descripcion;
 
     @Column(name = "imagen_url", length = 100)
     private String imagenUrl;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "subcategoria")
+    private List<Producto> productos;
 }

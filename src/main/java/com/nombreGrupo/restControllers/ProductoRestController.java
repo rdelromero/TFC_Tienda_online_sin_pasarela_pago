@@ -17,11 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nombreGrupo.modelo.dto.ProductoDtoCreacion;
-import com.nombreGrupo.modelo.entities.Fabricante;
-import com.nombreGrupo.modelo.entities.Pedido;
 import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.modelo.entities.Producto.TipoDescuento;
-import com.nombreGrupo.modelo.entities.Pedido.EstadoPedido;
 import com.nombreGrupo.services.ProductoService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -35,13 +32,13 @@ public class ProductoRestController {
     
     /* LECTURA----------------------------------------------------------------*/
     @GetMapping
-    public ResponseEntity<List<Producto>> getEncontrarTodos() {
+    public ResponseEntity<List<Producto>> getIndex() {
         List<Producto> productos = productoService.encontrarTodos();
         return ResponseEntity.ok(productos);
     }
     
     @GetMapping("/{idProducto}")
-    public ResponseEntity<?> getPorId(@PathVariable int idProducto) {
+    public ResponseEntity<?> getShowPorId(@PathVariable int idProducto) {
     	try {
             Producto producto = productoService.encontrarPorId(idProducto);
             return ResponseEntity.ok(producto);
@@ -52,26 +49,8 @@ public class ProductoRestController {
         }
     }
     
-    @GetMapping("/subcategoria/{idSubcategoria}")
-    public ResponseEntity<List<Producto>> getPorSubcategoria_IdSubcategoria(@PathVariable int idSubcategoria) {
-        List<Producto> productos = productoService.encontrarPorSubcategoria_IdSubcategoria(idSubcategoria);
-        if (productos.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(productos);
-    }
-    
-    @GetMapping("/fabricante/{idFabricante}")
-    public ResponseEntity<List<Producto>> getPorFabricante_IdFabricante(@PathVariable int idFabricante) {
-        List<Producto> productos = productoService.encontrarPorFabricante_IdFabricante(idFabricante);
-        if (productos.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(productos);
-    }
-    
     @GetMapping("/tipo-descuento/{tipoDescuento}")
-    public ResponseEntity<List<Producto>> getPedidosPorTipoDescuento(@PathVariable TipoDescuento tipoDescuento) {
+    public ResponseEntity<List<Producto>> getIndexPorTipoDescuento(@PathVariable TipoDescuento tipoDescuento) {
         List<Producto> productos = productoService.encontrarPorTipoDescuento(tipoDescuento);
         if (productos.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -79,17 +58,8 @@ public class ProductoRestController {
         return ResponseEntity.ok(productos);
     }
     
-    @GetMapping("/categoria/{idCategoria}")
-    public ResponseEntity<List<Producto>> getPorIdCategoria(@PathVariable int idCategoria) {
-        List<Producto> productos = productoService.encontrarPorSubcategoriaCategoriaIdCategoria(idCategoria);
-        if (productos.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(productos);
-    }
-    
     @GetMapping("/filtro")
-    public ResponseEntity<List<Producto>> getPorSubcategoriaCategoriaIdCategoriaYFabricante_IdFabricanteYPrecioFinal(
+    public ResponseEntity<List<Producto>> getIndexPorSubcategoriaCategoriaIdCategoriaYFabricante_IdFabricanteYPrecioFinal(
         @RequestParam(value = "idCategoria", required = false) Integer idCategoria,
         @RequestParam(value = "tipoDescuento", required = false, defaultValue = "sin_descuento") TipoDescuento tipoDescuento,
         @RequestParam(value = "idFabricante", required = false) Integer idFabricante,
@@ -115,7 +85,7 @@ public class ProductoRestController {
     
     //Buscar por varias palabras
     @GetMapping("/buscar")
-    public ResponseEntity<List<Producto>> buscarProductosPorPalabrasClave(
+    public ResponseEntity<List<Producto>> getIndexPorPalabrasClave(
         @RequestParam(value = "palabras", required = false, defaultValue = "") String palabras) {
         
         List<Producto> productos = productoService.buscarPorPalabrasClave(palabras);
@@ -126,7 +96,7 @@ public class ProductoRestController {
     }
     
     @GetMapping("/buscar2")
-    public ResponseEntity<List<Producto>> buscarProductosPorPalabrasClave2(
+    public ResponseEntity<List<Producto>> getIndexPorPalabrasClave2(
         @RequestParam(value = "palabras", required = false, defaultValue = "") String palabras) {
         
         List<Producto> productos = productoService.buscarPorPalabrasClave2(palabras);
@@ -137,7 +107,7 @@ public class ProductoRestController {
     }
     
     @GetMapping("/filtrarybuscar")
-    public ResponseEntity<List<Producto>> getPorFiltrosYBusquedaPorPalabras(
+    public ResponseEntity<List<Producto>> getIndexPorFiltrosYBusquedaPorPalabras(
             @RequestParam(value = "idCategoria", required = false) Integer idCategoria,
             @RequestParam(value = "tipoDescuento", required = false, defaultValue = "sin_descuento") TipoDescuento tipoDescuento,
             @RequestParam(value = "idFabricante", required = false) Integer idFabricante,
@@ -154,7 +124,7 @@ public class ProductoRestController {
     }
     
     @GetMapping("/filtrarybuscar2")
-    public ResponseEntity<List<Producto>> getPorFiltrosYBusquedaPorPalabras2(
+    public ResponseEntity<List<Producto>> getIndexPorFiltrosYBusquedaPorPalabras2(
             @RequestParam(value = "idCategoria", required = false) Integer idCategoria,
             @RequestParam(value = "tipoDescuento", required = false, defaultValue = "sin_descuento") TipoDescuento tipoDescuento,
             @RequestParam(value = "idFabricante", required = false) Integer idFabricante,
@@ -187,14 +157,18 @@ public class ProductoRestController {
         
     /* CREACIÓN------------------------------------------------------------------*/
 	@PostMapping
-	public ResponseEntity<?> postCrearYGuardar(@RequestBody ProductoDtoCreacion productoDtoCreacion) {
-        Producto productoGuardado = productoService.crearYGuardar(productoDtoCreacion);
-        return ResponseEntity.ok(productoGuardado);
+	public ResponseEntity<?> postStore(@RequestBody ProductoDtoCreacion productoDtoCreacion) {
+        try {
+        	Producto productoGuardado = productoService.crearYGuardar(productoDtoCreacion);
+            return ResponseEntity.ok(productoGuardado);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensaje", ex.getMessage()));
+        }
 	}
 
 	/* ACTUALIZACIÓN--------------------------------------------------------------*/
     @PutMapping("/{idProducto}")
-    public ResponseEntity<?> putActualizar(@PathVariable int idProducto, @RequestBody ProductoDtoCreacion productoDtoActualizacion) {
+    public ResponseEntity<?> putUpdate(@PathVariable int idProducto, @RequestBody ProductoDtoCreacion productoDtoActualizacion) {
         try {
             Producto productoGuardado = productoService.actualizar(idProducto, productoDtoActualizacion);
             return ResponseEntity.ok(productoGuardado);
@@ -205,7 +179,7 @@ public class ProductoRestController {
     
     /* BORRADO-----------------------------------------------------------------------*/
     @DeleteMapping("/{idProducto}")
-    public ResponseEntity<?> deletePorId(@PathVariable int idProducto) {
+    public ResponseEntity<?> destroyPorId(@PathVariable int idProducto) {
        try {
     	   productoService.borrarPorId(idProducto);
     	   return ResponseEntity.ok(Map.of("mensaje", "Producto borrado correctamente."));

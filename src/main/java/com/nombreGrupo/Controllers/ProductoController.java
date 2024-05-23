@@ -26,6 +26,7 @@ import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.modelo.entities.Fabricante;
 import com.nombreGrupo.modelo.entities.Imagen;
 import com.nombreGrupo.modelo.entities.Subcategoria;
+import com.nombreGrupo.repositories.ImagenRepository;
 import com.nombreGrupo.services.ProductoService;
 import com.nombreGrupo.services.FabricanteService;
 import com.nombreGrupo.services.SubcategoriaService;
@@ -40,9 +41,13 @@ public class ProductoController {
     private FabricanteService fabricanteService;
 	@Autowired
     private SubcategoriaService subcategoriaService;
-	
 	@Autowired
 	private ModelMapper modeloMapper;
+	
+	@Autowired
+    private ImagenRepository imagenRepository;
+
+    private static final String UPLOADED_FOLDER = "src/main/resources/static/imagenes/productos/";
 	
 	@GetMapping
     public String getIndex(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "15") int size) {
@@ -53,7 +58,7 @@ public class ProductoController {
     }
     
     @GetMapping("/{id}")
-    public String getProducto(@PathVariable("id") int idProducto, Model model) {
+    public String getShow(@PathVariable("id") int idProducto, Model model) {
         Producto producto = productoService.encontrarPorId(idProducto);
         if (producto == null) {
             return "redirect:/mostrarUno";

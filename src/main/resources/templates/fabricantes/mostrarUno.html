@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Detalles del fabricante')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/uno.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+    <h2 th:text="'Detalles del fabricante de id ' + ${fabricante.idFabricante}"></h2>
+    <main>
+        <table>
+            <tr>
+                <th>ID</th>
+                <td th:text="${fabricante.idFabricante}"></td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td th:text="${fabricante.nombre}"></td>
+            </tr>
+            <tr>
+                <th>Fecha fundación</th>
+                <td th:text="${fabricante.fechaFundacion}"></td>
+            </tr>
+               <tr>
+                <th>País</th>
+                <td th:text="${fabricante.pais}"></td>
+            </tr>
+            <tr>
+                <th>Página web</th>
+                <td th:text="${fabricante.paginaWeb}"></td>
+            </tr>
+            <tr>
+                <th>URL de la imagen</th>
+                <td th:text="${fabricante.imagenUrl}"></td>
+            </tr>
+            <tr>
+                <th>Fecha creación</th>
+                <td th:text="${fabricante.fechaCreacion}"></td>
+            </tr>
+            <tr>
+                <th>Fecha actualización</th>
+                <td th:text="${fabricante.fechaActualizacion}"></td>
+            </tr>
+        </table>
+        <br>
+        <div>
+        <label for="descripcionLTA">Descripción (poner tags &lt;p&gt;párrafo&lt;/p&gt;):</label><br>
+               <textarea id="descripcionLTA" th:text="${fabricante.descripcion}" rows="12" cols="100" disabled></textarea>
+        </div>
+        <br>
+        <a th:href="@{/fabricantes}" class="btn btn-secondary">Volver a la lista</a>
+    </main>
+    <br>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

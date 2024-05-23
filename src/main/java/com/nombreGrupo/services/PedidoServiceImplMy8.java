@@ -13,7 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.nombreGrupo.modelo.dto.PedidoDtoActualizacionSinCambiarLineasFacturacion;
-
+import com.nombreGrupo.modelo.dto.PedidoDtoCreacionConLineasFacturacion;
+import com.nombreGrupo.modelo.dto.ProductoDtoCreacion;
 import com.nombreGrupo.modelo.entities.LineaFacturacion;
 import com.nombreGrupo.modelo.entities.Pedido;
 import com.nombreGrupo.modelo.entities.Pedido.EstadoPedido;
@@ -21,7 +22,7 @@ import com.nombreGrupo.modelo.entities.Pedido.MetodoEnvio;
 import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.modelo.entities.Usuario;
 import com.nombreGrupo.repositories.LineaFacturacionRepository;
-//import com.nombreGrupo.modelo.entities.Pedido.EstadoPedido;
+import com.nombreGrupo.modelo.dto.LineaFacturacionDto;
 import com.nombreGrupo.repositories.PedidoRepository;
 import com.nombreGrupo.repositories.ProductoRepository;
 import com.nombreGrupo.repositories.UsuarioRepository;
@@ -77,45 +78,59 @@ public class PedidoServiceImplMy8 implements PedidoService {
 
     @Override
     @Transactional
-    public Pedido crearYGuardarConLF(int idUsuario, List<Integer> productoIds, List<Integer> cantidades, String nombre, String apellidos, String direccion, String pais, String ciudad, String numeroTelefonoMovil, MetodoEnvio metodoEnvio) {
+    public Pedido crearYGuardarConLF(PedidoDtoCreacionConLineasFacturacion pedidoDtoCreacionConLF) {
         
-    	//Si no existe usuario con ese idUsuario lanzar expceción adviertiendo de ello.
-    	Usuario usuario = usuarioRepository.findById(idUsuario)
-                .orElseThrow(() -> new EntityNotFoundException("No existe usuario con IdUsuario: "+idUsuario+"."));
-    	
-    	//Si el usuario existe pero no está activo (no ha verificado correo electrónico) lanzar expceción advirtiendo de ello.
-        if (usuario.getActive()==false) {
-            throw new IllegalStateException("El usuario con IdUsuario: "+idUsuario+" no está activo, luego no puede hacer pedidos.");
+        // Si no existe usuario con ese idUsuario lanzar excepción advirtiendo de ello.
+    	;
+    	Usuario usuario = usuarioRepository.findById(pedidoDtoCreacionConLF.getIdUsuario())
+                .orElseThrow(() -> new EntityNotFoundException("No existe usuario con IdUsuario: " + pedidoDtoCreacionConLF.getIdUsuario() + "."));
+        
+        // Si el usuario existe pero no está activo (no ha verificado correo electrónico) lanzar excepción advirtiendo de ello.
+        if (!usuario.getActive()) {
+            throw new IllegalStateException("El usuario con IdUsuario: " + usuario.getIdUsuario() + " no está activo, luego no puede hacer pedidos.");
         }
-    	
-    	//Si no existe suficiente stock para algún producto lanzar expceción adviertiendo de ello.
-        for (int i = 0; i < productoIds.size(); i++) {
-            Producto producto = productoRepository.findById(productoIds.get(i)).orElseThrow();
-            if (producto.getStock() < cantidades.get(i)) {
-                throw new IllegalStateException("No hay suficiente stock para el producto: "+producto.getNombre()+".");
+        
+        List<LineaFacturacionDto> lineasFacturacionDto = pedidoDtoCreacionConLF.getLineasFacturacionDto();
+        
+        // Verificar que la lista de líneas de facturación no sea nula o vacía
+        if (lineasFacturacionDto == null || lineasFacturacionDto.isEmpty()) {
+            throw new IllegalArgumentException("El pedido debe tener al menos una línea de facturación.");
+        }
+        
+        // Validar el stock para cada producto en las líneas de facturación
+        for (LineaFacturacionDto lineaDto : lineasFacturacionDto) {
+            Producto producto = productoRepository.findById(lineaDto.getIdProducto())
+                    .orElseThrow(() -> new EntityNotFoundException("No existe producto con IdProducto: " + lineaDto.getIdProducto() + "."));
+            
+            if (producto.getStock() < lineaDto.getCantidad()) {
+                throw new IllegalStateException("No hay suficiente stock para el producto: " + producto.getNombre() + ".");
             }
         }
-    	
-    	Pedido pedido = new Pedido();
-    	pedido.setUsuario(usuarioRepository.findById(idUsuario).orElseThrow(() -> new EntityNotFoundException("No existe usuario con ID: " +idUsuario+".")));
-        pedido.setNombre(nombre);
-        pedido.setApellidos(apellidos);
-        pedido.setDireccion(direccion);
-        pedido.setPais(pais);
-        pedido.setCiudad(ciudad);
-        pedido.setNumeroTelefonoMovil(numeroTelefonoMovil);
-        pedido.setMetodoEnvio(metodoEnvio);
-        pedido.setEstado(Pedido.EstadoPedido.pendiente);
-        pedidoRepository.save(pedido);
-        for (int i = 0; i < productoIds.size(); i++) {
-            Producto producto = productoRepository.findById(productoIds.get(i)).orElseThrow();
-            LineaFacturacion lf = new LineaFacturacion();
-            lf.setProducto(producto);
-            lf.setPedido(pedido);
-            lf.setCantidad(cantidades.get(i));
-            lf.setEstado(LineaFacturacion.EstadoLineaFacturacion.activo);
-            lineaFacturacionRepository.save(lf);
+        
+        Pedido pedido = new Pedido();
+        
+        modeloMapper.map(pedidoDtoCreacionConLF, pedido);
+        pedido = pedidoRepository.save(pedido);
+        
+        // Crear y guardar las líneas de facturación
+        for (LineaFacturacionDto lineaDto : lineasFacturacionDto) {
+            Producto producto = productoRepository.findById(lineaDto.getIdProducto())
+                    .orElseThrow(() -> new EntityNotFoundException("No existe producto con IdProducto: " + lineaDto.getIdProducto() + "."));
+            
+            LineaFacturacion lineaFacturacion = new LineaFacturacion();
+            
+            modeloMapper.map(lineaDto, lineaFacturacion);
+            
+            lineaFacturacion.setPedido(pedido);
+            lineaFacturacion.setEstado(LineaFacturacion.Estado.activo);
+            
+            // Actualizar el stock del producto
+            producto.setStock(producto.getStock() - lineaDto.getCantidad());
+            productoRepository.save(producto);
+            
+            lineaFacturacionRepository.save(lineaFacturacion);
         }
+        
         return pedido;
     }
     
@@ -134,7 +149,7 @@ public class PedidoServiceImplMy8 implements PedidoService {
 		     // Actualizar las líneas de facturación asociadas a este pedido
 		     List<LineaFacturacion> lineasFacturacion = lineaFacturacionRepository.findByPedido_IdPedido(idPedido);
 		     for (LineaFacturacion lf : lineasFacturacion) {
-		         lf.setEstado(LineaFacturacion.EstadoLineaFacturacion.cancelado);
+		         lf.setEstado(LineaFacturacion.Estado.cancelado);
 		         Producto productoDeLalinea = lf.getProducto();
 		         productoDeLalinea.setStock(productoDeLalinea.getStock()+lf.getCantidad());
 		         productoRepository.save(productoDeLalinea);
@@ -146,7 +161,7 @@ public class PedidoServiceImplMy8 implements PedidoService {
 		     // Actualizar las líneas de facturación asociadas a este pedido
 		     List<LineaFacturacion> lineasFacturacion = lineaFacturacionRepository.findByPedido_IdPedido(idPedido);
 		     for (LineaFacturacion lf : lineasFacturacion) {
-		         lf.setEstado(LineaFacturacion.EstadoLineaFacturacion.activo);
+		         lf.setEstado(LineaFacturacion.Estado.activo);
 		         Producto productoDeLalinea = lf.getProducto();
 		         productoDeLalinea.setStock(productoDeLalinea.getStock()-lf.getCantidad());
 		         productoRepository.save(productoDeLalinea);

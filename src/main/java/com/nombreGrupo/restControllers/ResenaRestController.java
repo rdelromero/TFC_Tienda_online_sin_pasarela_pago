@@ -26,14 +26,14 @@ public class ResenaRestController {
 	
     /* LECTURA----------------------------------------------------------------*/
     @GetMapping
-    public ResponseEntity<List<Resena>> getEncontrarTodas() {
+    public ResponseEntity<List<Resena>> getIndex() {
         List<Resena> resenas = resenaService.encontrarTodas();
         return ResponseEntity.ok(resenas);
     }
 	
     /* BORRADO-----------------------------------------------------------------------*/
     @DeleteMapping("/{idResena}")
-    public ResponseEntity<?> deletePorId(@PathVariable int idResena) {
+    public ResponseEntity<?> destroyPorId(@PathVariable int idResena) {
        try {
     	   resenaService.borrarPorId(idResena);
     	   return ResponseEntity.ok(Map.of("mensaje", "Resena de idResena "+idResena+" borrada correctamente."));

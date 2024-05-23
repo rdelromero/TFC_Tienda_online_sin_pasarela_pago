@@ -4,12 +4,11 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -26,21 +25,32 @@ public class EmailUtil {
   @Autowired
   private PedidoService pedidoService;
   
-  public void enviarEmailConOtp(String nombreDestinatario, String direccionEmail, String otp) throws MessagingException {
-    MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-    MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
-    mimeMessageHelper.setTo(direccionEmail);
-    mimeMessageHelper.setSubject("[nombrePagina.com] ¡Bienvenido!");
-    mimeMessageHelper.setText("""
-        <div>
-          <p>Hola %s</p>
-          <p>Gracias por crear una cuenta de usuario en nombre pagina.</p>
-          <a href="http://localhost:8080/no-verificados/verificar-cuenta?direccionEmail=%s&otp=%s" target="_blank">Haz click aquí para verificar tu dirección de email y completar el registro.</a>
-          <p>Saludos</p>
-        </div>
-        """.formatted(nombreDestinatario, direccionEmail, otp), true);
+  public void enviarEmailConUUIDParaVerificarEmail(String nombreDestinatario, String direccionEmail, String UUIDString) {
+      SimpleMailMessage mensaje = new SimpleMailMessage();
+      mensaje.setTo(direccionEmail);
+      mensaje.setSubject("[nombrePagina.com] Verificación de Cuenta");
 
-    javaMailSender.send(mimeMessage);
+      // Personalizar el mensaje para saludar al usuario por su nombre
+      String text = String.format(
+              "Hola %s,\n\nPara verificar tu cuenta, haz clic en el siguiente enlace: %s\n\nSaludos,\nEl Equipo",
+              nombreDestinatario, "http://localhost:8080/api/usuarios/verificar?uuid=" + UUIDString
+      );
+      mensaje.setText(text);
+      javaMailSender.send(mensaje);
+  }
+  
+  public void enviarEmailConNuevoUuidParaVerificarEmail(String nombreDestinatario, String direccionEmail, String UUIDString) {
+      SimpleMailMessage mensaje = new SimpleMailMessage();
+      mensaje.setTo(direccionEmail);
+      mensaje.setSubject("[nombrePagina.com] Verificación de Cuenta");
+
+      // Personalizar el mensaje para saludar al usuario por su nombre
+      String text = String.format(
+              "Hola de nuevo %s,\n\nPara verificar tu cuenta, haz clic en el siguiente enlace: %s\n\nSaludos,\nEl Equipo",
+              nombreDestinatario, "http://localhost:8080/api/usuarios/verificar?uuid=" + UUIDString
+      );
+      mensaje.setText(text);
+      javaMailSender.send(mensaje);
   }
   
 //Ponemos transactional para evitar el error El error could not initialize proxy - no Session.

@@ -3,22 +3,16 @@ package com.nombreGrupo.restControllers;
 import com.nombreGrupo.modelo.entities.Pedido;
 import com.nombreGrupo.modelo.entities.Usuario;
 import com.nombreGrupo.modelo.dto.UsuarioDtoRegistro;
-import com.nombreGrupo.modelo.dto.UsuarioDtoLogin;
 import com.nombreGrupo.services.PedidoService;
 import com.nombreGrupo.services.UsuarioServiceImplMy8;
-
 import jakarta.persistence.EntityNotFoundException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -32,20 +26,20 @@ public class UsuarioRestController {
     
     /* LECTURA------------------------------------------------------*/
     @GetMapping
-    public ResponseEntity<List<Usuario>> getAllUsuarios() {
+    public ResponseEntity<List<Usuario>> getIndex() {
         List<Usuario> usuarios = usuarioService.encontrarTodos();
         return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/verificados")
-    public ResponseEntity<List<Usuario>> getUsuariosVerificados() {
+    public ResponseEntity<List<Usuario>> getIndexUsuariosVerificados() {
         List<Usuario> usuarios = usuarioService.encontrarPorActiveTrue();
         return ResponseEntity.ok(usuarios);
     }
     
     // Obtener un usuario por ID
     @GetMapping("/{idUsuario}")
-    public ResponseEntity<?> getUsuarioById(@PathVariable int idUsuario) {
+    public ResponseEntity<?> getShowPorId(@PathVariable int idUsuario) {
         try {
             Usuario usuario = usuarioService.encontrarPorId(idUsuario);
             return ResponseEntity.ok(usuario);
@@ -60,7 +54,7 @@ public class UsuarioRestController {
 
     /* CREACIÓN----------------------------------------------------------*/
     @PostMapping
-    public ResponseEntity<?> postRegistrarUsuario(@RequestBody UsuarioDtoRegistro registroDto) {
+    public ResponseEntity<?> postStore(@RequestBody UsuarioDtoRegistro registroDto) {
         try {
             Usuario usuarioGuardado = usuarioService.crearYGuardar(registroDto);
             return ResponseEntity.ok(usuarioGuardado);
@@ -73,54 +67,24 @@ public class UsuarioRestController {
         }
     }
 
-    @PutMapping("/no-verificados/verificar-cuenta")
-    public ResponseEntity<?> PutVerificarCuenta(@RequestParam String direccionEmail, @RequestParam String otp) {
-        try {
-            Usuario usuarioGuardado = usuarioService.verificarCuentaPorDireccionEmailYOpt(direccionEmail, otp);
-            return ResponseEntity.ok(usuarioGuardado);
-        } catch (EntityNotFoundException ex) {
-            // No existe usuario con esa direccionEmail
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensaje", ex.getMessage()));
-        } catch (IllegalStateException ex) {
-            // Captura la excepción cuando la cuenta ya está verificada
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("mensaje", ex.getMessage()));
-        } catch (IllegalArgumentException ex) {
-            // Captura errores como OTP incorrecto o caducado
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("mensaje", ex.getMessage()));
-        } catch (RuntimeException ex) {
-            // Captura otros errores de tiempo de ejecución
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("mensaje", "Error interno del servidor. Por favor, intente de nuevo más tarde."));
-        }
-    }
-    
-    @PutMapping("/no-verificados/{idUsuario}/regenerar-otp")
-    public ResponseEntity<?> regenerarOtpParaUsuarioNoVerificado(@PathVariable("idUsuario") int idUsuario) {
-        try {
-            Usuario usuarioGuardado = usuarioService.regenerarOtpParaUsuarioNoVerificado(idUsuario);
-            return ResponseEntity.ok(usuarioGuardado);
-        } catch (EntityNotFoundException ex) {
-        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensaje", ex.getMessage()));
-        } catch (IllegalStateException ex) {
-            // Captura la excepción cuando la cuenta ya está verificada
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("mensaje", ex.getMessage()));
-        } catch (IllegalArgumentException ex) {
-            // direccionEmail no tiene el formato adecuado
+    @GetMapping("/verificar")
+    public ResponseEntity<?> verificarCuenta(@RequestParam("uuid") String uuid) {
+    	try {
+    		return ResponseEntity.ok(usuarioService.verificarCuentaPorDireccionEmailYUuid(uuid));
+    	} catch (IllegalArgumentException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("mensaje", ex.getMessage()));
         }
     }
     
     /* ACTUALIZAR ---------------------------------------------------------------*/
     @PutMapping("/{idUsuario}/actualizar")
-    public ResponseEntity<?> actualizarUsuario(@PathVariable int idUsuario, @RequestBody UsuarioDtoRegistro usuarioRegistroDto) {
+    public ResponseEntity<?> putUpdate(@PathVariable int idUsuario, @RequestBody UsuarioDtoRegistro usuarioRegistroDto) {
         try {
             Usuario usuarioActualizado = usuarioService.actualizar(idUsuario, usuarioRegistroDto);
             return ResponseEntity.ok(usuarioActualizado);
         } catch (EntityNotFoundException ex) {
             // No existe usuario con ese idUsuario
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensaje", ex.getMessage()));
-        } catch (IllegalStateException ex) {
-            // La cuenta de usuario no está verificada
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("mensaje", ex.getMessage()));
         } catch (DataIntegrityViolationException ex) {
             // Existe otro usuario con la direccionEmail que se propone
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("mensaje", ex.getMessage()));
@@ -132,7 +96,7 @@ public class UsuarioRestController {
     
     /* BORRADO-----------------------------------------------------------------------*/
     @DeleteMapping("/{idUsuario}")
-    public ResponseEntity<?> deleteUsuario(@PathVariable int idUsuario) {
+    public ResponseEntity<?> destroyPorId(@PathVariable int idUsuario) {
         boolean isDeleted = usuarioService.borrarPorId(idUsuario);
         if (isDeleted) {
             return ResponseEntity.ok(Map.of("mensaje", "Usuario borrado correctamente."));
@@ -141,20 +105,21 @@ public class UsuarioRestController {
         }
     }
     
-    /* LOGIN----------------------------------------------------------------------*/
-    @PutMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UsuarioDtoLogin usuarioDtoLogin) {
-    	try {
-    		return ResponseEntity.ok(usuarioService.loguearse(usuarioDtoLogin));
-    	} catch (EntityNotFoundException ex) {
-    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensaje", ex.getMessage()));
+    /* ACTUALIZACIÓN en la tabla verificacion_uuid del uuid de un usuario cuyo campo active es false */
+    @PutMapping("/{idUsuario}/regenerar-uuid")
+    public ResponseEntity<?> regenerarUuid(@PathVariable int idUsuario) {
+        try {
+            Usuario usuarioActualizado = usuarioService.regenerarUuidParaUsuarioNoVerificado(idUsuario);
+            return ResponseEntity.ok(usuarioActualizado);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensaje", ex.getMessage()));
         } catch (IllegalStateException ex) {
-      	  return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensaje", ex.getMessage()));
-        } catch (IllegalArgumentException ex) {
-        	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("mensaje", ex.getMessage()));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("mensaje", ex.getMessage()));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("mensaje", ex.getMessage()));
         }
     }
-
+    
     @GetMapping("/{idUsuario}/pedidos")
     public ResponseEntity<?> getPedidosPorUsuario(@PathVariable int idUsuario) {
         List<Pedido> pedidos = pedidoService.encontrarPorUsuarioIdUsuario(idUsuario);

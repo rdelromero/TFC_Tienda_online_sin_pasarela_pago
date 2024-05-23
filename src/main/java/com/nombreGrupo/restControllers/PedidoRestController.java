@@ -21,9 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nombreGrupo.modelo.dto.PedidoDtoActualizacionSinCambiarLineasFacturacion;
-import com.nombreGrupo.modelo.dto.PedidoDtoCreacion;
+
 import com.nombreGrupo.modelo.dto.PedidoDtoCreacionConLineasFacturacion;
 import com.nombreGrupo.modelo.entities.Pedido;
+import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.modelo.entities.LineaFacturacion;
 import com.nombreGrupo.modelo.entities.Usuario;
 import com.nombreGrupo.modelo.entities.Pedido.EstadoPedido;
@@ -45,13 +46,13 @@ public class PedidoRestController {
 	private EmailUtil emailUtil;
     
     @GetMapping
-    public ResponseEntity<List<Pedido>> getTodos() {
+    public ResponseEntity<List<Pedido>> getIndex() {
         List<Pedido> pedidos = pedidoService.encontrarTodos();
         return ResponseEntity.ok(pedidos);
     }
     
     @GetMapping("/{idPedido}")
-    public ResponseEntity<?> getPorId(@PathVariable int idPedido) {
+    public ResponseEntity<?> getShowPorId(@PathVariable int idPedido) {
     	try {
             Pedido pedido = pedidoService.encontrarPorId(idPedido);
             return ResponseEntity.ok(pedido);
@@ -63,7 +64,7 @@ public class PedidoRestController {
     }
     
     @GetMapping("/")
-    public ResponseEntity<List<Pedido>> getPedidosPorEstado(@RequestParam("estado") EstadoPedido estado) {
+    public ResponseEntity<List<Pedido>> getIndexPorEstado(@RequestParam("estado") EstadoPedido estado) {
         List<Pedido> pedidos = pedidoService.encontrarPorEstado(estado);
         if (pedidos.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -84,40 +85,19 @@ public class PedidoRestController {
 
     }
     
-	/*@PostMapping
-	public ResponseEntity<?> postCrearYGuardar(@RequestBody PedidoDtoCreacion pedidoDtoCreacion) {
-        try {
-            Pedido pedidoGuardado = pedidoService.crearYGuardar(pedidoDtoCreacion);
-            return ResponseEntity.ok(pedidoGuardado);
-        } catch (Exception ex) {
-        	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("mensaje", "El pedido no ha sido creado."));
-        }
-	}*/
-	
     @PostMapping
     public ResponseEntity<?> postCrearYGuardar(@RequestBody PedidoDtoCreacionConLineasFacturacion pedidoDtoCreacionConLF) {
         try {
-            Pedido pedido = pedidoService.crearYGuardarConLF(
-                    pedidoDtoCreacionConLF.getIdUsuario(),
-                    pedidoDtoCreacionConLF.getProductoIds(),
-                    pedidoDtoCreacionConLF.getCantidades(),
-                    pedidoDtoCreacionConLF.getNombre(),
-                    pedidoDtoCreacionConLF.getApellidos(),
-                    pedidoDtoCreacionConLF.getDireccion(),
-                    pedidoDtoCreacionConLF.getPais(),
-                    pedidoDtoCreacionConLF.getCiudad(),
-                    pedidoDtoCreacionConLF.getNumeroTelefonoMovil(),
-                    pedidoDtoCreacionConLF.getMetodoEnvio()
-            );
+        	Pedido pedidoGuardado = pedidoService.crearYGuardarConLF(pedidoDtoCreacionConLF);
 
             // Retornar la respuesta inmediatamente
-            ResponseEntity<?> response = ResponseEntity.ok(pedido);
+            ResponseEntity<?> response = ResponseEntity.ok(pedidoGuardado);
 
             // Ejecutar el envío de email después de retornar la respuesta
             new Thread(() -> {
                 try {
-                    Pedido pedidoGuardado = pedidoService.encontrarPorId(pedido.getIdPedido());
-                    emailUtil.enviarEmailPedido(pedidoGuardado.getUsuario().getNombre(), pedidoGuardado.getUsuario().getDireccionEmail(), pedidoGuardado);
+                    Pedido pedidoGuardado2 = pedidoService.encontrarPorId(pedidoGuardado.getIdPedido());
+                    emailUtil.enviarEmailPedido(pedidoGuardado2.getUsuario().getNombre(), pedidoGuardado2.getUsuario().getDireccionEmail(), pedidoGuardado2);
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }
@@ -127,6 +107,8 @@ public class PedidoRestController {
 
         } catch (EntityNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensaje", ex.getMessage()));
+        } catch (IllegalArgumentException ex) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensaje", ex.getMessage()));
         } catch (IllegalStateException ex) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("mensaje", ex.getMessage()));
         }

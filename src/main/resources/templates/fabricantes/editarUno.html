@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Editar y actualizar fabricante')"></head>
+<link rel="stylesheet" type="text/css" href="/css/uno.css">
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+
+    <main>
+        <h2 th:text="'Editar fabricante de id ' + ${id}"></h2>
+        <form th:action="@{/fabricantes/editar/{id}(id=${id})}" th:object="${fabricanteDto}" method="post">
+            <table>
+                <tr>
+                    <td><label for="1">Nombre:</label></td>
+                    <td><input type="text" id="1" th:field="*{nombre}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="fechaFundacionLI">Fecha fundación:</label></td>
+                    <td><input type="date" id="fechaFundacionLI" th:field="*{fechaFundacion}"></td>
+                </tr>
+                 <tr>
+                    <td><label for="2">País de origen:</label></td>
+                    <td><input type="text" id="2" th:field="*{pais}"></td>
+                </tr> 
+                 <tr>
+                    <td><label for="3">Link de la página web:</label></td>
+                    <td><input type="url" id="3" th:field="*{paginaWeb}"></td>
+                </tr> 
+                 <tr>
+                    <td><label for="4">URL de la imagen:</label></td>
+                    <td><input type="text" id="4" th:field="*{imagenUrl}"></td>
+                </tr>        
+            </table>
+            <br>
+            <div>
+               <label for="descripcionLTA">Descripción (poner tags &lt;p&gt;párrafo&lt;/p&gt;):</label><br>
+               <textarea id="descripcionLTA" th:field="*{descripcion}" rows="10" cols="100"></textarea>
+            </div>
+            <br>
+           <button type="submit" class="btn btn-warning">Actualizar fabricante</button>
+        </form>
+    </main>
+    <br>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

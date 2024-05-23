@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Nueva subcategoria')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/uno.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+    <main>
+        <h2>Crear subcategoria</h2>
+        <form th:action="@{/subcategorias/crear}" th:object="${subcategoriaDto}" method="post">
+            <table>
+                <tr>
+                    <td><label for="nombreLI">Nombre:</label></td>
+                    <td><input type="text" id="nombreLI" th:field="*{nombre}"></td>
+                </tr>
+                <tr>
+                    <td><label for="categoriaLI">Categoria:</label></td>
+                    <td><input type="text" id="categoriaLI" th:field="*{idCategoria}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="paginaWeb">URL de la imagen:</label></td>
+                    <td><input type="text" id="paginaWeb" th:field="*{imagenUrl}"></td>
+                </tr>
+            </table>
+            <br>
+            <div>
+               <label for="descripcionLTA">Descripción (poner tags &lt;p&gt;párrafo&lt;/p&gt;):</label><br>
+               <textarea id="descripcionLTA" th:field="*{descripcion}" rows="12" cols="100"></textarea>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-success">Crear fabricante</button>
+        </form>
+    </main>
+    <br>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

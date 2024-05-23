@@ -1,44 +1,51 @@
 package com.nombreGrupo.services;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-
+import java.util.UUID;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
+import com.nombreGrupo.modelo.entities.Pedido;
+import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.modelo.entities.Usuario;
 import com.nombreGrupo.modelo.dto.UsuarioDtoRegistro;
-import com.nombreGrupo.modelo.dto.UsuarioDtoLogin;
+import com.nombreGrupo.repositories.PedidoRepository;
 import com.nombreGrupo.repositories.UsuarioRepository;
 import com.nombreGrupo.util.EmailUtil;
-import com.nombreGrupo.util.OtpUtil;
-
-import jakarta.mail.MessagingException;
+import com.nombreGrupo.repositories.VerificacionUuidRepository;
+import com.nombreGrupo.modelo.entities.VerificacionUuid;
 import jakarta.persistence.EntityNotFoundException;
-
 
 @Service
 public class UsuarioServiceImplMy8 implements UsuarioService{
 
 	@Autowired
-	private OtpUtil otpUtil;
+	private UsuarioRepository usuarioRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
 	@Autowired
 	private EmailUtil emailUtil;
 	@Autowired
-	private UsuarioRepository usuarioRepository;
-
+	private ModelMapper modeloMapper;
+	@Autowired
+    private VerificacionUuidRepository verificacionUuidRepository;
+	
     @Override
     public List<Usuario> encontrarTodos() {
         return usuarioRepository.findAll();
     }
 
+	@Override
+	public Page<Usuario> encontrarTodosPaginacion(Pageable pageable) {
+		return usuarioRepository.findAll(pageable);
+	}
+    
     @Override
     public List<Usuario> encontrarPorActiveTrue() {
         return usuarioRepository.findByActiveTrue();
@@ -52,11 +59,16 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
 
     @Override
     public Usuario encontrarPorDireccionEmail(String direccionEmail) {
-  	  Optional<Usuario> usuarioOpt = usuarioRepository.findByDireccionEmail(direccionEmail);
-        if (!usuarioOpt.isPresent()) {
+  	  Optional<Usuario> usuario = usuarioRepository.findByDireccionEmail(direccionEmail);
+        if (!usuario.isPresent()) {
          	throw new RuntimeException("No existe un usuario de dirección email "+direccionEmail+".");
           }
-          return usuarioOpt.get();  // Devuelve el usuario encontrado
+          return usuario.get();  // Devuelve el usuario encontrado
+    }
+    
+	@Override
+    public List<Pedido> encontrarPedidosPorUsuario_IdUsuario(int idUsuario) {
+        return pedidoRepository.findByUsuario_IdUsuario(idUsuario);
     }
     
     @Override
@@ -70,65 +82,32 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
             throw new IllegalArgumentException("La contraseña debe tener al menos 8 caracteres.");
         }
         
-        String otp = otpUtil.generarOtp();
-        try {
-        	//Envío del email
-            emailUtil.enviarEmailConOtp(usuarioDtoRegistro.getNombre(), usuarioDtoRegistro.getDireccionEmail(), otp);
-        }   catch (MessagingException e) {
-            throw new IllegalArgumentException("No has introducido una dirección de correo electrónico válida.");
-        }
-    	Usuario usuario = new Usuario();
-    	usuario.setDireccionEmail(usuarioDtoRegistro.getDireccionEmail());
-    	usuario.setNombre(usuarioDtoRegistro.getNombre());
-    	usuario.setApellido1(usuarioDtoRegistro.getApellido1());
-    	usuario.setApellido2(usuarioDtoRegistro.getApellido2());
-    	usuario.setPassword(usuarioDtoRegistro.getPassword());
-    	usuario.setOtp(otp);
-    	usuario.setFechaGeneracionOtp(LocalDateTime.now());
-    	return usuarioRepository.save(usuario);
+        Usuario usuario = new Usuario();
+        modeloMapper.map(usuarioDtoRegistro, usuario);
+        usuario.setActive(false);
+
+        usuarioRepository.save(usuario);
+
+        String uuid = UUID.randomUUID().toString();
+        VerificacionUuid verificacionUUID = new VerificacionUuid(uuid, usuario, LocalDateTime.now().plusHours(24));
+        verificacionUuidRepository.save(verificacionUUID);
+
+        // Llamar al método para enviar el correo electrónico
+        emailUtil.enviarEmailConUUIDParaVerificarEmail(usuario.getNombre(), usuario.getDireccionEmail(), uuid);
+        return usuario;
     }
 
     @Override
-    public Usuario verificarCuentaPorDireccionEmailYOpt(String direccionEmail, String otp) {
+    public String verificarCuentaPorDireccionEmailYUuid(String uuid) {
+        VerificacionUuid verificacionUuid = verificacionUuidRepository.findByUuid(uuid)
+                .orElseThrow(() -> new IllegalArgumentException("Token inválido"));
 
-    	Usuario usuario = usuarioRepository.findByDireccionEmail(direccionEmail)
-    	        .orElseThrow(() -> new EntityNotFoundException("No existe usuario de direccionEmail "+direccionEmail+":"));
-        
-    	// Verificar si la cuenta de usuario ya está verifiacda
-        if (usuario.getActive()) {
-            throw new IllegalStateException("La cuenta de usuario ya está verificada.");
-        }
-        // Verificar si el OTP es correcto
-        if (!usuario.getOtp().equals(otp)) {
-            throw new IllegalArgumentException("El otp proporcionado no es correcto.");
-        }
-        // Verificar la expiración del OTP
-        if (Duration.between(usuario.getFechaGeneracionOtp(), LocalDateTime.now()).toMinutes() > 15) {
-            throw new IllegalArgumentException("El otp ha expirado.");
-        }
-        // Otras operaciones, como activar la cuenta
+        Usuario usuario = verificacionUuid.getUsuario();
         usuario.setActive(true);
-        return usuarioRepository.save(usuario);
-    }
-    
-    @Override
-    public Usuario regenerarOtpParaUsuarioNoVerificado(int idUsuario) {
-    	Usuario usuario = usuarioRepository.findById(idUsuario)
-    	        .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + idUsuario));
-    	
-    	  if (!usuario.getActive()) {
-    		  String otp = otpUtil.generarOtp();
-    		  usuario.setOtp(otp);
-    		  try {
-    		    emailUtil.enviarEmailConOtp(usuario.getNombre(), usuario.getDireccionEmail(), otp);
-    		    return usuarioRepository.save(usuario);
-    		  } catch (MessagingException e) {
-    		    throw new IllegalArgumentException("No has introducido una dirección de email válida.");
-    		  }
-    	  } else {
-    		  throw new IllegalStateException("El usuario de dirección "+usuario.getDireccionEmail()+" ya está verificado.");
-    	  }
-      }
+        usuarioRepository.save(usuario);
+
+        return "Cuenta verificada exitosamente.";
+        }
     
     //OJO antes de llamar a esta funcion hay que establecer el id al usuario el cual se pasa por parámetro por url
     @Override
@@ -154,14 +133,15 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
     	if (!usuarioDtoRegistro.getDireccionEmail().equals(usuarioAntiguo.getDireccionEmail())) {
         	usuarioAntiguo.setDireccionEmail(usuarioDtoRegistro.getDireccionEmail());
         	usuarioAntiguo.setActive(false);
-        	usuarioAntiguo.setOtp(otpUtil.generarOtp());
-      	    usuarioAntiguo.setFechaGeneracionOtp(LocalDateTime.now());
-  		  try {
-  		    emailUtil.enviarEmailConOtp(usuarioAntiguo.getNombre(), usuarioAntiguo.getDireccionEmail(), usuarioAntiguo.getOtp());
-  		    return usuarioRepository.save(usuarioAntiguo);
-  		  } catch (MessagingException e) {
-  		    throw new RuntimeException("No has introducido una dirección de email válida.");
-  		  }
+        	
+        	VerificacionUuid verificacionUuid = verificacionUuidRepository.findByUsuario_IdUsuario(idUsuario)
+                    .orElseThrow(() -> new EntityNotFoundException("Verificación UUID no encontrada"));
+
+            String nuevoUuid = UUID.randomUUID().toString();
+            verificacionUuid.setUuid(nuevoUuid);
+            verificacionUuid.setFechaExpiracion(LocalDateTime.now().plusDays(1));
+            verificacionUuidRepository.save(verificacionUuid);
+            emailUtil.enviarEmailConNuevoUuidParaVerificarEmail(usuarioAntiguo.getNombre(), usuarioAntiguo.getDireccionEmail(), nuevoUuid);
         }
     	return usuarioRepository.save(usuarioAntiguo);
     }
@@ -175,15 +155,25 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
         return false;
     }
     
-    public String loguearse(UsuarioDtoLogin loginDto) {
-        Usuario usuario = usuarioRepository.findByDireccionEmail(loginDto.getDireccionEmail())
-            .orElseThrow(() -> new EntityNotFoundException("No hay ningún usuario con esa dirección de email."));
+    public Usuario regenerarUuidParaUsuarioNoVerificado(int idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new EntityNotFoundException("No existe usuario de idUsuario "+idUsuario+"."));
+
         if (!usuario.getActive()) {
-            throw new IllegalStateException("La cuenta no está verificada.");
+            VerificacionUuid verificacionUuid = verificacionUuidRepository.findByUsuario_IdUsuario(idUsuario)
+                    .orElseThrow(() -> new EntityNotFoundException("Verificación UUID no encontrada"));
+
+            String nuevoUuid = UUID.randomUUID().toString();
+            verificacionUuid.setUuid(nuevoUuid);
+            verificacionUuid.setFechaExpiracion(LocalDateTime.now().plusDays(1)); // Ajusta la fecha de expiración según sea necesario
+            verificacionUuidRepository.save(verificacionUuid);
+
+            emailUtil.enviarEmailConNuevoUuidParaVerificarEmail(usuario.getNombre(), usuario.getDireccionEmail(), nuevoUuid);
+
+            return usuario;
+        } else {
+            throw new IllegalStateException("No se puede regenerar el UUID de un usuario activo.");
         }
-        if (!loginDto.getPassword().equals(usuario.getPassword())) {
-            throw new IllegalArgumentException("La contraseña es incorrecta.");
-        }
-        return "Logueo exitoso.";
     }
+    
 }

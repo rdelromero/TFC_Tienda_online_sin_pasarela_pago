@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Todas las subcategorías')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/lista.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+
+    <main>
+        <h2>Subcategorías</h2>
+      
+        <div>
+            <a class="btn btn-primary" th:href="@{/subcategorias/crear}">Crear Subcategoría</a>
+        </div>
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Categoría</th>
+                    <th>URL de la imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="subcategoria : ${paginaSubcategoriasHtml}">
+                    <td th:text="${subcategoria.idSubcategoria}"></td>
+                    <td th:text="${subcategoria.nombre}"></td>
+                    <td>
+                       <a class="btn btn-link" th:href="@{'/categorias/' + ${subcategoria.categoria.idCategoria}}" th:text="${subcategoria.categoria.nombre}"></a>
+                    </td>
+                    <td th:text="${subcategoria.imagenUrl}"></td>
+                    <td>
+                        <a class="btn btn-info" th:href="@{'/subcategorias/' + ${subcategoria.idSubcategoria}}">Mostrar</a>
+                        <a class="btn btn-warning" th:href="@{'/subcategorias/editar/' + ${subcategoria.idSubcategoria}}">Editar</a>
+                        <a class="btn btn-danger" th:href="@{'/subcategorias/borrar/' + ${subcategoria.idSubcategoria}}" onclick="return confirm('¿Está seguro de que desea eliminar esta subcategoría?');">Borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Controles de paginación -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${paginaSubcategoriasHtml.hasPrevious()} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/subcategorias(page=${paginaSubcategoriasHtml.number - 1}, size=${paginaSubcategoriasHtml.size})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li th:each="i : ${#numbers.sequence(0, paginaSubcategoriasHtml.totalPages - 1)}" class="page-item" th:classappend="${i == paginaSubcategoriasHtml.number} ? 'active' : ''">
+                    <a class="page-link" th:href="@{/subcategorias(page=${i}, size=${paginaSubcategoriasHtml.size})}" th:text="${i + 1}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${paginaSubcategoriasHtml.hasNext()} ? '' : 'disabled'">
+                    <a class="page-link" th:href="@{/subcategorias(page=${paginaSubcategoriasHtml.number + 1}, size=${paginaSubcategoriasHtml.size})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </main>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

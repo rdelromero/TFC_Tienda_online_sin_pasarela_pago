@@ -18,9 +18,7 @@ public interface ProductoService {
 	List<Producto> encontrarTodos();
 	Page<Producto> encontrarTodos(Pageable pageable);
 	Producto encontrarPorId(int idProducto);
-	List<Producto> encontrarPorFabricante_IdFabricante(int idFabricante);
-	List<Producto> encontrarPorSubcategoria_IdSubcategoria(int idSubcategoria);
-	List<Producto> encontrarPorSubcategoriaCategoriaIdCategoria(int idCategoria);
+	
 	List<Producto> encontrarPorTipoDescuento(TipoDescuento tipoDescuento);
 	List<Imagen> encontrarImagenesPorIdProducto(int productoId);
 	

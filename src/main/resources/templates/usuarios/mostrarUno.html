@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Detalles del usuario')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/uno.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+    <h2 th:text="'Detalles del usuario de id ' + ${usuario.idUsuario}"></h2>
+    <main>
+        <table>
+            <tr>
+                <th>ID</th>
+                <td th:text="${usuario.idUsuario}"></td>
+            </tr>
+            <tr>
+                <th>Dirección email</th>
+                <td th:text="${usuario.direccionEmail}"></td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td th:text="${usuario.password}"></td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td th:text="${usuario.nombre}"></td>
+            </tr>
+               <tr>
+                <th>Primer apellido</th>
+                <td th:text="${usuario.apellido1}"></td>
+            </tr>
+            <tr>
+                <th>Segundo apellido</th>
+                <td th:text="${usuario.apellido2}"></td>
+            </tr>
+            <tr>
+                <th>Active</th>
+                <td th:text="${usuario.active}"></td>
+            </tr>
+             <tr>
+                <th>Fecha de creación</th>
+                <td th:text="${usuario.fechaCreacion}"></td>
+            </tr>
+            <tr>
+                <th>Fecha de actualización</th>
+                <td th:text="${usuario.fechaActualizacion}"></td>
+            </tr>
+        </table>
+        
+        <br>
+        <a th:href="@{/usuarios}" class="btn btn-secondary">Volver a la lista</a>
+    </main>
+    <br>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

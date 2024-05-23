@@ -1,13 +1,10 @@
 package com.nombreGrupo.modelo.entities;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nombreGrupo.modelo.entities.Pedido.EstadoPedido;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -99,6 +96,7 @@ public class Producto implements Serializable {
     @Column(name = "fecha_actualizacion", nullable = false, updatable = false, insertable = false)
     private LocalDateTime fechaActualizacion;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "producto")
     private List<Imagen> imagenes;
     

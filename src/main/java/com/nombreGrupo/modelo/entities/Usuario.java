@@ -42,6 +42,9 @@ public class Usuario implements Serializable{
     @Column(name = "direccion_email", nullable = false, unique = true, length = 100)
     private String direccionEmail;
     
+    @Column(length = 100)
+    private String password;
+    
     @Column(nullable = false, length = 30)
     private String nombre;
 
@@ -51,19 +54,10 @@ public class Usuario implements Serializable{
     @Column(length = 40)
     private String apellido2;
     
-    @Column(length = 30)
-    private String password;
-
     //Campos ni insertables ni actualizables directamente ---------------------------*/
     
     @Column(nullable = false)
     private Boolean active = false;
-
-    @Column(nullable = false, length = 6)
-    private String otp;
-    
-    @Column(name = "fecha_generacion_otp")
-    private LocalDateTime fechaGeneracionOtp;
     
     @Column(name = "fecha_creacion", nullable = false, updatable = false, insertable = false)
     @Temporal(TemporalType.TIMESTAMP)

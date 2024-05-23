@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Todos los fabricantes')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/lista.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+
+    <main>
+      <h2>Fabricantes</h2>
+      
+        <div>
+          <a class="btn btn-primary" th:href="@{/fabricantes/crear}">Crear fabricante</a>
+        </div>
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre </th>
+                    <th>Fecha fundación</th>
+                    <th>País</th>
+                    <th>Página web</th>
+                    <th>Url de la imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>     <!-- MIRAR ESTOOOOOOOOOOOOOOO -->
+                <tr th:each="fabricante : ${paginaFabricantesHtml}">
+                    <td th:text="${fabricante.idFabricante}"></td>
+                    <td th:text="${fabricante.nombre}"></td>
+                    <td th:text="${fabricante.fechaFundacion}"></td>
+                    <td th:text="${fabricante.pais}"></td>
+                    <td th:text="${fabricante.paginaWeb}"></td>
+                      <td th:text="${fabricante.imagenUrl}"></td>
+                   
+                    <td>
+                        <a class="btn btn-info" th:href="@{'/fabricantes/' + ${fabricante.idFabricante}}">Mostrar</a>
+                        <a class="btn btn-warning" th:href="@{'/fabricantes/editar/' + ${fabricante.idFabricante}}">Editar</a>
+                        <a class="btn btn-danger" th:href="@{'/fabricantes/borrar/' + ${fabricante.idFabricante}}" onclick="return confirm('¿Está seguro de que desea eliminar este fabricante?');">Borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Controles de paginación -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${paginaFabricantesHtml.hasPrevious() ? '' : 'disabled'}">
+                <a class="page-link" th:href="@{/fabricantes(page=${paginaFabricantesHtml.number - 1}, size=${paginaFabricantesHtml.size})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, paginaFabricantesHtml.totalPages - 1)}" class="page-item" th:classappend="${i == paginaFabricantesHtml.number ? 'active' : ''}">
+                <a class="page-link" th:href="@{/fabricantes(page=${i}, size=${paginaFabricantesHtml.size})}" th:text="${i + 1}">1</a>
+            </li>
+            <li class="page-item" th:classappend="${paginaFabricantesHtml.hasNext() ? '' : 'disabled'}">
+                <a class="page-link" th:href="@{/fabricantes(page=${paginaFabricantesHtml.number + 1}, size=${paginaFabricantesHtml.size})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+        
+    </main>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

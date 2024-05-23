@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Todos los usuarios')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/lista.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+
+    <main>
+      <h2>Usuarios</h2>
+      
+        <div>
+          <a class="btn btn-primary" th:href="@{/usuarios/crear}">Crear Usuario</a>
+        </div>
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Dirección email</th>
+                    <th>Nombre </th>
+                    <th>Primer apellido </th>
+                    <th>Segundo apellido </th>
+                    <th>Active</th>
+                    <th>Pedidos</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>     <!-- MIRAR ESTOOOOOOOOOOOOOOO -->
+                <tr th:each="usuario : ${paginausuarios}">
+                    <td th:text="${usuario.idUsuario}"></td>
+                    <td th:text="${usuario.direccionEmail}"></td>
+                    <td th:text="${usuario.nombre}"></td>
+                    <td th:text="${usuario.apellido1}"></td>
+                    <td th:text="${usuario.apellido2}"></td>
+                    <td th:text="${usuario.active}"></td>
+                    <td>
+                       <a class="btn btn-link" th:href="@{'/usuarios/' + ${usuario.idUsuario}} + '/pedidos'" th:text="pedidos"></a>
+                    </td>
+                    <td>
+                        <a class="btn btn-info" th:href="@{'/usuarios/' + ${usuario.idUsuario}}">Mostrar</a>
+                        <a class="btn btn-danger" th:href="@{'/usuarios/borrar/' + ${usuario.idUsuario}}" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Borrar*</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        *Solo se puede borrar un usuario si no tiene ni reseñas ni pedidos a su nombre
+        <!-- Controles de paginación -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${paginausuarios.hasPrevious() ? '' : 'disabled'}">
+                <a class="page-link" th:href="@{/usuarios(page=${paginausuarios.number - 1}, size=${paginausuarios.size})}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, paginausuarios.totalPages - 1)}" class="page-item" th:classappend="${i == paginausuarios.number ? 'active' : ''}">
+                <a class="page-link" th:href="@{/usuarios(page=${i}, size=${paginausuarios.size})}" th:text="${i + 1}">1</a>
+            </li>
+            <li class="page-item" th:classappend="${paginausuarios.hasNext() ? '' : 'disabled'}">
+                <a class="page-link" th:href="@{/usuarios(page=${paginausuarios.number + 1}, size=${paginausuarios.size})}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+        
+    </main>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

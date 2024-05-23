@@ -15,13 +15,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nombreGrupo.especificaciones.ProductoEspecificaciones;
-
+import com.nombreGrupo.modelo.dto.LineaFacturacionDto;
+import com.nombreGrupo.modelo.dto.ImagenDto;
 import com.nombreGrupo.modelo.dto.ProductoDtoCreacion;
+import com.nombreGrupo.modelo.entities.Fabricante;
 import com.nombreGrupo.modelo.entities.Imagen;
+import com.nombreGrupo.modelo.entities.LineaFacturacion;
 import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.modelo.entities.Producto.TipoDescuento;
+import com.nombreGrupo.modelo.entities.Subcategoria;
 import com.nombreGrupo.repositories.ImagenRepository;
 import com.nombreGrupo.repositories.LineaFacturacionRepository;
+import com.nombreGrupo.repositories.FabricanteRepository;
+import com.nombreGrupo.repositories.SubcategoriaRepository;
 import com.nombreGrupo.repositories.ProductoRepository;
 import com.nombreGrupo.repositories.ResenaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -36,6 +42,12 @@ public class ProductoServiceImplMy8 implements ProductoService{
 
 	@Autowired
 	private ProductoRepository productoRepository;
+	
+	@Autowired
+	private FabricanteRepository fabricanteRepository;
+	
+	@Autowired
+	private SubcategoriaRepository subcategoriaRepository;
 	
 	@Autowired
 	private ImagenRepository imagenRepository;
@@ -61,21 +73,6 @@ public class ProductoServiceImplMy8 implements ProductoService{
     public Producto encontrarPorId(int idProducto) {
         return productoRepository.findById(idProducto)
                 .orElseThrow(() -> new EntityNotFoundException("No existe un producto de idProducto "+idProducto+"."));
-    }
-	
-	@Override
-    public List<Producto> encontrarPorSubcategoria_IdSubcategoria(int idSubcategoria) {
-        return productoRepository.findBySubcategoria_IdSubcategoria(idSubcategoria);
-    }
-	
-	@Override
-    public List<Producto> encontrarPorFabricante_IdFabricante(int idFabricante) {
-        return productoRepository.findByFabricante_IdFabricante(idFabricante);
-    }
-	
-	@Override
-    public List<Producto> encontrarPorSubcategoriaCategoriaIdCategoria(int idCategoria) {
-        return productoRepository.findBySubcategoriaCategoriaIdCategoria(idCategoria);
     }
 	
     @Override
@@ -212,9 +209,25 @@ public class ProductoServiceImplMy8 implements ProductoService{
     //Creación
 	@Override
 	public Producto crearYGuardar(ProductoDtoCreacion productoDtoCreacion) {
-	    Producto producto = new Producto();
-	    modeloMapper.map(productoDtoCreacion, producto);
-	    return productoRepository.save(producto);
+	    
+		fabricanteRepository.findById(productoDtoCreacion.getIdFabricante())
+                .orElseThrow(() -> new EntityNotFoundException("No existe fabricante con IdFabricante: " + productoDtoCreacion.getIdFabricante() + "."));
+
+        subcategoriaRepository.findById(productoDtoCreacion.getIdSubcategoria())
+                .orElseThrow(() -> new EntityNotFoundException("No existe subcategoria con IdSubcategoria: " + productoDtoCreacion.getIdSubcategoria() + "."));
+		
+        Producto producto = new Producto();
+        modeloMapper.map(productoDtoCreacion, producto);
+        producto = productoRepository.save(producto);
+        
+        for (ImagenDto imagenDto : productoDtoCreacion.getImagenesDto()) {
+            Imagen imagen = new Imagen();  
+            modeloMapper.map(imagenDto, imagen);
+            imagen.setProducto(producto);
+            imagenRepository.save(imagen);
+        }
+		
+	    return producto;
 	}
 	
 	@Override

@@ -45,7 +45,7 @@ public class PedidoController {
     }
 	
     @GetMapping("/{id}")
-    public String getProducto(@PathVariable("id") int idPedido, Model model) {
+    public String getShow(@PathVariable("id") int idPedido, Model model) {
         Pedido pedido = pedidoService.encontrarPorId(idPedido);
         if (pedido == null) {
             return "redirect:/mostrarUno";

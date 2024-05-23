@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var select = document.getElementById('estadoPedido');
+    var select = document.getElementById('estadoLS');
     var currentState = select.getAttribute('data-current-state');  // Asumiendo que pasas el estado actual como un atributo de datos
 
     Array.from(select.options).forEach(function(option) {

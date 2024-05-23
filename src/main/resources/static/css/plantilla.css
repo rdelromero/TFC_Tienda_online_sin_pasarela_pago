@@ -11,11 +11,12 @@ header {
 header nav {
 	display: flex;
 	justify-content: center;
-	padding: 10px 0;
+	padding: 15px 0;
 }
 
 header nav div {
 	display: inline-block;
+	position: relative; /* Añadido para el dropdown */
 }
 
 header nav div div {
@@ -29,7 +30,7 @@ header nav div div {
 
 #navdiv1 {
 	text-align: left;
-	width: 25%
+	width: 25%;
 }
 
 #navdiv2 {
@@ -47,42 +48,48 @@ header nav div div a {
 	color: white;
 }
 
-header nav div div:hover {
-	transform: scale(1.1); /*Aumenta el tamaño al hacer hover*/
+header nav .nav-item:hover {
+    transform: scale(1.1); /*Aumenta el tamaño al hacer hover*/
 }
 
-header nav div .dropwdown-content{
-    display: none;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    position: absolute;
-    background-color: #f9f9f9;
-    box-shadow: 0 8px 16px rgba(0,0,0,2);
-    z-index: 1;
-    white-space: nowrap;
+.dropdown {
+	position: relative;
+	display: inline-block;
 }
 
-header nav div .dropwdown-content div{
-    display: inline-block;
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    text-align: center;
+.dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+	z-index: 1;
+	top: 39px; /* Ajusta este valor para mostrar más abajo */
+	transform: translateX(-15%);
 }
 
-header nav div .dropdown-content {
-	display: block;
+.dropdown-content div {
+	color: black;
+	padding: 4px 8px;
+	text-decoration: none;
+
 }
 
-header nav div .dropdown-content div:hover {
+.dropdown-content div a {
+	color: white;
+}
+
+.dropdown-content div:hover {
 	background-color: darkgray;
+}
+
+.dropdown:hover .dropdown-content {
+	display: flex;
 }
 
 footer {
     background-color: gray;
     padding: 1px;
-    text-align: center
+    text-align: center;
 }
 
 footer a{
@@ -103,4 +110,9 @@ thead {
 
 th, td {
 	border: 1px solid #ccc;
+}
+
+
+.navbar-toggler-icon{
+	display:inline-block;width:1.5em;height:1.5em;vertical-align:middle;content:"";background:50%/100% 100% no-repeat;color:white;
 }

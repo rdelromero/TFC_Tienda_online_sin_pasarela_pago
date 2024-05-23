@@ -91,7 +91,7 @@ public class EnvioServiceImplMy8 implements EnvioService {
 			pedidoRepository.save(pedido);
 		     List<LineaFacturacion> lineasFacturacion = lineaFacturacionRepository.findByPedido_IdPedido(pedido.getIdPedido());
 		     for (LineaFacturacion lf : lineasFacturacion) {
-		         lf.setEstado(LineaFacturacion.EstadoLineaFacturacion.cancelado);
+		         lf.setEstado(LineaFacturacion.Estado.cancelado);
 		         Producto productoDeLalinea = lf.getProducto();
 		         productoDeLalinea.setStock(productoDeLalinea.getStock()+lf.getCantidad());
 		         productoRepository.save(productoDeLalinea);

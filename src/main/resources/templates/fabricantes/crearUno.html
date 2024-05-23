@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Nuevo fabricante')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/uno.css">
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+    <main>
+        <h2>Crear fabricante</h2>
+        <form th:action="@{/fabricantes/crear}" th:object="${fabricanteDto}" method="post">
+            <table>
+                
+                <tr>
+                    <td><label for="nombre">Nombre del fabricante:</label></td>
+                    <td><input type="text" id="nombre" th:field="*{nombre}" required></td>
+                </tr>
+                <tr>
+                    <td><label for="fechaFundacion">Fecha de fundación:</label></td>
+                    <td><input type="datetime-local" id="fechaFundacion" th:field="*{fechaFundacion}"></td>
+                </tr>
+                <tr>
+                    <td><label for="pais">País de origen:</label></td>
+                    <td><input type="text" id="pais" th:field="*{pais}"></td>
+                </tr>
+                <tr>
+                    <td><label for="paginaWeb">Link de la página web:</label></td>
+                    <td><input type="text" id="paginaWeb" th:field="*{paginaWeb}"></td>
+                </tr>
+                <tr>
+                    <td><label for="imagenUrl">URL de la imagen:</label></td>
+                    <td><input type="text" id="imagenUrl" th:field="*{imagenUrl}"></td>
+                </tr>
+            </table>
+            <br>
+            <div>
+               <label for="descripcionLTA">Descripción (poner tags &lt;p&gt;párrafo&lt;/p&gt;):</label><br>
+               <textarea id="descripcionLTA" th:field="*{descripcion}" rows="12" cols="100"></textarea>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-success">Crear fabricante</button>
+            <br><br>
+        </form>
+    </main>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>
