@@ -14,7 +14,7 @@ public interface UsuarioService {
 	Page<Usuario> encontrarTodosPaginacion(Pageable pageable);
 	List<Usuario> encontrarPorActiveTrue();
 	Usuario encontrarPorId(int idUsuario);
-	Usuario encontrarPorDireccionEmail(String direccionEmail);
+	Usuario encontrarPorUsername(String direccionEmail);
 	List<Pedido> encontrarPedidosPorUsuario_IdUsuario(int idUsuario);
 	
 	//Registro

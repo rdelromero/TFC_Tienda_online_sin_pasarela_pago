@@ -1,3 +1,22 @@
-Inspirado en https://www.youtube.com/watch?v=kBtgDVzjFzs
 Cómo enviar mensajes a través de SpringBoot usando una cuenta gmail:
 https://www.youtube.com/watch?v=srGxqsPwAlw
+
+Registro mediante envio de email con UUID
+https://www.youtube.com/watch?v=QwQuro7ekvc (min 1:14:30)
+
+Autenticación que devuelve JWT
+youtube.com/watch?v=nwqQYCM4YT8
+
+Realizar commit en la rama main
+Paso 1: Asegúrate de estar en la rama main
+Primero, asegúrate de estar en la rama main de tu repositorio. Puedes verificarlo con el siguiente comando: git branch
+Si no estás en la rama main, cambia a la rama main con: git checkout main
+Paso 2: Añadir los cambios al área de preparación (staging area)
+Añade los cambios que has realizado al área de preparación: git add .
+El punto . después de git add indica que se deben añadir todos los cambios. Si solo quieres añadir archivos específicos, puedes sustituir el punto por los nombres de los archivos.
+Paso 3: Hacer el commit
+Haz el commit de los cambios con un mensaje descriptivo: git commit -m "Mensaje descriptivo de los cambios"
+Asegúrate de que el mensaje del commit sea claro y descriptivo sobre los cambios que has realizado.
+Paso 4: Empujar los cambios a GitHub
+Finalmente, empuja los cambios a la rama main en tu repositorio en GitHub: git push origin main
+Este comando enviará tus commits al repositorio remoto en GitHub.

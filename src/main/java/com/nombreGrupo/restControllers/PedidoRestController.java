@@ -24,12 +24,10 @@ import com.nombreGrupo.modelo.dto.PedidoDtoActualizacionSinCambiarLineasFacturac
 
 import com.nombreGrupo.modelo.dto.PedidoDtoCreacionConLineasFacturacion;
 import com.nombreGrupo.modelo.entities.Pedido;
-import com.nombreGrupo.modelo.entities.Producto;
-import com.nombreGrupo.modelo.entities.LineaFacturacion;
-import com.nombreGrupo.modelo.entities.Usuario;
+
 import com.nombreGrupo.modelo.entities.Pedido.EstadoPedido;
 import com.nombreGrupo.services.PedidoService;
-import com.nombreGrupo.services.UsuarioService;
+
 import com.nombreGrupo.util.EmailUtil;
 
 import jakarta.mail.MessagingException;
@@ -97,7 +95,7 @@ public class PedidoRestController {
             new Thread(() -> {
                 try {
                     Pedido pedidoGuardado2 = pedidoService.encontrarPorId(pedidoGuardado.getIdPedido());
-                    emailUtil.enviarEmailPedido(pedidoGuardado2.getUsuario().getNombre(), pedidoGuardado2.getUsuario().getDireccionEmail(), pedidoGuardado2);
+                    emailUtil.enviarEmailPedido(pedidoGuardado2.getUsuario().getNombre(), pedidoGuardado2.getUsuario().getUsername(), pedidoGuardado2);
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }

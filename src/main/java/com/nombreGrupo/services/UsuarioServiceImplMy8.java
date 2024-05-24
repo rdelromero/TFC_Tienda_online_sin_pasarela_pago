@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nombreGrupo.modelo.entities.Pedido;
-import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.modelo.entities.Usuario;
 import com.nombreGrupo.modelo.dto.UsuarioDtoRegistro;
 import com.nombreGrupo.repositories.PedidoRepository;
@@ -35,6 +35,8 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
 	private ModelMapper modeloMapper;
 	@Autowired
     private VerificacionUuidRepository verificacionUuidRepository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
     @Override
     public List<Usuario> encontrarTodos() {
@@ -58,8 +60,8 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
     }
 
     @Override
-    public Usuario encontrarPorDireccionEmail(String direccionEmail) {
-  	  Optional<Usuario> usuario = usuarioRepository.findByDireccionEmail(direccionEmail);
+    public Usuario encontrarPorUsername(String direccionEmail) {
+  	  Optional<Usuario> usuario = usuarioRepository.findByUsername(direccionEmail);
         if (!usuario.isPresent()) {
          	throw new RuntimeException("No existe un usuario de dirección email "+direccionEmail+".");
           }
@@ -74,8 +76,8 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
     @Override
     public Usuario crearYGuardar(UsuarioDtoRegistro usuarioDtoRegistro) {
     	
-        if (usuarioRepository.findByDireccionEmail(usuarioDtoRegistro.getDireccionEmail()).isPresent()) {
-            throw new DataIntegrityViolationException("No se ha podido crear el usuario. Ya existe un usuario con la dirección de correo electrónico " + usuarioDtoRegistro.getDireccionEmail() + ".");
+        if (usuarioRepository.findByUsername(usuarioDtoRegistro.getUsername()).isPresent()) {
+            throw new DataIntegrityViolationException("No se ha podido crear el usuario. Ya existe un usuario con la dirección de correo electrónico " + usuarioDtoRegistro.getUsername() + ".");
         }
     	
         if (usuarioDtoRegistro.getPassword().length() < 8) {
@@ -83,8 +85,10 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
         }
         
         Usuario usuario = new Usuario();
+        usuarioDtoRegistro.setPassword(passwordEncoder.encode(usuarioDtoRegistro.getPassword()));
         modeloMapper.map(usuarioDtoRegistro, usuario);
         usuario.setActive(false);
+        usuario.setRole(Usuario.Role.ROLE_USER);
 
         usuarioRepository.save(usuario);
 
@@ -93,7 +97,7 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
         verificacionUuidRepository.save(verificacionUUID);
 
         // Llamar al método para enviar el correo electrónico
-        emailUtil.enviarEmailConUUIDParaVerificarEmail(usuario.getNombre(), usuario.getDireccionEmail(), uuid);
+        emailUtil.enviarEmailConUUIDParaVerificarEmail(usuario.getNombre(), usuario.getUsername(), uuid);
         return usuario;
     }
 
@@ -120,18 +124,18 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
     		throw new IllegalStateException("La cuenta de usuario de idUsuario "+idUsuario+" no ha sido verificada, luego no puede actualizarse.");
     	}
     	
-    	Optional<Usuario> usuarioConDireccionEmailYaExistente = usuarioRepository.findByDireccionEmail(usuarioDtoRegistro.getDireccionEmail());
+    	Optional<Usuario> usuarioConDireccionEmailYaExistente = usuarioRepository.findByUsername(usuarioDtoRegistro.getUsername());
     	
     	if (usuarioConDireccionEmailYaExistente.isPresent() && usuarioAntiguo.getIdUsuario()!=usuarioConDireccionEmailYaExistente.get().getIdUsuario()) {
-            throw new DataIntegrityViolationException("Ya existe otro usuario con la dirección de correo electrónico " + usuarioDtoRegistro.getDireccionEmail() + ".");
+            throw new DataIntegrityViolationException("Ya existe otro usuario con la dirección de correo electrónico " + usuarioDtoRegistro.getUsername() + ".");
         }
 		
 		usuarioAntiguo.setNombre(usuarioDtoRegistro.getNombre());
 		usuarioAntiguo.setApellido1(usuarioDtoRegistro.getApellido1());
 		usuarioAntiguo.setApellido2(usuarioDtoRegistro.getApellido2());
 		usuarioAntiguo.setPassword(usuarioDtoRegistro.getPassword());
-    	if (!usuarioDtoRegistro.getDireccionEmail().equals(usuarioAntiguo.getDireccionEmail())) {
-        	usuarioAntiguo.setDireccionEmail(usuarioDtoRegistro.getDireccionEmail());
+    	if (!usuarioDtoRegistro.getUsername().equals(usuarioAntiguo.getUsername())) {
+        	usuarioAntiguo.setUsername(usuarioDtoRegistro.getUsername());
         	usuarioAntiguo.setActive(false);
         	
         	VerificacionUuid verificacionUuid = verificacionUuidRepository.findByUsuario_IdUsuario(idUsuario)
@@ -141,7 +145,7 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
             verificacionUuid.setUuid(nuevoUuid);
             verificacionUuid.setFechaExpiracion(LocalDateTime.now().plusDays(1));
             verificacionUuidRepository.save(verificacionUuid);
-            emailUtil.enviarEmailConNuevoUuidParaVerificarEmail(usuarioAntiguo.getNombre(), usuarioAntiguo.getDireccionEmail(), nuevoUuid);
+            emailUtil.enviarEmailConNuevoUuidParaVerificarEmail(usuarioAntiguo.getNombre(), usuarioAntiguo.getUsername(), nuevoUuid);
         }
     	return usuarioRepository.save(usuarioAntiguo);
     }
@@ -168,7 +172,7 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
             verificacionUuid.setFechaExpiracion(LocalDateTime.now().plusDays(1)); // Ajusta la fecha de expiración según sea necesario
             verificacionUuidRepository.save(verificacionUuid);
 
-            emailUtil.enviarEmailConNuevoUuidParaVerificarEmail(usuario.getNombre(), usuario.getDireccionEmail(), nuevoUuid);
+            emailUtil.enviarEmailConNuevoUuidParaVerificarEmail(usuario.getNombre(), usuario.getUsername(), nuevoUuid);
 
             return usuario;
         } else {

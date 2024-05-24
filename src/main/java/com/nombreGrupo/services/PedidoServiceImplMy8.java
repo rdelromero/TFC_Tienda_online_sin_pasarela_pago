@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 
 import com.nombreGrupo.modelo.dto.PedidoDtoActualizacionSinCambiarLineasFacturacion;
 import com.nombreGrupo.modelo.dto.PedidoDtoCreacionConLineasFacturacion;
-import com.nombreGrupo.modelo.dto.ProductoDtoCreacion;
+
 import com.nombreGrupo.modelo.entities.LineaFacturacion;
 import com.nombreGrupo.modelo.entities.Pedido;
 import com.nombreGrupo.modelo.entities.Pedido.EstadoPedido;
-import com.nombreGrupo.modelo.entities.Pedido.MetodoEnvio;
+
 import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.modelo.entities.Usuario;
 import com.nombreGrupo.repositories.LineaFacturacionRepository;
@@ -26,9 +26,7 @@ import com.nombreGrupo.modelo.dto.LineaFacturacionDto;
 import com.nombreGrupo.repositories.PedidoRepository;
 import com.nombreGrupo.repositories.ProductoRepository;
 import com.nombreGrupo.repositories.UsuarioRepository;
-import com.nombreGrupo.util.EmailUtil;
 
-import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -110,6 +108,7 @@ public class PedidoServiceImplMy8 implements PedidoService {
         Pedido pedido = new Pedido();
         
         modeloMapper.map(pedidoDtoCreacionConLF, pedido);
+        pedido.setEstado(Pedido.EstadoPedido.pendiente);
         pedido = pedidoRepository.save(pedido);
         
         // Crear y guardar las líneas de facturación

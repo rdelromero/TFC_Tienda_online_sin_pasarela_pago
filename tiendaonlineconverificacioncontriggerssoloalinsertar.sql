@@ -1,6 +1,6 @@
-drop database if exists basedatostiendacontriggersalinsertar;
-create database basedatostiendacontriggersalinsertar;
-use basedatostiendacontriggersalinsertar;
+drop database if exists base_datos_tienda_con_triggers_al_insertar_v3;
+create database base_datos_tienda_con_triggers_al_insertar_v3;
+use base_datos_tienda_con_triggers_al_insertar_v3;
 
 CREATE TABLE categorias (
     id_categoria INT AUTO_INCREMENT PRIMARY KEY,
@@ -16,21 +16,31 @@ CREATE TABLE fabricantes (
     pais VARCHAR(50),
     pagina_web VARCHAR(50),
     imagen_url VARCHAR(100) NOT NULL,
-    descripcion TEXT
+    descripcion TEXT,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-    direccion_email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
     nombre VARCHAR(30) NOT NULL,
     apellido1 VARCHAR(40) NOT NULL,
     apellido2 VARCHAR(40),
 	active BOOLEAN,
-    otp VARCHAR(6) NOT NULL,
-    fecha_generacion_otp DATETIME,
+    enabled INT NOT NULL DEFAULT 1,
+    role ENUM('ROLE_ADMIN', 'ROLE_USER') NOT NULL DEFAULT 'ROLE_USER',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE verificacion_uuid (
+    id_verificacion_uuid BIGINT AUTO_INCREMENT PRIMARY KEY,
+    identidad_usuario INT,
+    uuid VARCHAR(255) NOT NULL,
+    fecha_expiracion TIMESTAMP NOT NULL,
+    FOREIGN KEY (identidad_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 );
 
 CREATE TABLE subcategorias (
@@ -92,7 +102,7 @@ CREATE TABLE pedidos (
     metodo_envio ENUM('Recogida_en_tienda', 'CTT_Express', 'NACEX') NOT NULL DEFAULT 'CTT_Express',
     gastos_envio DECIMAL(4, 2), /*gastos_envio depende de precio_subtotal y metodo_envio*/
     precio_total DECIMAL(8, 2),
-    estado ENUM('pendiente', 'enviado', 'entregado', 'cancelado') NOT NULL DEFAULT 'pendiente',
+    estado ENUM('pendiente', 'enviado', 'entregado', 'cancelado') DEFAULT 'pendiente',
     /*Datos del destinatario*/
 	nombre VARCHAR(30) NOT NULL,
     apellidos VARCHAR(40) NOT NULL,
@@ -266,9 +276,7 @@ INSERT INTO categorias(nombre, imagen_url, descripcion) value
     mejora la experiencia del juego.'),
     ('Accesorios',
     '/imagenes/categorias/accesorios.jpg',
-	'Los accesorios son elementos adicionales que se pueden añadir a las réplicas de armas para mejorar su funcionalidad, eficiencia, comodidad y realismo. Estos 
-	accesorios no solo sirven para mejorar el rendimiento en el campo de batalla, sino también para aumentar la inmersión en el juego y hacer que la experiencia 
-	sea más agradable y personalizada.'),
+	'<p>Los accesorios son elementos adicionales que se pueden añadir a las réplicas de armas para mejorar su funcionalidad, eficiencia, comodidad y realismo. Estos accesorios no solo sirven para mejorar el rendimiento en el campo de batalla, sino también para aumentar la inmersión en el juego y hacer que la experiencia más agradable y personalizada.</p>'),
     ('Equipamiento',
     '/imagenes/categorias/equipamiento.jpg',
     'El equipamiento en Airsoft es fundamental para asegurar la seguridad y la efectividad durante el juego. Este incluye réplicas de armas como rifles, pistolas, 
@@ -403,17 +411,19 @@ INSERT INTO productos (identidad_fabricante, identidad_subcategoria, nombre, des
     (5, 8, 'FRANCOTIRADOR DE CO2 M1903 A3 - G&G', 'descripcion', 'detalles', 584.90, 5, true),
     (10, 1, 'TOKYO MARUI SAIGA-12K', 'descripción', 'detalles', 589.95, 10, true);
     
-INSERT INTO usuarios (nombre, apellido1, apellido2, password, direccion_email, active, otp, fecha_generacion_otp) VALUES
-    ('Alfredo', 'Landa', 'Areta', 'alflanare', 'alflanare@example.com', true, '000000', CURRENT_TIMESTAMP),
-    ('Antonio', 'Ozores', 'Puchol', 'antozopuc', 'antozopuc@example.com', true, '000000', CURRENT_TIMESTAMP),
-    ('Amparo', 'Baró', 'San Martín', 'ampbarsm', 'ampbarsm@example.com', true, '000000', CURRENT_TIMESTAMP),
-    ('Carlos', 'Larrañaga', 'Ladrón de Guevera', 'carlarldg', 'carlarldg@example.com', true, '000000', CURRENT_TIMESTAMP),
-    ('Concepción', 'Velasco', 'Varona', 'convelvar', 'convelvar@example.com', false, '000000', CURRENT_TIMESTAMP),
-    ('Enrique', 'San Francisco', 'Cobo', 'enrsanfan', 'enrsfcob@sqlmail.com', true, '000000', CURRENT_TIMESTAMP),
-    ('Francisco', 'Rabal', 'Valera', 'frarabval', 'frarabval@sqlmail.com', true, '000000', CURRENT_TIMESTAMP),
-    ('Fernando', 'Fernández', 'Gómez', 'ferfergom', 'ferfergom@sqlmail.com', true, '000000', CURRENT_TIMESTAMP),
-    ('Florinda', 'Chico', 'Martín-Mora', 'flochimar-mor', 'flochim-m@sqlmail.com', true, '000000', CURRENT_TIMESTAMP),
-    ('Ricardo', 'Deza', 'Roanes', 'ricdezroa', 'vivo_en_madrid@hotmail.com', true, '000000', CURRENT_TIMESTAMP);
+INSERT INTO usuarios (username, password, nombre, apellido1, apellido2, active, role) VALUES
+    ('ricardo@nombregrupo.com', '$2a$12$RLDKdQu8djPEv7/7/rmF1ePUAg0sPUMCPaXh0uhG.w1QH95SB20JC', 'Ricardo', 'Deza', 'Roanes', true, 'ROLE_ADMIN');
+
+INSERT INTO usuarios (username, password, nombre, apellido1, apellido2, active) VALUES
+    ('alflanare@example.com', 'alflanare', 'Alfredo', 'Landa', 'Areta', true),
+    ('antozopuc@example.com', 'antozopuc', 'Antonio', 'Ozores', 'Puchol', true),
+    ('ampbarsm@example.com', 'ampbarsm', 'Amparo', 'Baró', 'San Martín', true),
+    ('carlarldg@example.com', 'carlarldg', 'Carlos', 'Larrañaga', 'Ladrón de Guevera', true),
+    ('convelvar@example.com', 'convelvar', 'Concepción', 'Velasco', 'Varona', false),
+    ('enrsfcob@sqlmail.com', 'enrsanfan', 'Enrique', 'San Francisco', 'Cobo', true),
+    ('frarabval@sqlmail.com', 'frarabval', 'Francisco', 'Rabal', 'Valera', true),
+    ('ferfergom@sqlmail.com', 'ferfergom', 'Fernando', 'Fernández', 'Gómez', true),
+    ('flochim-m@sqlmail.com', 'flochimar-mor', 'Florinda', 'Chico', 'Martín-Mora', true);
 
 INSERT INTO resenas (identidad_producto, identidad_usuario, valoracion, titulo, comentario) VALUES
     (1, 1, 4, 'título', 'comentario'),
@@ -423,12 +433,12 @@ INSERT INTO resenas (identidad_producto, identidad_usuario, valoracion, titulo, 
     (3, 5, 5, 'título', 'comentario'),
 	(4, 7, 5, 'título', 'comentario'),
     (4, 8, 5, 'título', 'comentario'),
-    (4, 9, 4, 'título', 'comentario');
+    (4, 8, 4, 'título', 'comentario');
 
 START TRANSACTION;
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (1, 'Alfredo', 'Landa', 'direccion AL', 'España', 'Pamplona', '+346XXXXXXXX', 'Recogida_en_tienda', '2024-04-01');
+    (2, 'Alfredo', 'Landa', 'direccion AL', 'España', 'Pamplona', '+346XXXXXXXX', 'Recogida_en_tienda', '2024-04-01');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 2, 1),
@@ -436,7 +446,7 @@ INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) V
     (@identidad_pedido, 15, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (1, 'Alfredo', 'Landa', 'direccion AL', 'España', 'Pamplona', '+346XXXXXXXX', 'NACEX', '2024-04-01');
+    (2, 'Alfredo', 'Landa', 'direccion AL', 'España', 'Pamplona', '+346XXXXXXXX', 'NACEX', '2024-04-01');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 2, 1),
@@ -444,57 +454,57 @@ INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) V
     (@identidad_pedido, 13, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (3, 'Amparo', 'Baró', 'direccion AB', 'España', 'Barcelona', '+346XXXXXXXX', 'Recogida_en_tienda', '2024-04-02');
+    (4, 'Amparo', 'Baró', 'direccion AB', 'España', 'Barcelona', '+346XXXXXXXX', 'Recogida_en_tienda', '2024-04-02');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 25, 1);
     
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (3, 'Amparo', 'Baró', 'direccion AB', 'España', 'Barcelona', '+346XXXXXXXX', 'CTT_Express', '2024-04-03');
+    (4, 'Amparo', 'Baró', 'direccion AB', 'España', 'Barcelona', '+346XXXXXXXX', 'CTT_Express', '2024-04-03');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 26, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (1, 'Germán', 'Areta', 'direccion GA', 'España', 'Madrid', '+346XXXXXXXX', 'CTT_Express', '2024-04-04');
+    (2, 'Germán', 'Areta', 'direccion GA', 'España', 'Madrid', '+346XXXXXXXX', 'CTT_Express', '2024-04-04');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 5, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (8, 'Miguel', 'Aguirrezabala', 'direccion MA', 'España', 'Azpeitia', '+346XXXXXXXX', 'CTT_Express', '2024-04-05');
+    (9, 'Miguel', 'Aguirrezabala', 'direccion MA', 'España', 'Azpeitia', '+346XXXXXXXX', 'CTT_Express', '2024-04-05');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 6, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (5, 'Concepción', 'Velasco', 'direccion CV', 'España', 'Valladolid', '+346XXXXXXXX', 'CTT_Express', '2024-04-07');
+    (6, 'Concepción', 'Velasco', 'direccion CV', 'España', 'Valladolid', '+346XXXXXXXX', 'CTT_Express', '2024-04-07');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 6, 1),
     (@identidad_pedido, 20, 3);
     
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (6, 'Ramiro', 'Pacheco', 'direccion RP', 'España', 'Madrid', '+346XXXXXXXX', 'CTT_Express', '2024-04-07');
+    (7, 'Ramiro', 'Pacheco', 'direccion RP', 'España', 'Madrid', '+346XXXXXXXX', 'CTT_Express', '2024-04-07');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 14, 2),
     (@identidad_pedido, 15, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (7, 'Francisco', 'Rabal', 'direccion FR', 'España', 'Águilas', '+346XXXXXXXX', 'CTT_Express', '2024-04-09');
+    (8, 'Francisco', 'Rabal', 'direccion FR', 'España', 'Águilas', '+346XXXXXXXX', 'CTT_Express', '2024-04-09');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 9, 3);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (1, 'Alfredo', 'Landa', 'direccion AL', 'España', 'Pamplona', '+346XXXXXXXX', 'CTT_Express', '2024-04-15');
+    (2, 'Alfredo', 'Landa', 'direccion AL', 'España', 'Pamplona', '+346XXXXXXXX', 'CTT_Express', '2024-04-15');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 14, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (5, 'Nuria', 'Berenguer', 'direccion NB', 'España', 'Gerona', '+346XXXXXXXX', 'NACEX', '2024-04-16');
+    (6, 'Nuria', 'Berenguer', 'direccion NB', 'España', 'Gerona', '+346XXXXXXXX', 'NACEX', '2024-04-16');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 11, 1);

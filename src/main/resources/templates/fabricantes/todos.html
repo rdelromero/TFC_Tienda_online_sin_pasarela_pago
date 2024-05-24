@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="layout/titulo :: head (title='Todos los fabricantes')"></head>
 <head>
     <link rel="stylesheet" type="text/css" href="/css/lista.css">
@@ -23,7 +24,7 @@
                     <th>País</th>
                     <th>Página web</th>
                     <th>Url de la imagen</th>
-                    <th>Acciones</th>
+                    <th sec:authorize="hasRole('ROLE_ADMIN')">Acciones</th>
                 </tr>
             </thead>
             <tbody>     <!-- MIRAR ESTOOOOOOOOOOOOOOO -->
@@ -34,8 +35,7 @@
                     <td th:text="${fabricante.pais}"></td>
                     <td th:text="${fabricante.paginaWeb}"></td>
                       <td th:text="${fabricante.imagenUrl}"></td>
-                   
-                    <td>
+                    <td sec:authorize="hasRole('ROLE_ADMIN')">
                         <a class="btn btn-info" th:href="@{'/fabricantes/' + ${fabricante.idFabricante}}">Mostrar</a>
                         <a class="btn btn-warning" th:href="@{'/fabricantes/editar/' + ${fabricante.idFabricante}}">Editar</a>
                         <a class="btn btn-danger" th:href="@{'/fabricantes/borrar/' + ${fabricante.idFabricante}}" onclick="return confirm('¿Está seguro de que desea eliminar este fabricante?');">Borrar</a>
