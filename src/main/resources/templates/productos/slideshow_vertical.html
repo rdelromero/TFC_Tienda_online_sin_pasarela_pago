@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Imágenes de un producto')"></head>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/slideshowmanualcontransicion_vertical.css">
+</head>
+
+<body>
+<div th:replace="layout/encabezado :: header"></div>
+<main>
+<h3 th:text="'Producto: ' + ${nombreHtml}"></h3>
+<div class="contenedor-para-centrar" th:if="${not #lists.isEmpty(imagenes)}">
+  <div class="wrapper">
+    <div class="slideshow-container">
+        <div class="contenedorIzquierdo">
+            <img id="imagenExpandida" th:src="@{'/imagenes/productos/' + ${imagenes[0].imagenUrl}}"/>
+            <div id="divDeTextoAlt"></div>
+        </div>
+        <div class="contenedorCentral">
+            <div class="divDeImagenes" id="divDeImagenes" >
+                <img th:each="imagen, iterStat : ${imagenes}" th:classappend="${iterStat.index == 0} ? ' activo'" th:src="@{'/imagenes/productos/' + ${imagen.imagenUrl}}" th:alt="'Imagen '+${iterStat.index + 1}+'/'+${imagenes.size()}" th:onclick="mostrarImagenSeleccionada(this)" th:onmouseover="colorearPadding(this);" th:onmouseout="descolorearPadding(this);" />
+            </div>
+            <a class="prev" onclick="setMenosYMostrarDiapositiva();">&#128897</a>
+            <a class="sigu" onclick="setMasYMostrarDiapositiva();">&#128899</a>
+        </div>
+        <div class="contenedorDerecho" id="contenedorDeSpans" style="text-align:center"></div>
+    </div>
+    <script src="/js/slideshowmanualcontransicion_vertical.js"></script>
+  </div>
+</div>
+<div th:if="${imagenes.isEmpty()}" class="no-images">
+    <p>No hay imágenes disponibles para este producto.</p>
+</div>
+    
+<a class="btn btn-secondary" th:href="@{/productos}">Volver a la lista de productos</a>
+</main>
+<br>
+<div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

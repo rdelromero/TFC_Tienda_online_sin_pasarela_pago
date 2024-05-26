@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nombreGrupo.modelo.dto.ProductoDtoCreacion;
 import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.modelo.entities.Producto.TipoDescuento;
+import com.nombreGrupo.services.LineaFacturacionService;
 import com.nombreGrupo.services.ProductoService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -154,7 +155,15 @@ public class ProductoRestController {
         }
         return ResponseEntity.ok(productos);
     }*/
-        
+    
+    @Autowired
+    private LineaFacturacionService lineaFacturacionService;
+    
+    @GetMapping("/{idProducto}/unidades-vendidas")
+    public int getTotalUnitsSoldByProductId(@PathVariable int idProducto) {
+        return lineaFacturacionService.encontrarNumeroUnidadesVendidasPorIdProducto(idProducto);
+    }
+    
     /* CREACIÓN------------------------------------------------------------------*/
 	@PostMapping
 	public ResponseEntity<?> postStore(@RequestBody ProductoDtoCreacion productoDtoCreacion) {

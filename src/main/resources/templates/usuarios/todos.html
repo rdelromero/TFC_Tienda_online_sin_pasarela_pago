@@ -18,7 +18,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Dirección email</th>
+                    <th>Username</th>
                     <th>Nombre </th>
                     <th>Primer apellido </th>
                     <th>Segundo apellido </th>
@@ -33,14 +33,19 @@
                     <td th:text="${usuario.username}"></td>
                     <td th:text="${usuario.nombre}"></td>
                     <td th:text="${usuario.apellido1}"></td>
-                    <td th:text="${usuario.apellido2}"></td>
+                    <td th:text="${usuario.apellido2 != null ? usuario.apellido2 : '-'}"></td>
                     <td th:text="${usuario.active}"></td>
-                    <td>
-                       <a class="btn btn-link" th:href="@{'/usuarios/' + ${usuario.idUsuario}} + '/pedidos'" th:text="pedidos"></a>
+
+                    <td style="text-align: center">
+                      <a class="btn btn-link" 
+                        th:if="${numeroPedidosPorIdUsuarioMap[usuario.idUsuario] != 0}"
+                        th:href="@{'/usuarios/' + ${usuario.idUsuario} + '/pedidos'}" 
+                        th:text="${numeroPedidosPorIdUsuarioMap[usuario.idUsuario]}"></a>
+                      <span th:unless="${numeroPedidosPorIdUsuarioMap[usuario.idUsuario] != 0}">-</span>
                     </td>
                     <td>
                         <a class="btn btn-info" th:href="@{'/usuarios/' + ${usuario.idUsuario}}">Mostrar</a>
-                        <a class="btn btn-danger" th:href="@{'/usuarios/borrar/' + ${usuario.idUsuario}}" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">Borrar*</a>
+                        <a class="btn btn-danger" th:href="@{'/usuarios/borrar/' + ${usuario.idUsuario}}" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');" >Borrar*</a>
                     </td>
                 </tr>
             </tbody>

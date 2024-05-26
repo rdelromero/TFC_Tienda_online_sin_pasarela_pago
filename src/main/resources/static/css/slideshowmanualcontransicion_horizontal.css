@@ -1,0 +1,96 @@
+.contenedor-slideshow {
+    max-width: 500px;
+    border: 1px solid black;
+    margin: auto; /* Centra el contenedor*/
+    overflow: hidden;
+}
+.contenedor-slideshow .contenedor-0 {
+  /*border: 1px solid black;*/
+  text-align: center;
+  /*Para que su hijo divDeTextoAlt puedan posicionarse respecto él, la posición no debe ser static, sino relative*/
+  position: relative;
+}
+.contenedor-slideshow .contenedor-0 #imagenExpandida {
+    border: 1px solid indigo;
+    width: 100%;
+}
+
+/* Expanding image text */
+.contenedor-slideshow .contenedor-0 #divDeTextoAlt {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 20px;
+}
+
+.contenedor-slideshow .contenedor-1 {
+    border: 1px solid black;
+    position: relative;
+    overflow: hidden;
+}
+
+.contenedor-slideshow .contenedor-1 .divDeImagenes {
+    /*Si son 11 diapositivas y queremos ver 4, hacemos 100*11/4 = 275, o en píxeles */
+   /* width: 275%; */
+    transition: transform 1.0s ease;
+    display: flex;
+}
+
+.contenedor-slideshow .contenedor-1 .divDeImagenes img {
+    border: 1px solid gray;
+    padding: 2px;
+    margin: 5px;
+    width: 100%; /* Ajuste de ancho para mostrar 4 miniaturas */
+}
+
+.contenedor-slideshow .contenedor-1 .prev, .contenedor-slideshow .contenedor-1 .sigu {
+    cursor: pointer;
+    color: black;
+    background-color: rgba(127, 127, 127, 0.5);
+    font-weight: bold;
+    font-size: 10px;
+    transition: 0.6s ease;
+    user-select: none;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.contenedor-slideshow .contenedor-1 .prev {
+    left: 0;
+}
+
+.contenedor-slideshow .contenedor-1 .sigu {
+    right: 0;
+}
+
+.contenedor-slideshow .contenedor-1 .prev:hover, .contenedor-slideshow .contenedor-1 .sigu:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+.contenedor-slideshow .contenedor2 {
+  display: flex;
+  justify-content: center;
+}
+
+/* The dots/bullets/indicators */
+.contenedor-slideshow .contenedor2 span {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  /*Para que sean círculos*/
+  border-radius: 50%;
+  transition: background-color 0.6s ease;
+}
+
+.contenedor-slideshow .contenedor2 .activo {
+  pointer-events: none;
+  background-color: #717171;
+}
+
+.contenedor-slideshow .contenedor2 .dot:hover {
+  background-color: #717171;
+}

@@ -23,6 +23,7 @@ import com.nombreGrupo.modelo.entities.Imagen;
 import com.nombreGrupo.modelo.entities.LineaFacturacion;
 import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.modelo.entities.Producto.TipoDescuento;
+import com.nombreGrupo.modelo.entities.Resena;
 import com.nombreGrupo.modelo.entities.Subcategoria;
 import com.nombreGrupo.repositories.ImagenRepository;
 import com.nombreGrupo.repositories.LineaFacturacionRepository;
@@ -53,9 +54,11 @@ public class ProductoServiceImplMy8 implements ProductoService{
 	private ImagenRepository imagenRepository;
 	
 	@Autowired
-	private ModelMapper modeloMapper;
-	@Autowired
 	private ResenaRepository resenaRepository;
+	
+	@Autowired
+	private ModelMapper modeloMapper;
+
 	@Autowired
 	private LineaFacturacionRepository lineaFacturacionRepository;
 	
@@ -83,6 +86,11 @@ public class ProductoServiceImplMy8 implements ProductoService{
     @Override
     public List<Imagen> encontrarImagenesPorIdProducto(int productoId) {
         return imagenRepository.findByProducto_IdProducto(productoId);
+    }
+    
+    @Override
+    public List<Resena> encontrarResenasPorIdProducto(int productoId) {
+        return resenaRepository.findByProducto_IdProducto(productoId);
     }
     
 	@Override

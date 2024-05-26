@@ -9,7 +9,7 @@
     <div th:replace="layout/encabezado :: header"></div>
 
     <main>
-        <h2>Crear Producto</h2>
+        <h3>Crear Producto</h3>
         <form th:action="@{/productos/crear}" th:object="${productoDto}" method="post">
             <table>
                 <tr>
@@ -66,11 +66,11 @@
             <br>
             <div>
                <label for="descripcionLTA">Descripción:</label><br>
-               <textarea id="descripcionLTA" th:field="*{descripcion}" rows="5" cols="50"></textarea>
+               <textarea id="descripcionLTA" th:field="*{descripcion}" rows="5" cols="100"></textarea>
             </div>
             <div>
                 <label for="detallesLTA">Detalles:</label><br>
-                <textarea id="detallesLTA" th:field="*{detalles}" rows="5" cols="50"></textarea>
+                <textarea id="detallesLTA" th:field="*{detalles}" rows="5" cols="100"></textarea>
             </div>
             <br>
             <button type="submit" class="btn btn-success">Crear Producto</button>

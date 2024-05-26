@@ -10,7 +10,7 @@
     <div th:replace="layout/encabezado :: header"></div>
 
     <main>
-      <h2>Productos</h2>
+      <h3>Productos</h3>
       
       <div style="display:flex;">
         <div style="text-align:left; width:33.3%">
@@ -33,36 +33,46 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Fabricante</th>
-                    <th>Imágenes</th>
-                    <th>Precio (€)</th>
-                    <th>Stock</th>
                     <th>Subcategoría</th>
+                    <th>Imágenes</th>
+                    <th>Stock</th>
                     <th>Novedad</th>
+                    <th>Precio (€)</th>
                     <th>Tipo descuento</th>
-                    <th>Descuento</th>
-                    <th>V. media</th>
+                    <th>Reseñas</th>
+                    <th>V.media</th>
+                    <th>Ventas</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="producto : ${paginaProductos}">
                     <td th:text="${producto.idProducto}"></td>
-                    <td th:text="${producto.nombre != null ? #strings.abbreviate(producto.nombre, 40) : 'N/A'}"></td>
+                    <td th:text="${producto.nombre != null ? #strings.abbreviate(producto.nombre, 38) : 'N/A'}"></td>
                     <td>
-                       <a class="btn btn-link" th:href="@{'/fabricantes/' + ${producto.fabricante.idFabricante}}" th:text="${producto.fabricante.nombre}"></a>
+                        <a class="btn btn-link" th:href="@{'/fabricantes/' + ${producto.fabricante.idFabricante}}" th:text="${producto.fabricante.nombre}" style="font-size: 14px;"></a>
                     </td>
-                     <td>
-                       <a class="btn btn-link" th:href="@{'productos/'+${producto.idProducto}+'/imagenes'}" th:text="imágenes"></a>
+                    <td>
+                        <a class="btn btn-link" th:href="@{'/subcategorias/' + ${producto.subcategoria.idSubcategoria}}" th:text="${#strings.abbreviate(producto.subcategoria.nombre, 20)}" style="font-size: 14px;"></a>
                     </td>
-                    <td th:text="${producto.precio}"></td>
+                    <td>
+                        <a class="btn btn-link" th:href="@{'productos/'+${producto.idProducto}+'/imagenes'}" th:text="imágenes" style="font-size: 14px;"></a>
+                    </td>
                     <td th:text="${producto.stock}" style="text-align: center"></td>
-                    <td>
-                       <a class="btn btn-link" th:href="@{'/subcategorias/' + ${producto.subcategoria.idSubcategoria}}" th:text="${#strings.abbreviate(producto.subcategoria.nombre, 20)}"></a>
-                    </td>
-                    <td th:text="${producto.novedad ? 'Sí' : 'No'}"></td>
+                    <td th:text="${producto.novedad ? 'Sí' : 'No'}" style="text-align:center"></td>
+                    <td th:text="${producto.precio}" style="text-align:center"></td>
                     <td th:text="${producto.tipoDescuento}"></td>
-                    <td th:text="${producto.descuento != null ? producto.descuento : 'NULL'}" style="text-align: center"></td>
-                    <td th:text="${producto.valoracionMedia != null ? #numbers.formatDecimal(producto.valoracionMedia, 1, 2) : 'NULL'}" style="text-align: center"></td>
+                    <td style="text-align: center">
+                        <span th:if="${producto.numeroValoraciones > 0}">
+                            <a th:href="@{'/productos/' + ${producto.idProducto} + '/resenas'}" th:text="${producto.numeroValoraciones}"></a>
+                        </span>
+                       <span th:unless="${producto.numeroValoraciones > 0}">-</span>
+                    </td>
+                    <td th:text="${producto.valoracionMedia != null ? #numbers.formatDecimal(producto.valoracionMedia, 1, 2) : '-'}" style="text-align: center"></td>
+                    <td style="text-align: center">
+                        <span th:if="${totalUnidadesVendidasMap[producto.idProducto] > 0}" th:text="${totalUnidadesVendidasMap[producto.idProducto]}"></span>
+                        <span th:unless="${totalUnidadesVendidasMap[producto.idProducto] > 0}">-</span>
+                    </td>
                     <td>
                         <a class="btn btn-info" th:href="@{'/productos/' + ${producto.idProducto}}">Mostrar</a>
                         <a class="btn btn-warning" th:href="@{'/productos/editar/' + ${producto.idProducto}}">Editar</a>

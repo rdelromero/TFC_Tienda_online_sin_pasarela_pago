@@ -1,26 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout/titulo :: head (title='Productos todos')"></head>
+<head th:replace="layout/titulo :: head (title='Imágenes de un producto')"></head>
 <head>
-
+    <link rel="stylesheet" type="text/css" href="/css/galeriaymodal.css">
 </head>
-<body>
-    <div th:replace="layout/encabezado :: header"></div>
-    <main>
-        <h2 th:text="'Producto de ID: ' + ${idProducto}"></h2>
-    <h4>Lista de imágenes</h4>
-    <div>
-        <div th:if="${imagenes.isEmpty()}">
-            <p>No hay imágenes disponibles para este producto.</p>
-        </div>
 
-        <div th:each="imagen : ${imagenes}">
-            <img style="border: 1px solid black" th:src="@{'/imagenes/productos/' + ${imagen.imagenUrl}}" th:alt="'Imagen del producto ' + ${idProducto}" />
-        </div>
+<body>
+<div th:replace="layout/encabezado :: header"></div>
+<main>
+  <h3 th:text="'Producto: ' + ${nombreHtml}"></h3>
+  <div class="wrapper">
+    <div class="contenedor" th:if="${not #lists.isEmpty(imagenes)}">
+      <div class="divFila">      
+        <img class="imagenDeSlide" th:each="imagen, iterStat : ${imagenes}" th:classappend="${iterStat.index == 0} ? ' activo'" th:src="@{'/imagenes/productos/' + ${imagen.imagenUrl}}" th:alt="'Imagen '+${iterStat.index + 1}+'/'+${imagenes.size()}" onclick="mostrarImagen(this);" onmouseover="backgroundDeImagenAGris(this);" onmouseout="backgroundDeImagenABlanco(this);" />
+      </div>
+      <div class="divDeImagenExpandida">
+        <img id="imagenExpandida">
+        <div class="lupa"></div>
+        <div id="imgtext"></div>
+      </div>
     </div>
-    <a class="btn btn-secondary" th:href="@{/productos}">Volver a la lista de productos</a>
-    </main>
-    <br>
-    <div th:replace="layout/pie_de_pagina :: footer"></div>
+    <div th:if="${imagenes.isEmpty()}" class="no-images">
+      <p>No hay imágenes disponibles para este producto.</p>
+    </div>
+    <div class="divModal">
+      <span class="spanDeCierreDelModal">&times;</span>
+      <img class="imagenDelModal">
+      <div id="divConTexto"></div>
+    </div>
+    <script src="/js/galeriaymodal.js"></script>
+    
+  </div>
+  <a class="btn btn-secondary" th:href="@{/productos}">Volver a la lista de productos</a>
+</main>
+<br>
+<div th:replace="layout/pie_de_pagina :: footer"></div>
 </body>
+
+
 </html>
+
+

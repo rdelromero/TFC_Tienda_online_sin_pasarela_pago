@@ -1,0 +1,132 @@
+.contenedor-para-centrar {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+}
+
+.wrapper {
+  display: inline-block;
+}
+
+.slideshow-container {
+  
+  /*border: 1px solid lightgray;*/
+  display: flex;
+  height: 440px; /*max-height no funciona bien para alturas de hijos en %, 870*0,*/ /*Originalmente 704*/
+  /*Para que no sobresalga los hijos que hagan más de 1200px de ancho usamos hidden*/
+  overflow: hidden;
+  margin: auto;
+
+}
+
+.slideshow-container .contenedorIzquierdo{
+  display:flex;
+  /*border: 1px solid lightgray;*/
+  text-align: center;
+  /*Para que su hijo divDeTextoAlt puedan posicionarse respecto él, la posición no debe ser static, sino relative*/
+  position: relative;
+  
+}
+
+.slideshow-container .contenedorIzquierdo #imagenExpandida {
+  height: 440px;
+  border: 1px solid indigo;
+  }
+
+/* Expanding image text */
+.slideshow-container .contenedorIzquierdo #divDeTextoAlt {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 20px;
+}
+
+.slideshow-container .contenedorCentral {
+
+  border: 1px solid lightgray;
+  display: flex;
+  flex-direction: column; /* Establecer la dirección del flujo como columnas */
+  align-items: center; /* Centrar horizontalmente */
+  /*Para que sus hijos prev y sigu puedan posicionarse respecto él, la posición no debe ser static, sino relative*/
+  position: relative;
+}
+
+.slideshow-container .contenedorCentral .divDeImagenes {
+  transition: all 1.0s ease;
+  /*border:1px solid yellowgreen;*/
+  display: flex;
+  flex-direction: column;
+}
+
+.slideshow-container .contenedorCentral .divDeImagenes img{
+  border: 1px solid cyan;
+  height: 100px; /* No funciona en %, lo ponemos en píxeles: (440-10*4)/4, donde restamos 10*5
+  porque hay diez márgenes de margen 5px, no restamos el padding por tener puesto box-sizing: border-box;*/
+  padding: 2px;
+  margin: 5px;
+}
+
+
+/* Next & previous buttons */
+.slideshow-container .contenedorCentral .prev, .sigu {
+  cursor: pointer;
+  position: absolute;
+  /*Las flechas deben estar a media altura del contenedor*/
+  padding-top: 0px;
+  padding-left: 40px;
+  padding-right: 40px;
+  color: white;
+  background-color: rgba(127, 127, 127, 0.5);
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.6s ease;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.slideshow-container .contenedorCentral .prev {
+  top: 0;
+}
+
+/* Position the "next button" to the right */
+.slideshow-container .contenedorCentral .sigu {
+  bottom: 0;
+}
+
+.slideshow-container .contenedorDerecho {
+  border: 1px solid lightgray;
+  display: flex;
+  flex-direction: column; /* Establecer la dirección del flujo como columnas */
+  align-items: center; /* Centrar horizontalmente */
+  justify-content: center; /* Centrar verticalmente */
+}
+
+/* The dots/bullets/indicators */
+.slideshow-container .contenedorDerecho span {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  /*Para que sean círculos*/
+  border-radius: 50%;
+  transition: background-color 0.6s ease;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.slideshow-container .contenedorCentral .prev:hover, .slideshow-container .contenedorCentral .sigu:hover{
+  background-color: rgba(0,0,0,0.8);
+}
+
+.slideshow-container .contenedorDerecho .activo {
+  pointer-events: none;
+  background-color: #717171;
+}
+
+.slideshow-container .contenedorDerecho span:hover {
+  background-color: #717171;
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .prev, .sigu,.texto {font-size: 11px}
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Reseñas de un producto')"></head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reseñas del Producto</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div th:replace="layout/encabezado :: header"></div>
+<main>
+    <h3>Reseñas de: <span th:text="${nombreHtml}"></span></h3>
+    <div class="reviews">
+        <table class="review-table">
+            <tbody th:each="resena : ${resenasHtml}">
+                <tr>
+                    <td style="padding:10px 0px; min-width:150px;"><strong>Calificación: </strong><span th:text="${resena.valoracion}"></span>/5</td>
+                    <td th:text="${resena.titulo}"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <span th:text="${resena.fechaCreacion}"></span><br>
+                        <a th:href="@{'/usuarios/' + ${resena.usuario.idUsuario}}" th:text="${resena.usuario.nombre} + ' ' + ${resena.usuario.apellido1.substring(0, 1)}"></a>
+                    </td>
+                    <td th:text="${resena.comentario}"></td>
+                </tr>
+                <tr style="height: 25px"></tr>
+            </tbody>
+        </table>
+    </div>
+    <a href="/productos" class="btn btn-secondary">Volver a productos</a>
+</main>
+<br>
+<div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

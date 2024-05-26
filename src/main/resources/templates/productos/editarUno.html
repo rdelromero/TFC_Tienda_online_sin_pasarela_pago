@@ -6,7 +6,7 @@
     <div th:replace="layout/encabezado :: header"></div>
 
     <main>
-        <h2 th:text="'Editar producto de id '+${idHtml}"></h2>
+        <h3 th:text="'Editar producto de id '+${idHtml}"></h3>
         <form th:action="@{/productos/editar/{id}(id=${idHtml})}" th:object="${productoDto}" method="post">
             <table>
                 <tr>
@@ -67,11 +67,11 @@
             <br>
             <div>
                <label for="descripcionLTA">Descripción:</label><br>
-               <textarea id="descripcionLTA" th:field="*{descripcion}" rows="5" cols="50"></textarea>
+               <textarea id="descripcionLTA" th:field="*{descripcion}" rows="5" cols="100"></textarea>
             </div>
             <div>
                 <label for="detallesLTA">Detalles:</label><br>
-                <textarea id="detallesLTA" th:field="*{detalles}" rows="5" cols="50"></textarea>
+                <textarea id="detallesLTA" th:field="*{detalles}" rows="5" cols="100"></textarea>
             </div>
             <br>
             <button type="submit" class="btn btn-warning">Actualizar producto</button>

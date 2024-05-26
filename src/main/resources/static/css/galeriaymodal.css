@@ -1,0 +1,167 @@
+/*Envoltura para centrar horizontalmente .contenedor*/
+.wrapper {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    height: 100%;           /* Hace que el wrapper ocupe toda la altura de la ventana */
+    align-items: center;    /* Opcional: para centrar verticalmente */
+}
+
+.contenedor {
+    margin: auto;
+  display: inline-block;
+    border: 2px solid black;
+}
+
+.contenedor .divFila {
+    align-items: center;
+    border: 1px solid burlywood;
+    display: inline-block;
+    overflow: hidden;
+    justify-content: center;
+
+}
+
+/* The grid: Four equal columns that floats next to each other */
+.contenedor .divFila img {
+    /* pixeles ocupados por margen = 2*nºimagenes*margen = 80 px, lo cual representa 80/600*100=13.33 % a repartir, queda 86.66 %, por lo que width=86.66/nºimagenes=21.66%*/
+     /* width = % píxeles_ocupados_por_imagenes/nº_imagenes */ /* píxeles_ocupados_por_margenes=2*margin*nº_imagenes */
+    /*box-sizing: border-box; cubre padding pero no margin, tenemos que poner padding no margin.*/
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid gray;
+    opacity: 0.8; 
+    cursor: pointer;
+    height: 100px;
+}
+
+.contenedor .divFila img:hover {
+    opacity: 1;
+}
+
+/* Clear floats after the columns */
+.contenedor .divFila:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* The expanding image container */
+.contenedor .divDeImagenExpandida {
+    /*Para que los hijos de .divDeImagenExpandida se posicionen respecto el padre necesitamos position: relative*/
+    position: relative;
+    margin-top:5px;
+    display: none;
+    text-align-last: center;
+}
+
+.contenedor .divDeImagenExpandida #imagenExpandida {
+
+    cursor: pointer;
+    transition: 0.3s;
+    max-height: 460px;
+  }
+
+.contenedor .divDeImagenExpandida .lupa {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-image: url('/imagenes/otras/magnifier-plus-svgrepo-com.svg'); /* Ajusta la ruta de la imagen */
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none; /* Oculta la lupa inicialmente */
+}
+
+
+/* Expanding image text */
+.contenedor .divDeImagenExpandida #imgtext {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: white;
+    font-size: 20px;
+}
+
+#imagenExpandida:hover {
+    opacity: 0.6;
+}
+
+/* The Modal (background) */
+.divModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    /*z-index: 1; Sit on top */
+    padding-top: 20px; /* Location of the box */
+    top: 0;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+    /*Para que ocupe toda la pantalla*/
+    width: 100%;
+    height: 100%;
+}
+
+/* Modal Content (image) */
+.divModal .imagenDelModal {
+    display: block;
+    /*Ancho respecto su div padre
+    width: 80%;*/
+    /*max-width: 700px;*/
+    /*Para que la imagen esté centrada*/
+    margin: auto;
+}
+
+/* Caption of Modal Image */
+.divModal #divConTexto {
+    /*width: 80%;
+    max-width: 700px;*/
+    /* Para que el texto esté centrado */
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    border: 1px solid white;
+}
+
+/* Add Animation */
+.divModal .imagenDelModal, #divConTexto {  
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+from {-webkit-transform:scale(0)} 
+to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+from {transform:scale(0)} 
+to {transform:scale(1)}
+}
+
+/* The Close Button */
+.divModal .spanDeCierreDelModal {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.divModal .spanDeCierreDelModal:hover, .spanDeCierreDelModal:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+.imagenDelModal {
+  width: 100%;
+}
+}

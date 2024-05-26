@@ -14,7 +14,7 @@
                 <td th:text="${usuario.idUsuario}"></td>
             </tr>
             <tr>
-                <th>Dirección email</th>
+                <th>Username</th>
                 <td th:text="${usuario.username}"></td>
             </tr>
             <tr>
@@ -31,11 +31,15 @@
             </tr>
             <tr>
                 <th>Segundo apellido</th>
-                <td th:text="${usuario.apellido2}"></td>
+                <td th:text="${usuario.apellido2 != null ? usuario.apellido2 : '-'}"></td>
             </tr>
             <tr>
                 <th>Active</th>
                 <td th:text="${usuario.active}"></td>
+            </tr>
+            <tr>
+                <th>N.º pedidos</th>
+                <td th:text="${numeroPedidosHtml != 0 ? numeroPedidosHtml : '-'}" th:href="@{'/usuarios/' + ${usuario.idUsuario} + '/pedidos'}"></td>
             </tr>
              <tr>
                 <th>Fecha de creación</th>

@@ -26,7 +26,6 @@ import lombok.ToString;
 @Entity
 @Table(name = "resenas")
 @NamedQuery(name="Resena.findAll", query="SELECT r FROM Resena r")
-
 public class Resena implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -41,7 +40,7 @@ public class Resena implements Serializable {
     
     @ManyToOne
     @JoinColumn(name="identidad_usuario")
-    private Producto usuario;
+    private Usuario usuario;
     
     @Column(nullable = false)
     private int valoracion;

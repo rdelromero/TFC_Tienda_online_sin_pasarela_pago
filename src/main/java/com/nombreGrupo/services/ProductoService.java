@@ -11,6 +11,7 @@ import com.nombreGrupo.modelo.entities.Imagen;
 import com.nombreGrupo.modelo.entities.Pedido;
 import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.modelo.entities.Producto.TipoDescuento;
+import com.nombreGrupo.modelo.entities.Resena;
 
 public interface ProductoService {
 
@@ -21,6 +22,7 @@ public interface ProductoService {
 	
 	List<Producto> encontrarPorTipoDescuento(TipoDescuento tipoDescuento);
 	List<Imagen> encontrarImagenesPorIdProducto(int productoId);
+	List<Resena> encontrarResenasPorIdProducto(int idProducto);
 	
 	//Búsqueda por filtros: idCategoria, tipoDescuento, idFabricante, precioFinalMinimo, precioFinalMaximo
 	List<Producto> encontrarPorSubcategoriaCategoriaIdCategoriaYTipoDescuentoYFabricante_IdFabricanteYPrecioFinalEntre(Integer idCategoria, TipoDescuento tipoDescuento,
@@ -50,6 +52,7 @@ public interface ProductoService {
 	Producto actualizarMVC(Producto producto);
 	//Borrado
 	boolean borrarPorId(int idProducto);
+	
 	
 	
 	

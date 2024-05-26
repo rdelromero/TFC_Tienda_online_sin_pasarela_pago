@@ -24,6 +24,12 @@ public class ResenaServiceImplMy8 implements ResenaService{
         return resenaRepository.findAll();
     }
     
+    //Sin usar porque pusimos un campo numeroValoraciones en la entidad
+    /*@Override
+    public int encontrarNumeroResenasPorIdProducto(int idProducto) {
+        return resenaRepository.contarResenasPorIdProducto(idProducto);
+    }*/
+    
 	@Override
 	public boolean borrarPorId(int idResena) {
 	    // Verificar si el producto existe
