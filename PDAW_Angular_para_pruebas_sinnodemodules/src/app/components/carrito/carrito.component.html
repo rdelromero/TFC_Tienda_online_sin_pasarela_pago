@@ -1,0 +1,70 @@
+<div *ngIf="carrito.length > 0; else emptyCart">
+  <h2>Carrito de Compras</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Producto ID</th>
+        <th>Cantidad</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of carrito">
+        <td>{{ item.idProducto }}</td>
+        <td>{{ item.cantidad }}</td>
+        <td>
+          <button (click)="eliminarProducto(item.idProducto)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button (click)="limpiarCarrito()">Vaciar Carrito</button>
+
+  <h3>Datos de dirección de envío</h3>
+  <form (ngSubmit)="realizarPedido()">
+    <table>
+      <tr>
+        <td><label for="nombre">Nombre:</label></td>
+        <td><input id="nombre" [(ngModel)]="nombre" name="nombre" required></td>
+      </tr>
+      <tr>
+        <td><label for="apellidos">Apellidos:</label></td>
+        <td><input id="apellidos" [(ngModel)]="apellidos" name="apellidos" required></td>
+      </tr>
+      <tr>
+        <td><label for="direccion">Dirección:</label></td>
+        <td><input id="direccion" [(ngModel)]="direccion" name="direccion" required></td>
+      </tr>
+      <tr>
+        <td><label for="pais">País:</label></td>
+        <td><input id="pais" [(ngModel)]="pais" name="pais" required></td>
+      </tr>
+      <tr>
+        <td><label for="ciudad">Ciudad:</label></td>
+        <td><input id="ciudad" [(ngModel)]="ciudad" name="ciudad" required></td>
+      </tr>
+      <tr>
+        <td><label for="numeroTelefonoMovil">Número de Teléfono Móvil:</label></td>
+        <td><input id="numeroTelefonoMovil" [(ngModel)]="numeroTelefonoMovil" name="numeroTelefonoMovil" required></td>
+      </tr>
+      <tr>
+        <td><label for="metodoEnvio">Método de Envío:</label></td>
+        <td>
+          <select id="metodoEnvio" [(ngModel)]="metodoEnvio" name="metodoEnvio" required>
+            <option value="Recogida_en_tienda">Recogida en tienda</option>
+            <option value="CTT_Express">CTT Express</option>
+            <option value="NACEX">NACEX</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+    <br>
+    <button type="submit" [disabled]="carrito.length === 0">Crear Pedido</button>
+  </form>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+</div>
+
+<ng-template #emptyCart>
+  <p>El carrito está vacío.</p>
+</ng-template>

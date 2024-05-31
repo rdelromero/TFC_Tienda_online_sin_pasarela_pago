@@ -19,5 +19,6 @@ public class ProductoDtoCreacion {
 	private boolean novedad;
 	private TipoDescuento tipoDescuento;
 	private double descuento;
+	//FUTURA IMPLEMENTACIÓN
 	private List<ImagenDto> imagenesDto;
 }

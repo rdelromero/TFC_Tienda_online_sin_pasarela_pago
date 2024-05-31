@@ -1,0 +1,40 @@
+<!-- src/app/components/productos-por-id-fabricante/productos-por-id-fabricante.component.html -->
+<div class="container">
+    <!-- Verificación si hay productos para mostrar -->
+    <h2>LISTADO DE PRODUCTOS DE LA MARCA {{ fabricanteHtml?.nombre }}</h2>
+    <div *ngIf="fabricanteHtml; else noProductTemplate" [innerHtml]="fabricanteHtml.descripcion">
+    </div>
+    <!-- Template alternativo si no hay productos -->
+    <ng-template #noProductTemplate>
+      <p>No existe producto de este id.</p>
+    </ng-template>
+
+    <div *ngIf="productosPorFabricanteHtml && productosPorFabricanteHtml.length > 0; else noProductsTemplate">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Fabricante</th>
+            <th>Subcategoria</th>
+            <th>Precio final</th>
+            <th>Valoración media</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let producto of productosPorFabricanteHtml; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.fabricante.nombre }}</td>
+            <td>{{ producto.subcategoria.nombre }}</td>
+            <td style="text-align:right">{{ producto.precioFinal }} €</td>
+            <td style="text-align:center">{{ producto.valoracionMedia }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Template alternativo si no hay productos -->
+    <ng-template #noProductsTemplate>
+      <p>No hay productos disponibles para este fabricante.</p>
+    </ng-template>
+  </div>

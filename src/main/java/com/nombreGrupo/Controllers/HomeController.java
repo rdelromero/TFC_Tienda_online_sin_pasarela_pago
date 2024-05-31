@@ -10,5 +10,5 @@ public class HomeController {
     public String getWelcomeHome() {
 	    return "home";
     }
-	
+
 }

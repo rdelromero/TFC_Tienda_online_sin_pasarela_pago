@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioRestController {
@@ -122,7 +123,7 @@ public class UsuarioRestController {
     
     @GetMapping("/{idUsuario}/pedidos")
     public ResponseEntity<?> getPedidosPorUsuario(@PathVariable int idUsuario) {
-        List<Pedido> pedidos = pedidoService.encontrarPorUsuarioIdUsuario(idUsuario);
+        List<Pedido> pedidos = pedidoService.encontrarPorUsuario_IdUsuario(idUsuario);
         if (pedidos.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensaje", "El usuario de idUsuario "+idUsuario+" no tiene pedidos a su nombre."));
         }

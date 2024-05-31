@@ -12,19 +12,14 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.nombreGrupo.especificaciones.ProductoEspecificaciones;
-import com.nombreGrupo.modelo.dto.LineaFacturacionDto;
 import com.nombreGrupo.modelo.dto.ImagenDto;
 import com.nombreGrupo.modelo.dto.ProductoDtoCreacion;
-import com.nombreGrupo.modelo.entities.Fabricante;
 import com.nombreGrupo.modelo.entities.Imagen;
-import com.nombreGrupo.modelo.entities.LineaFacturacion;
 import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.modelo.entities.Producto.TipoDescuento;
 import com.nombreGrupo.modelo.entities.Resena;
-import com.nombreGrupo.modelo.entities.Subcategoria;
 import com.nombreGrupo.repositories.ImagenRepository;
 import com.nombreGrupo.repositories.LineaFacturacionRepository;
 import com.nombreGrupo.repositories.FabricanteRepository;
@@ -228,11 +223,13 @@ public class ProductoServiceImplMy8 implements ProductoService{
         modeloMapper.map(productoDtoCreacion, producto);
         producto = productoRepository.save(producto);
         
-        for (ImagenDto imagenDto : productoDtoCreacion.getImagenesDto()) {
-            Imagen imagen = new Imagen();  
-            modeloMapper.map(imagenDto, imagen);
-            imagen.setProducto(producto);
-            imagenRepository.save(imagen);
+        if (productoDtoCreacion.getImagenesDto() != null && !productoDtoCreacion.getImagenesDto().isEmpty()) {
+            for (ImagenDto imagenDto : productoDtoCreacion.getImagenesDto()) {
+                Imagen imagen = new Imagen();  
+                modeloMapper.map(imagenDto, imagen);
+                imagen.setProducto(producto);
+                imagenRepository.save(imagen);
+            }
         }
 		
 	    return producto;

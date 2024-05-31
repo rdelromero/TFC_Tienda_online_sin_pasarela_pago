@@ -1,0 +1,53 @@
+<div *ngIf="producto">
+  <h2>{{ producto.nombre }}</h2>
+  <table>
+      <tr>
+        <td><strong>Novedad:</strong></td>
+        <td>{{ producto.novedad ? 'Sí' : 'No' }}</td>
+      </tr>
+      <tr>
+          <td><strong>Precio (€):</strong></td>
+          <td>{{ producto.precio }}</td>
+      </tr>
+      <tr>
+          <td><strong>Tipo de Descuento:</strong></td>
+          <td>{{ producto.tipoDescuento }}</td>
+      </tr>
+      <tr>
+          <td><strong>Descuento:</strong></td>
+          <td>{{ producto.descuento !== null ? producto.descuento : '-' }}</td>
+      </tr>
+      <tr>
+          <td><strong>Precio Final (€):</strong></td>
+          <td>{{ producto.precioFinal }}</td>
+      </tr>
+      <tr>
+          <td><strong>Número de Valoraciones:</strong></td>
+          <td>{{ producto.numeroValoraciones }}</td>
+      </tr>
+      <tr>
+        <td><strong>Valoración Media:</strong></td>
+        <td>{{ producto.valoracionMedia !== null ? producto.valoracionMedia : '-' }}</td>
+    </tr>
+      <tr>
+          <td><strong>Descripción:</strong></td>
+          <td>{{ producto.descripcion }}</td>
+      </tr>
+      <tr>
+          <td><strong>Detalles:</strong></td>
+          <td>{{ producto.detalles }}</td>
+      </tr>
+  </table>
+  <br>
+  <div>
+      <button (click)="decrementarCantidad()">-</button>
+      <input type="number" [value]="cantidad" readonly>
+      <button (click)="incrementarCantidad()">+</button>
+  </div>
+
+  <br>
+  <button (click)="anadirAlCarrito()">Añadir al Carrito</button>
+</div>
+<div *ngIf="errorMessage" class="error">
+  {{ errorMessage }}
+</div>

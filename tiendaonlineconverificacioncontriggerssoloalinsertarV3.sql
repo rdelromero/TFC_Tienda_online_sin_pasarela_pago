@@ -25,10 +25,10 @@ CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,
+    enabled BOOLEAN,
     nombre VARCHAR(30) NOT NULL,
     apellido1 VARCHAR(40) NOT NULL,
     apellido2 VARCHAR(40),
-	active BOOLEAN,
     role ENUM('ROLE_ADMIN', 'ROLE_USER') NOT NULL DEFAULT 'ROLE_USER',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -258,38 +258,22 @@ DELIMITER ;*/
 INSERT INTO categorias(nombre, imagen_url, descripcion) value
     ('Armas airsoft', 
     '/imagenes/categorias/replicas.jpg',
-    'Las armas de airsoft son réplicas de armas utilizadas en los deportes de airsoft. Son un tipo especial de armas de aire de cañón liso de baja potencia 
-    diseñadas para disparar proyectiles llamados "airsoft pellets" o BBs, los cuales están típicamente hechos de (pero no limitados a) materiales plásticos o 
-    resinas biodegradables. Las plantas de energía de las armas de airsoft están diseñadas para tener bajas calificaciones de energía en la boca del cañón 
-    (generalmente menos de 1.5 J, o 1.1 ft⋅lb) y los pellets tienen significativamente menos poder penetrante y de detención que las armas de aire convencionales, y
-    son generalmente seguras para uso deportivo competitivo y recreativo si se lleva el equipo de protección adecuado.'),
+    'Las armas de airsoft son réplicas de armas utilizadas en los deportes de airsoft. Son un tipo especial de armas de aire de cañón liso de baja potencia diseñadas para disparar proyectiles llamados "airsoft pellets" o BBs, los cuales están típicamente hechos de (pero no limitados a) materiales plásticos o resinas biodegradables. Las plantas de energía de las armas de airsoft están diseñadas para tener bajas calificaciones de energía en la boca del cañón (generalmente menos de 1.5 J, o 1.1 ft⋅lb) y los pellets tienen significativamente menos poder penetrante y de detención que las armas de aire convencionales, y son generalmente seguras para uso deportivo competitivo y recreativo si se lleva el equipo de protección adecuado.'),
     ('Munición y recarga', 
     '/imagenes/categorias/consumibles.jpg',
-    'La munición se utiliza para marcar a otros jugadores durante el juego. Estas son pequeñas esferas de plástico, conocidas como BBs, 
-    que se disparan desde las réplicas de armas. El objetivo principal es alcanzar a los oponentes con estas BBs para "eliminarlos" o cumplir objetivos específicos 
-    dentro del escenario del juego. Las BBs pueden ser de diferentes pesos y calidades, y su elección puede influir en la precisión y el rendimiento de la réplica.
-    <br> La recarga en airsoft implica rellenar los cargadores de las réplicas con estas BBs. Los jugadores deben cargar manualmente sus cargadores, ya sea utilizando un
-    tubo cargador o un dispositivo de carga rápida. Esta acción es más que una simple tarea; es una habilidad táctica crucial en el juego. Recargar requiere 
-    estrategia y buen timing, ya que hacerlo en un momento inapropiado o en una posición expuesta puede dejar al jugador vulnerable a ser marcado por los oponentes.
-    Por lo tanto, saber cuándo y dónde recargar forma parte integral de la táctica y la estrategia en el airsoft, añadiendo un elemento de realismo y desafío que 
-    mejora la experiencia del juego.'),
+    'p>La munición se utiliza para marcar a otros jugadores durante el juego. Estas son pequeñas esferas de plástico, conocidas como BBs, que se disparan desde las réplicas de armas. El objetivo principal es alcanzar a los oponentes con estas BBs para "eliminarlos" o cumplir objetivos específicos dentro del escenario del juego. Las BBs pueden ser de diferentes pesos y calidades, y su elección puede influir en la precisión y el rendimiento de la réplica.</p>
+    <p>La recarga en airsoft implica rellenar los cargadores de las réplicas con estas BBs. Los jugadores deben cargar manualmente sus cargadores, ya sea utilizando un tubo cargador o un dispositivo de carga rápida. Esta acción es más que una simple tarea; es una habilidad táctica crucial en el juego. Recargar requiere estrategia y buen timing, ya que hacerlo en un momento inapropiado o en una posición expuesta puede dejar al jugador vulnerable a ser marcado por los oponentes.</p>
+    <p>Por lo tanto, saber cuándo y dónde recargar forma parte integral de la táctica y la estrategia en el airsoft, añadiendo un elemento de realismo y desafío que mejora la experiencia del juego.</p>'),
     ('Accesorios',
     '/imagenes/categorias/accesorios.jpg',
 	'<p>Los accesorios son elementos adicionales que se pueden añadir a las réplicas de armas para mejorar su funcionalidad, eficiencia, comodidad y realismo. Estos accesorios no solo sirven para mejorar el rendimiento en el campo de batalla, sino también para aumentar la inmersión en el juego y hacer que la experiencia más agradable y personalizada.</p>'),
     ('Equipamiento',
     '/imagenes/categorias/equipamiento.jpg',
-    'El equipamiento en Airsoft es fundamental para asegurar la seguridad y la efectividad durante el juego. Este incluye réplicas de armas como rifles, pistolas, 
-    escopetas y francotiradores, que disparan bolas de plástico o biodegradables. La protección personal es crucial, destacando el uso de máscaras y gafas para 
-    proteger los ojos y la cara, cascos para la cabeza, chalecos tácticos que ofrecen protección y espacio para llevar accesorios, y guantes para proteger las manos
-    y mejorar el agarre. La vestimenta también es importante; se utilizan uniformes, a menudo de camuflaje, para integrarse con el entorno y botas tácticas para 
-    proteger los pies en terrenos irregulares. Los accesorios para armas como mirillas, visores, silenciadores, linternas y láseres mejoran la funcionalidad y 
-    precisión. La comunicación entre jugadores se facilita mediante radios y auriculares, y la hidratación se mantiene con mochilas de hidratación o cantimploras, 
-    especialmente vital en juegos largos o en climas cálidos. Todo este equipamiento no solo enriquece la experiencia de juego haciéndola más inmersiva y 
-    estratégica, sino que también es esencial para la protección de los jugadores.'),
+    '<p>El equipamiento en Airsoft es fundamental para asegurar la seguridad y la efectividad durante el juego. Este incluye réplicas de armas como rifles, pistolas, escopetas y francotiradores, que disparan bolas de plástico o biodegradables. La protección personal es crucial, destacando el uso de máscaras y gafas para proteger los ojos y la cara, cascos para la cabeza, chalecos tácticos que ofrecen protección y espacio para llevar accesorios, y guantes para proteger las manos y mejorar el agarre. La vestimenta también es importante; se utilizan uniformes, a menudo de camuflaje, para integrarse con el entorno y botas tácticas para proteger los pies en terrenos irregulares.</p>
+    <p>Los accesorios para armas como mirillas, visores, silenciadores, linternas y láseres mejoran la funcionalidad y precisión. La comunicación entre jugadores se facilita mediante radios y auriculares, y la hidratación se mantiene con mochilas de hidratación o cantimploras, especialmente vital en juegos largos o en climas cálidos. Todo este equipamiento no solo enriquece la experiencia de juego haciéndola más inmersiva y estratégica, sino que también es esencial para la protección de los jugadores.</p>'),
     ('Internos',
     '/imagenes/categorias/internos.jpg',
-    'Los "elementos internos" se refieren a las partes y componentes que están dentro de la réplica de arma y que son esenciales para su funcionamiento. Estos 
-    incluyen varios sistemas y piezas que influyen en el rendimiento del arma, como la precisión, la potencia y la fiabilidad.');
+    '<p>Los "elementos internos" se refieren a las partes y componentes que están dentro de la réplica de arma y que son esenciales para su funcionamiento. Estos incluyen varios sistemas y piezas que influyen en el rendimiento del arma, como la precisión, la potencia y la fiabilidad.</p>');
 
 INSERT INTO fabricantes(nombre, pais, pagina_web, imagen_url, descripcion) VALUES
     ('Ares Amoeba', 'China', 'https://www.amoeba-airsoft.com/', 'ares-amoeba.jpg', 
@@ -300,7 +284,7 @@ INSERT INTO fabricantes(nombre, pais, pagina_web, imagen_url, descripcion) VALUE
     <p>En resumen, Ares Amoeba es una marca de réplicas de airsoft con una sólida reputación por su innovación, calidad y diseño ergonómico. Si buscas una réplica de airsoft que ofrezca alto rendimiento y personalización, Ares Amoeba es una excelente opción a considerar.</p>
     <p>En nuestra tienda online Nombre Tienda tienes a tu disposición el catálogo completo de Ares Amoeba</p>'),
     ('BO Manufacture', 'Francia', 'https://bomanufacture.com/', 'bo-manufacture.jpg',
-    '<p>¿Quién es BO Manufacture? Esta es una empresa europea nacida y afincada en Francia. Desde sus inicios hace más de 20 años se especializaron, sobre todo, en réplicas de armas famosas de airsoft.</p>
+    '<p>BO Manufacture es una empresa nacida y afincada en Francia. Desde sus inicios hace más de 20 años se especializaron, sobre todo, en réplicas de armas famosas de airsoft.</p>
     <p>No obstante, y dado el éxito de la compañía, fueron ampliando su mercado con el diseño de otros productos para airsoft y para outdoor. Pronto, diversos accesorios, munición, cargadores, carabinas e incluso ampliaciones, complementos y partes separadas fueron apareciendo en su línea de producción para dar al experto y aficionado al tiro deportivo una experiencia única y de enorme calidad.</p>
     <p>Esta marca no ha dejado de crecer con el paso del tiempo. Además de ser una gran diseñadora, y más allá de comercializar sus productos en todo el mundo, también ha creado otras líneas que, probablemente, te suenen bastante. Junto a BO Manufacture, se unen los nombres de BO Dynamics y Black Ops, con lo que cubren todo el mercado de necesidades de los aficionados y los expertos y profesionales del airsoft.</p>'),
     ('DBOYS', 'N/A', 'https://dboysguns.com/', 'dboys.jpg',
@@ -345,12 +329,20 @@ INSERT INTO fabricantes(nombre, pais, pagina_web, imagen_url, descripcion) VALUE
     <p>En resumen, Tokyo Marui es una marca de réplicas de armas de airsoft de alta calidad y precisión que utiliza tecnología avanzada y materiales de alta calidad en la fabricación de sus productos. La marca se compromete con la seguridad y la responsabilidad social, lo que la convierte en una opción popular para los jugadores de airsoft de todo el mundo.</p>');
 
 INSERT INTO subcategorias(identidad_categoria, nombre, imagen_url, descripcion) VALUES
-    (1, 'fusiles', '/imagenes/subcategorias/fusiles.jpg', 'Los fusiles de airsoft son la elección ideal para todo tipo de partidas de airsoft, ya que son las armas más versátiles, convirtiéndose
-    en una de las armas más utilizadas por los jugadores de airsoft'),
-    (1, 'subfusiles', '/imagenes/subcategorias/subfusiles.jpg', 'Los subfusiles de airsoft son armas muy utilizadas por los jugadores de airsoft que buscan juegos rápidos a cortas distancias, estos utilizan cargadores mas estrechos que los fusiles, convirtiéndolas en replicas exactas de los subfusiles reales, los cuales están diseñados para utilizarse con munición de pistola. El subfusil de airsoft es la elección perfecta para los amantes del CQB o partidas de corto alcance. A pesar de que estas armas también pueden llegar a distancias mas largas pudiendo casi igualar a los fusiles, generalmente están diseñadas con cañones mas cortos para facilitar su movilidad y convertirlas en armas mas rápidas.'),
-    (1, 'pistolas', '/imagenes/subcategorias/pistolas.jpg', 'Si quieres iniciarte en este hobby o renovar tu equipamiento por muy poco dinero, una pistola airsoft es el producto ideal para empezar con buen pie o salir victorioso de todos tus enfrentamientos a corta distancia.'),
-    (1, 'escopetas', '/imagenes/subcategorias/escopetas.jpg', 'Las escopetas Airsoft son una de las réplicas Airsoft más usadas por los jugadores a nivel mundial después de los rifles y las pistolas eléctricas. Estas escopetas de bolas son ideales para la simulación militar de un combate ordinario y también para aquellos que son aficionados a las actividades de enfrentamiento. Por lo general, son empleadas como una herramienta de defensa en contra del enemigo que está atacando durante la duración del juego.Estas escopetas de Airsoft son un tipo de arma por lo general largas (también existen los cañones cortos) y utilizadas como arma principal del juego por su jugador. Es un arma con mayor alcance de todas las que se pueden utilizar y cuenta con mayor atracción de manera visual para muchos de los jugadores. Este tipo de escopeta para Airsoft es de las preferidas por aquellos jugadores que tienen el papel de fusileros. Esto se debe a su gran parecido con las armas reales y por el gran tamaño que pueden tener. Puedes conseguir una gran cantidad de escopetas de bolas que son réplicas de las reales y puede ser usadas por jugadores expertos del Airsoft y también por los novatos en el área, así que no te preocupes y disfruta de tu escopeta de bolas.'),
-    (1, 'francotiradores', '/imagenes/subcategorias/francotiradores.jpg', 'Los francotiradores Airsoft juegan un papel muy importante dentro de este juego. Son jugadores que tienen que contar con mucha paciencia, inteligencia y a su vez una puntería increíble. Si tienes estas características principales, quiere decir que puedes ser excelente con los rifles para francotiradores en este juego que ha revolucionado al mundo entero desde su creación en Japón. La función principal de los francotiradores de Airsoft es ofrecerle protección a su equipo. Una tarea que se hace por medio de la observación de inteligencia y eliminando a los jugadores del equipo contrario con disparos realizados a larga distancia con diversas armas. Su objetivo es abatir a determinados jugadores del equipo contrario que pueden ser una amenaza para sus compañeros. Al realizar este tipo de disparos, los francotiradores logran que el equipo contrario quede con bajas y con movimientos limitados, por lo que consiguen una mejor penetración en terreno enemigo.'),
+    (1, 'fusiles', '/imagenes/subcategorias/fusiles.jpg', 
+    '<p>Los fusiles de airsoft son la elección ideal para todo tipo de partidas de airsoft, ya que son las armas más versátiles, convirtiéndose en una de las armas más utilizadas por los jugadores de airsoft</p>'),
+    (1, 'subfusiles', '/imagenes/subcategorias/subfusiles.jpg', 
+    '<p>Los subfusiles de airsoft son armas muy utilizadas por los jugadores de airsoft que buscan juegos rápidos a cortas distancias, estos utilizan cargadores mas estrechos que los fusiles, convirtiéndolas en replicas exactas de los subfusiles reales, los cuales están diseñados para utilizarse con munición de pistola.</p>
+    <p>El subfusil de airsoft es la elección perfecta para los amantes del CQB o partidas de corto alcance. A pesar de que estas armas también pueden llegar a distancias mas largas pudiendo casi igualar a los fusiles, generalmente están diseñadas con cañones mas cortos para facilitar su movilidad y convertirlas en armas mas rápidas.</p>'),
+    (1, 'pistolas', '/imagenes/subcategorias/pistolas.jpg', 
+    '<p>Si quieres iniciarte en este hobby o renovar tu equipamiento por muy poco dinero, una pistola airsoft es el producto ideal para empezar con buen pie o salir victorioso de todos tus enfrentamientos a corta distancia.</p>'),
+    (1, 'escopetas', '/imagenes/subcategorias/escopetas.jpg', 
+    '<p>Las escopetas Airsoft son una de las réplicas Airsoft más usadas por los jugadores a nivel mundial después de los rifles y las pistolas eléctricas. Estas escopetas de bolas son ideales para la simulación militar de un combate ordinario y también para aquellos que son aficionados a las actividades de enfrentamiento.</p> 
+    <p>Por lo general, son empleadas como una herramienta de defensa en contra del enemigo que está atacando durante la duración del juego. Estas escopetas de Airsoft son un tipo de arma por lo general largas (también existen los cañones cortos) y utilizadas como arma principal del juego por su jugador. Es un arma con mayor alcance de todas las que se pueden utilizar y cuenta con mayor atracción de manera visual para muchos de los jugadores.</p>
+    <p>Este tipo de escopeta para Airsoft es de las preferidas por aquellos jugadores que tienen el papel de fusileros. Esto se debe a su gran parecido con las armas reales y por el gran tamaño que pueden tener. Puedes conseguir una gran cantidad de escopetas de bolas que son réplicas de las reales y puede ser usadas por jugadores expertos del Airsoft y también por los novatos en el área, así que no te preocupes y disfruta de tu escopeta de bolas.</p>'),
+    (1, 'francotiradores', '/imagenes/subcategorias/francotiradores.jpg',
+    '<p>Los francotiradores Airsoft juegan un papel muy importante dentro de este juego. Son jugadores que tienen que contar con mucha paciencia, inteligencia y a su vez una puntería increíble. Si tienes estas características principales, quiere decir que puedes ser excelente con los rifles para francotiradores en este juego que ha revolucionado al mundo entero desde su creación en Japón.</p>
+    <p>La función principal de los francotiradores de Airsoft es ofrecerle protección a su equipo. Una tarea que se hace por medio de la observación de inteligencia y eliminando a los jugadores del equipo contrario con disparos realizados a larga distancia con diversas armas. Su objetivo es abatir a determinados jugadores del equipo contrario que pueden ser una amenaza para sus compañeros. Al realizar este tipo de disparos, los francotiradores logran que el equipo contrario quede con bajas y con movimientos limitados, por lo que consiguen una mejor penetración en terreno enemigo.'),
     (2, 'bolas de airsoft', '/imagenes/subcategorias/bolas-bbs.jpg', 'Los balines de Airsoft (conocidos como BBs) son proyectiles esféricos utilizados por las armas de airsoft. Por lo general, están hechos de plástico, suelen medir alrededor de 6 mm (0,24 pulgadas) de diámetro (aunque algunos modelos usan 8 mm) y pesan entre 0,20 y 0,40 g (3,1 a 6,2 g), siendo los pesos más comunes 0,20 gy 0,25 g. , mientras que las bolas de 0,28 g, 0,30 g, 0,32 g y 0,40 g también son habituales. Aunque los usuarios de airsoft los conocen con frecuencia como "BBs", estos BBs no son los mismos que los proyectiles metálicos de 4,5 mm que disparan las pistolas de BB ni los perdigones de 4,6 mm (0,180 pulgadas) de los que se originó el término "BB".'),
     (2, 'baterías y cargadores de batería', '/imagenes/subcategorias/baterias.jpg', 'En el airsoft, las baterías son utilizadas principalmente para alimentar las réplicas de armas eléctricas, conocidas como AEGs (Airsoft Electric Guns).'),
     (2, 'gas, co2 y mantenimiento', '/imagenes/subcategorias/gas-co2-y-mantenimiento.jpg', 'El gas y el CO2 son dos tipos de propelentes utilizados en las armas de airsoft para proporcionar la energía necesaria para disparar las BBs. Cada uno tiene características específicas y se utiliza en diferentes tipos de réplicas de armas. El lubricante ayuda a reducir la fricción entre las partes móviles del arma, como los engranajes en una AEG (Airsoft Electric Gun) o las partes móviles del mecanismo de blowback en armas de gas. Esto asegura un funcionamiento más suave y eficiente, lo que es crucial para la durabilidad del arma. Previene el Desgaste: Al disminuir la fricción, el lubricante también reduce el desgaste general de las partes móviles del arma. Esto es especialmente importante en componentes como pistones, cilindros y válvulas.'),
@@ -411,72 +403,74 @@ INSERT INTO productos (identidad_fabricante, identidad_subcategoria, nombre, des
     (5, 8, 'FRANCOTIRADOR DE CO2 M1903 A3 - G&G', 'descripcion', 'detalles', 584.90, 5, true, '2024-02-29');
     
 /*Contraseñas encriptadas mediante bcrypt a través de https://bcrypt-generator.com/*/
-INSERT INTO usuarios (username, password, nombre, apellido1, apellido2, active, role) VALUES
-    ('ricardo@nombregrupo.com', '$2a$12$RLDKdQu8djPEv7/7/rmF1ePUAg0sPUMCPaXh0uhG.w1QH95SB20JC', 'Ricardo', 'Deza', 'Roanes', true, 'ROLE_ADMIN');
+INSERT INTO usuarios (username, password, enabled, nombre, apellido1, apellido2, role) VALUES
+    ('ricardo@nombregrupo.com', '$2a$12$RLDKdQu8djPEv7/7/rmF1ePUAg0sPUMCPaXh0uhG.w1QH95SB20JC', true, 'Ricardo', 'Deza', 'Roanes', 'ROLE_ADMIN'),
+    ('enrique@nombregrupo.com', '$2a$12$I4A.WrC/YPPN2d4Coy6LH.AbcEX4ANRGNWkW1KBtDIiNDDNTh6BS.', true, 'Enrique', 'Várgas', null, 'ROLE_ADMIN');
 
-INSERT INTO usuarios (username, password, nombre, apellido1, apellido2, active) VALUES
-    ('j-druimor@example.com', 'j-druimor', 'Juan Diego', 'Ruiz', 'Moreno', true),
-    ('sercal___@example.com', '$2a$12$5WX81WmyfDI/gISrlT8q/uINDkPXV3jCNXRVJ0ygDy8UuSWQj.qoO', 'Sergio', 'Calderón', null, true), /*Contraseña es sercal___*/
-    ('j-jmig___@example.com', '$2a$12$z9spIpwXEmVo8iIrKh3dSe9od7JhpMIGZ6TVikiArH/upOBMRT9Ji', 'Juan José', 'Míguez', null, true),
-    ('davgai___@example.com', '$2a$12$WMP5oUHfxqx98V6s7f16xue4AOe0zljFN7B/UTGvuqD.rJSlGHfF2', 'David', 'Gail', null, true),
-    ('rafdiaval@example.com', '$2a$12$vLklpTuA8V56pBvRwNEkFOENxMBb2rgpwIN5u8cXwqEw5jUwm65PG', 'Rafaela', 'Díaz', 'Valiente', true),
-    ('carlarldg@example.com', '$2a$12$/QleNIa5ileNPwHo9KxzOO1CqnI1HCWkYpo6bEPGhpcul4Gxf/MUC', 'Carlos', 'Larrañaga', 'Ladrón de Guevera', true), /*Contraseña es carlarldg*/
-    ('j-mmarper@example.com', '$2a$12$n0IVHU/KjKSkz0C2xfzGxua9UDVFrbjJmzMsUFZe4eShavuicKI5i', 'José Manuel', 'Martín', 'Pérez', true),
-    ('angd-amiq@example.com', '$2a$12$OeDV8u3Dc2EyV7XKG28XkOD26TVVWiiBDsQZ5k/.CJTf1qUBDwOxK', 'Ángel', 'de Andrés', 'Miquel', true),
-    ('j-lmanagu@example.com', '$2a$12$c9TQgQGv4jOy2HB84INvNuYWqGk9fcqGpUN6zzX6NEemqYNt0kM.m', 'José Luiz', 'Manzano', 'Agudo', true), /*Contraseña es j-lmanagu*/
-    ('cricersan@example.com', '$2a$12$fbN/q.pLHAJex2YlXqlNjOcEjczwDQmQK/mjXNgZdu9qS0FcpMN86', 'Cristina', 'Cerviá', 'Sancho', true),
-    ('a-pcalles@sqlmail.com', '$2a$12$/0CJEdO7n28wKoe144FYJ.fHQkZbh7/KCPpKajfHGdfA12wuU9MeG', 'Armando Pascual', 'Calvo', 'Lespier', true),
-    ('w-hpra___@sqlmail.com', '$2a$12$5BlMQj/Hq1Uyp649QdeEteXrzs67QrNv2F0OtKUW6VBp9jt4Q3GjS', 'William Henry', 'Pratt', null, true), /*Contraseña es w-hpra___*/
-    ('edugomman@sqlmail.com', '$2a$12$hZkuTPBSn96VGx1KNnZJbuPBdavsTc7nTdzeeUJauyMTY8ZGQzE9W', 'Eduardo', 'Gómez', 'Manzano', true),
-    ('flochim-m@sqlmail.com', '$2a$12$HWLqtlKcdB.7C8DDHtUiEum3Yby0S/Z9Aw3AvyZ/cLzSOO6DaCLKC', 'Florinda', 'Chico', 'Martín-Mora', false);
+/*Recordar que al definir la tabla usuarios dijos que por defecto el role es ROLE_USER*/
+INSERT INTO usuarios (username, password, enabled, nombre, apellido1, apellido2) VALUES
+    ('j-druimor@example.com', '$2a$12$.Fqr3K6qDvQ3Xci3SOhvPO8IqM83RD11JwiloYeJjcekPgT.T3oz6', true, 'Juan Diego', 'Ruiz', 'Moreno'), /*Contraseña es j-druimor*/
+    ('sercal___@example.com', '$2a$12$5WX81WmyfDI/gISrlT8q/uINDkPXV3jCNXRVJ0ygDy8UuSWQj.qoO', true, 'Sergio', 'Calderón', null), /*Contraseña es sercal___*/
+    ('j-jmig___@example.com', '$2a$12$z9spIpwXEmVo8iIrKh3dSe9od7JhpMIGZ6TVikiArH/upOBMRT9Ji', true, 'Juan José', 'Míguez', null),
+    ('davgai___@example.com', '$2a$12$WMP5oUHfxqx98V6s7f16xue4AOe0zljFN7B/UTGvuqD.rJSlGHfF2', true, 'David', 'Gail', null),
+    ('rafdiaval@example.com', '$2a$12$vLklpTuA8V56pBvRwNEkFOENxMBb2rgpwIN5u8cXwqEw5jUwm65PG', true, 'Rafaela', 'Díaz', 'Valiente'),
+    ('carlarldg@example.com', '$2a$12$/QleNIa5ileNPwHo9KxzOO1CqnI1HCWkYpo6bEPGhpcul4Gxf/MUC', true, 'Carlos', 'Larrañaga', 'Ladrón de Guevera'), /*Contraseña es carlarldg*/
+    ('j-mmarper@example.com', '$2a$12$n0IVHU/KjKSkz0C2xfzGxua9UDVFrbjJmzMsUFZe4eShavuicKI5i', true, 'José Manuel', 'Martín', 'Pérez'),
+    ('angd-amiq@example.com', '$2a$12$OeDV8u3Dc2EyV7XKG28XkOD26TVVWiiBDsQZ5k/.CJTf1qUBDwOxK', true, 'Ángel', 'de Andrés', 'Miquel'),
+    ('j-lmanagu@example.com', '$2a$12$c9TQgQGv4jOy2HB84INvNuYWqGk9fcqGpUN6zzX6NEemqYNt0kM.m', true, 'José Luiz', 'Manzano', 'Agudo'), /*Contraseña es j-lmanagu*/
+    ('cricersan@example.com', '$2a$12$fbN/q.pLHAJex2YlXqlNjOcEjczwDQmQK/mjXNgZdu9qS0FcpMN86', true, 'Cristina', 'Cerviá', 'Sancho'),
+    ('a-pcalles@sqlmail.com', '$2a$12$/0CJEdO7n28wKoe144FYJ.fHQkZbh7/KCPpKajfHGdfA12wuU9MeG', true, 'Armando Pascual', 'Calvo', 'Lespier'),
+    ('w-hpra___@sqlmail.com', '$2a$12$5BlMQj/Hq1Uyp649QdeEteXrzs67QrNv2F0OtKUW6VBp9jt4Q3GjS', true, 'William Henry', 'Pratt', null), /*Contraseña es w-hpra___*/
+    ('edugomman@sqlmail.com', '$2a$12$hZkuTPBSn96VGx1KNnZJbuPBdavsTc7nTdzeeUJauyMTY8ZGQzE9W', true, 'Eduardo', 'Gómez', 'Manzano'),
+    ('flochim-m@sqlmail.com', '$2a$12$HWLqtlKcdB.7C8DDHtUiEum3Yby0S/Z9Aw3AvyZ/cLzSOO6DaCLKC', false, 'Florinda', 'Chico', 'Martín-Mora');
 
 INSERT INTO resenas (identidad_producto, identidad_usuario, valoracion, titulo, fecha_creacion, comentario) VALUES
-    (4, 2, 5, 'MUY BUENA CALIDAD', '2019-11-27',
+    (4, 3, 5, 'MUY BUENA CALIDAD', '2019-11-27',
     'Muy contento con la compra, la recomiendo al 100%'),
-    (8, 3, 5, 'Muy buena replica.', '2019-12-05',
+    (8, 4, 5, 'Muy buena replica.', '2019-12-05',
     'hola, el arma va muy muy bien, muy buena calidad precio y el envió a ido muy rápido, gracias'),
-    (8, 4, 4, 'Perfecta para empezar', '2020-02-16',
+    (8, 5, 4, 'Perfecta para empezar', '2020-02-16',
     'Es la primera réplica que adquiero, y la compre directamente en tienda, gracias a la recomendación de Javi. Estoy muy satisfecho.
     Puntos fuertes: Es robusta, los internos son bastante buenos para el precio. Viene ya con bateria, el grip y todo eso, no hace falta esa inversión plus. La puntería es buena y con los fps que tiene se asemeja a otras réplicas más caras. La culata tiene bastantes posiciones. En general, es una réplica sorprendentemente buena para empezar y sin hacer una inversión excesiva.
     Puntos débiles: Algunos cargadores (como los de ares) encajan bien pero con bastante holgura, lo que no afecta a la funcionalidad. La mira delantera sujeta los railes, por lo que quitarla es inviable, aun asi no molesta si se pone un red dot en el rail de puente. Viene sin enganche único en la parte de la culata, por lo que habría que adquirirlo si se lo quieres poner.
     Cabe decir que soy muy meticuloso, pero en general solo tengo buenas críticas para esta réplica aunque destaque esos puntos débiles. Por este precio, para iniciarse o si te interesa esta marca, la verdad es que es una pasada. La recomiendo sin duda.
     La atención por parte de Airsoft Yecla y su experiencia la verdad es que la hacen una tienda excelente donde comprar.'),
-    (4, 5, 5, 'Excelente', '2020-04-14',
+    (4, 6, 5, 'Excelente', '2020-04-14',
     'Exelente trato me la enviaron a Barcelona la réplica buen peso , se ve muy bien , y buena precisión por su precio exelente'),
-    (9, 5, 5, 'Recomendable', '2020-05-07',
+    (9, 6, 5, 'Recomendable', '2020-05-07',
     'Va perfecta, y tira muy muy bien esta de lujo para su precio!! ,Donde vas a encontrar una réplica de metal por ese precio? En ningún sitio la recomiendo'),
-    (9, 5, 5, 'M4', '2020-05-12',
+    (9, 6, 5, 'M4', '2020-05-12',
     'Va muy bien ,yo tengo esa misma que pedí hace poquito la verda estoy muy contento la recomiendo.'),
-    (2, 6, 5, 'Perfecta!!!!', '2020-05-29',
+    (2, 7, 5, 'Perfecta!!!!', '2020-05-29',
     'Buena calidad, terminaciones y potencia. Servicio de venta excelente, muy recomendable de 6 estrellas.'),
-    (2, 6, 5, 'Perfecta!!!!', '2020-05-29',
+    (2, 7, 5, 'Perfecta!!!!', '2020-05-29',
     'Buena calidad, terminaciones y potencia. Servicio de venta excelente, muy recomendable de 6 estrellas.'),
-    (1, 7, 5, 'BRUTAL', '2020-08-03',
+    (1, 8, 5, 'BRUTAL', '2020-08-03',
     'Relación precio calidad BRUTAL. Que me corrija el moderador, pero creo que es la única réplica que no es escala 1:1 , creo que es unos centímetros más pequeña.
     Es la pistola de muelle más potente que he probado . Alcanza casi el doble que otras pistolas de muelle y casi tres veces más que los por ejemplo la D90 eléctrica. 
     Tiene piezas desmontables para hacerla más larga. El ruido que hace el muelle al disparar , ... pues se nota que es barata , pero más potente y precisa que 
     muchas otras. Muy recomendable , pero cuidado con dejársela a los niños . Si te dan con esta en la espalda o en una pierna con ropa , ¡ pica ¡ , . y rebotan las bolitas con fuerza'),
-    (6, 8, 5, 'Perfecto', '2020-08-10',
+    (6, 9, 5, 'Perfecto', '2020-08-10',
     'Aún no he disparado con ella porque me acaba de llegar, pero he probado otras y es una maravilla sobre todo en entornos cqb. Además me ha sorprendido que el arma viene marcada con su número de armero y los papeles correspondientes. 100%recomendable la réplica y la tienda.'),
-    (5, 9, 5, 'ESPECTACULAR!', '2020-08-26',
+    (5, 10, 5, 'ESPECTACULAR!', '2020-08-26',
     'Va de lujo, super manejable, perfecta para campos pequeños y con gran alcance. Una gran compra!'),
-    (1, 10, 5, 'Brutal', '2020-09-24',
+    (1, 11, 5, 'Brutal', '2020-09-24',
     'Muy buena.'),
-    (1, 11, 5, 'Recomendable 100%', '2020-10-30',
+    (1, 14, 5, 'Recomendable 100%', '2020-10-30',
     'Buena calidad/precio. Envió rápido.'),
-    (9, 12, 4, 'Bien pero mal', '2021-03-21',
+    (9, 13, 4, 'Bien pero mal', '2021-03-21',
     'el arma esta muy bien y la recomiendo mucho pero su mira por defecto esta muy mal alineada y para saber donde das tienes que corregir el disparo a ojo'),
-    (10, 11, 5, 'Fnx 45', '2021-06-15',
+    (10, 12, 5, 'Fnx 45', '2021-06-15',
     'Espectacular el tiro la recomiendo mucho para principiantes y para expertos'),
-    (19, 13, 5, 'Francotirador', '2021-10-19',
+    (19, 14, 5, 'Francotirador', '2021-10-19',
     'Muy buena calidad'),
-    (21, 14, 5, 'La mejor de las baratas', '2023-06-15',
+    (21, 15, 5, 'La mejor de las baratas', '2023-06-15',
     'Compré tres distintas para mis sobrinos y esta es la más precisa de las tres. Para el precio que tiene me parece muy útil.');
 
 START TRANSACTION;
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (2, 'Juan Diego', 'Ruiz', 'direccion JR', 'España', 'Sevilla', '+346XXXXXXXX', 'NACEX', '2024-04-01');
+    (3, 'Juan Diego', 'Ruiz', 'direccion JR', 'España', 'Bormujos', '+346XXXXXXXX', 'NACEX', '2024-04-01');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 3, 1),
@@ -484,7 +478,7 @@ INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) V
     (@identidad_pedido, 15, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (2, 'Juan Diego', 'Ruiz', 'direccion JR', 'España', 'Sevilla', '+346XXXXXXXX', 'NACEX', '2024-04-01');
+    (3, 'Juan Diego', 'Ruiz', 'direccion JR', 'España', 'Bormujos', '+346XXXXXXXX', 'NACEX', '2024-04-01');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 3, 1),
@@ -492,57 +486,57 @@ INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) V
     (@identidad_pedido, 15, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (4, 'Juan José', 'Míguez', 'direccion JM', 'Portugal', 'Lisboa', '+346XXXXXXXX', 'Recogida_en_tienda', '2024-04-02');
+    (5, 'Juan José', 'Míguez', 'direccion JM', 'Portugal', 'Lisboa', '+346XXXXXXXX', 'Recogida_en_tienda', '2024-04-02');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 25, 1);
     
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (4, 'Juan José', 'Míguez', 'direccion JM', 'Portugal', 'Lisboa', '+346XXXXXXXX', 'CTT_Express', '2024-04-03');
+    (5, 'Juan José', 'Míguez', 'direccion JM', 'Portugal', 'Lisboa', '+346XXXXXXXX', 'CTT_Express', '2024-04-03');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 26, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (2, 'Germán', 'Areta', 'direccion GA', 'España', 'Madrid', '+346XXXXXXXX', 'CTT_Express', '2024-04-04');
+    (3, 'Germán', 'Areta', 'direccion GA', 'España', 'Madrid', '+346XXXXXXXX', 'CTT_Express', '2024-04-04');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 5, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (9, 'Miguel', 'Aguirrezabala', 'direccion MA', 'España', 'Azpeitia', '+346XXXXXXXX', 'CTT_Express', '2024-04-05');
+    (10, 'Miguel', 'Aguirrezabala', 'direccion MA', 'España', 'Azpeitia', '+346XXXXXXXX', 'CTT_Express', '2024-04-05');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 6, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (6, 'Rafaela', 'Díaz', 'direccion RD', 'España', 'Marbella', '+346XXXXXXXX', 'CTT_Express', '2024-04-07');
+    (7, 'Rafaela', 'Díaz', 'direccion RD', 'España', 'Marbella', '+346XXXXXXXX', 'CTT_Express', '2024-04-07');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 6, 1),
     (@identidad_pedido, 19, 3);
     
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (7, 'Ramiro', 'Pacheco', 'direccion RP', 'España', 'Madrid', '+346XXXXXXXX', 'CTT_Express', '2024-04-07');
+    (8, 'Ramiro', 'Pacheco', 'direccion RP', 'España', 'Madrid', '+346XXXXXXXX', 'CTT_Express', '2024-04-07');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 15, 2),
     (@identidad_pedido, 16, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (8, 'José Manuel', 'Martín', 'direccion JM', 'España', 'Casavieja', '+346XXXXXXXX', 'CTT_Express', '2024-04-09');
+    (9, 'José Manuel', 'Martín', 'direccion JM', 'España', 'Casavieja', '+346XXXXXXXX', 'CTT_Express', '2024-04-09');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 9, 3);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (2, 'Juan Diego', 'Ruiz', 'direccion JR', 'España', 'Sevilla', '+346XXXXXXXX', 'CTT_Express', '2024-04-15');
+    (3, 'Juan Diego', 'Ruiz', 'direccion JR', 'España', 'Bormujos', '+346XXXXXXXX', 'CTT_Express', '2024-04-15');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 15, 2);
 
 INSERT INTO pedidos (identidad_usuario, nombre, apellidos, direccion, pais, ciudad, numero_telefono_movil, metodo_envio, fecha_pedido) VALUES
-    (6, 'Nuria', 'Berenguer', 'direccion NB', 'España', 'Gerona', '+346XXXXXXXX', 'NACEX', '2024-04-16');
+    (7, 'Nuria', 'Berenguer', 'direccion NB', 'España', 'Gerona', '+346XXXXXXXX', 'NACEX', '2024-04-16');
 SET @identidad_pedido = LAST_INSERT_ID();
 INSERT INTO linea_facturacion (identidad_pedido, identidad_producto, cantidad) VALUES 
 	(@identidad_pedido, 12, 1);

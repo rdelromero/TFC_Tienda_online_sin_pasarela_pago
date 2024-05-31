@@ -54,6 +54,7 @@ public class Fabricante implements Serializable{
     @Column(name = "pagina_web", length = 50)
     private String paginaWeb;
     
+    @JsonIgnore
     @Column(nullable = false)
     private String descripcion;
 

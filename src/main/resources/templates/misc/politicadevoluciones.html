@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Nuevo Producto')"></head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Devoluciones - Ecommerce de Airsoft</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .returns-policy {
+            background: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .returns-policy h3 {
+            color: #333;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 10px;
+        }
+        .returns-policy p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+    <div class="container">
+        <h1>Política de Devoluciones</h1>
+
+        <div class="returns-policy">
+            <h2>Política General de Devoluciones</h2>
+            <p>En nuestra tienda de ecommerce de airsoft, nos comprometemos a ofrecer productos de alta calidad. Si no estás completamente satisfecho con tu compra, estamos aquí para ayudarte con nuestra política de devoluciones.</p>
+        </div>
+
+        <div class="returns-policy">
+            <h2>Condiciones para Devoluciones</h2>
+            <h3>Plazo de Devolución</h3>
+            <p>Tienes un plazo de 30 días naturales desde la fecha de recepción del producto para solicitar una devolución.</p>
+            <h3>Estado del Producto</h3>
+            <p>Para ser elegible para una devolución, el producto debe estar sin usar y en las mismas condiciones en que lo recibiste. También debe estar en el embalaje original.</p>
+            <h3>Recibo o Comprobante</h3>
+            <p>Para completar tu devolución, requerimos un recibo o comprobante de compra.</p>
+        </div>
+
+        <div class="returns-policy">
+            <h2>Proceso de Devolución</h2>
+            <h3>Contacto</h3>
+            <p>Para iniciar una devolución, por favor contacta a nuestro equipo de atención al cliente a través de <a href="mailto:tuemail@ecommerceairsoft.com">tuemail@ecommerceairsoft.com</a> o llamándonos al número de atención al cliente (+34 123 456 789). Te proporcionaremos las instrucciones necesarias para el envío de tu devolución.</p>
+            <h3>Envío del Producto</h3>
+            <p>Debes enviar el producto a la siguiente dirección: [Dirección de Devoluciones, Calle, Ciudad, País, Código Postal]. Los gastos de envío para la devolución serán a cargo del cliente, salvo en caso de productos defectuosos o errores en el envío.</p>
+        </div>
+
+        <div class="returns-policy">
+            <h2>Reembolsos</h2>
+            <h3>Inspección y Aprobación</h3>
+            <p>Una vez que recibamos e inspeccionemos el producto devuelto, te notificaremos sobre la aprobación o rechazo de tu reembolso.</p>
+            <h3>Procesamiento del Reembolso</h3>
+            <p>Si se aprueba, se procesará tu reembolso y se aplicará un crédito automáticamente a tu tarjeta de crédito o método original de pago, en un plazo determinado de días.</p>
+        </div>
+
+        <div class="returns-policy">
+            <h2>Cambios</h2>
+            <p>Solo reemplazamos artículos si están defectuosos o dañados. Si necesitas cambiarlo por el mismo artículo, contáctanos a través de <a href="mailto:tuemail@ecommerceairsoft.com">tuemail@ecommerceairsoft.com</a> y te proporcionaremos las instrucciones necesarias.</p>
+        </div>
+
+        <div class="returns-policy">
+            <h2>Excepciones</h2>
+            <p>Algunos artículos están exentos de ser devueltos, como productos perecederos, tarjetas de regalo y productos de software descargables.</p>
+        </div>
+
+        <div class="returns-policy">
+            <h2>Contacto</h2>
+            <p>Si tienes alguna pregunta adicional sobre nuestra política de devoluciones, no dudes en contactarnos a través de nuestro formulario de contacto en la web, por correo electrónico a <a href="mailto:tuemail@ecommerceairsoft.com">tuemail@ecommerceairsoft.com</a>, o llamándonos al número de atención al cliente (+34 123 456 789).</p>
+        </div>
+    </div>
+        <a th:href="@{/}"><button >volver al inicio</button></a>
+   <br>
+        <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

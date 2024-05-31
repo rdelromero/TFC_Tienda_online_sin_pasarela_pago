@@ -1,0 +1,29 @@
+<form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+  <table>
+      <tr>
+          <td><label for="username">Username:</label></td>
+          <td><input id="username" formControlName="username"></td>
+      </tr>
+      <tr>
+          <td><label for="password">Password:</label></td>
+          <td><input id="password" type="password" formControlName="password"></td>
+      </tr>
+      <tr>
+          <td><label for="nombre">Nombre:</label></td>
+          <td><input id="nombre" formControlName="nombre"></td>
+      </tr>
+      <tr>
+          <td><label for="apellido1">Apellido 1:</label></td>
+          <td><input id="apellido1" formControlName="apellido1"></td>
+      </tr>
+      <tr>
+          <td><label for="apellido2">Apellido 2:</label></td>
+          <td><input id="apellido2" formControlName="apellido2"></td>
+      </tr>
+      <tr>
+          <td colspan="2">
+              <button type="submit" [disabled]="!registroForm.valid">Crear Usuario</button>
+          </td>
+      </tr>
+  </table>
+</form>

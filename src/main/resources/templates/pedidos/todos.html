@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout/titulo :: head (title='Pedidos todos')"></head>
+<head th:replace="layout/titulo :: head (title='Pedidos por estado')"></head>
 <head>
     <link rel="stylesheet" type="text/css" href="/css/lista.css">
+    <script type="text/javascript" src="/js/pedidos_lista.js"></script>
 </head>
 <body>
-    <div th:replace="layout/encabezado :: header"></div>
-
-    <main>
-      <h2>Pedidos</h2>
+<div th:replace="layout/encabezado :: header"></div>
+   <main>
+    
+      <div style="display:flex;">
+         <div style="width:10%"><h2>Pedidos</h2>
+         </div>
+         
+         <div style="position: relative; top: 25px;">
+            <label for="estadoSelect">Filtrar por estado:</label>
+            <select id="estadoSelect" onchange="filtrarPorEstado()">
+                <option value="">Todos</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="enviado">Enviado</option>
+                <option value="entregado">Entregado</option>
+                <option value="cancelado">Cancelado</option>
+            </select>
+         </div>
+      </div>
 
         <table>
             <thead>
@@ -53,24 +68,23 @@
         </table>
         
         <!-- Controles de paginación -->
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item" th:classappend="${paginaPedidosHtml.hasPrevious() ? '' : 'disabled'}">
-                <a class="page-link" th:href="@{/pedidos(page=${paginaPedidosHtml.number - 1}, size=${paginaPedidosHtml.size})}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li th:each="i : ${#numbers.sequence(0, paginaPedidosHtml.totalPages - 1)}" class="page-item" th:classappend="${i == paginaPedidosHtml.number ? 'active' : ''}">
-                <a class="page-link" th:href="@{/pedidos(page=${i}, size=${paginaPedidosHtml.size})}" th:text="${i + 1}">1</a>
-            </li>
-            <li class="page-item" th:classappend="${paginaPedidosHtml.hasNext() ? '' : 'disabled'}">
-                <a class="page-link" th:href="@{/pedidos(page=${paginaPedidosHtml.number + 1}, size=${paginaPedidosHtml.size})}" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-        
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${paginaPedidosHtml.hasPrevious() ? '' : 'disabled'}">
+                    <a class="page-link" th:href="@{/pedidos(page=${paginaPedidosHtml.number - 1}, size=${paginaPedidosHtml.size})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li th:each="i : ${#numbers.sequence(0, paginaPedidosHtml.totalPages - 1)}" class="page-item" th:classappend="${i == paginaPedidosHtml.number ? 'active' : ''}">
+                    <a class="page-link" th:href="@{/pedidos(page=${i}, size=${paginaPedidosHtml.size})}" th:text="${i + 1}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${paginaPedidosHtml.hasNext() ? '' : 'disabled'}">
+                    <a class="page-link" th:href="@{/pedidos(page=${paginaPedidosHtml.number + 1}, size=${paginaPedidosHtml.size})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </main>
     <div th:replace="layout/pie_de_pagina :: footer"></div>
 </body>

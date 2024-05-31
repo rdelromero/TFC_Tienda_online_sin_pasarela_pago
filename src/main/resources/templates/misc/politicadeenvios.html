@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Política de envíos')"></head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Envíos - Ecommerce de Airsoft</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .shipping-policy {
+            background: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .shipping-policy h3 {
+            color: #333;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 10px;
+        }
+        .shipping-policy p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+    <div class="container">
+        <h1>Política de Envíos</h1>
+
+        <div class="shipping-policy">
+            <h2>Información General</h2>
+            <p>Nos esforzamos por procesar y enviar todos los pedidos lo más rápido posible. Generalmente, los pedidos se procesan dentro de las 24-48 horas siguientes a la confirmación del pago, excluyendo fines de semana y días festivos.</p>
+        </div>
+
+        <div class="shipping-policy">
+            <h2>Envíos Nacionales</h2>
+            <h3>Tiempo de Entrega</h3>
+            <p>El tiempo estimado de entrega para los envíos nacionales es de 3-7 días hábiles, dependiendo de la ubicación y la disponibilidad del producto.</p>
+            <h3>Costos de Envío</h3>
+            <p>Los costos de envío se calculan en función del peso y tamaño del paquete, así como de la dirección de entrega. Puedes ver los costos exactos de envío durante el proceso de pago.</p>
+        </div>
+
+        <div class="shipping-policy">
+            <h2>Envíos Internacionales</h2>
+            <h3>Disponibilidad</h3>
+            <p>Realizamos envíos a varios países. Puedes consultar la lista de países disponibles durante el proceso de pago. Si tu país no está en la lista, por favor contáctanos para más información.</p>
+            <h3>Tiempo de Entrega</h3>
+            <p>El tiempo estimado de entrega para los envíos internacionales es de 7-21 días hábiles, dependiendo del destino y del método de envío seleccionado.</p>
+            <h3>Costos de Envío</h3>
+            <p>Los costos de envío internacional se calculan en función del peso y tamaño del paquete, así como del destino. Los costos exactos se mostrarán durante el proceso de pago.</p>
+            <h3>Aduanas y Aranceles</h3>
+            <p>Los pedidos internacionales pueden estar sujetos a impuestos, aranceles y tarifas de aduana, que son responsabilidad del cliente. Recomendamos consultar con la oficina de aduanas local para obtener más información.</p>
+        </div>
+
+        <div class="shipping-policy">
+            <h2>Seguimiento de Envíos</h2>
+            <p>Una vez que tu pedido haya sido enviado, recibirás un correo electrónico con el número de seguimiento y un enlace para seguir tu paquete en línea. Puedes usar este número para verificar el estado de tu envío en cualquier momento.</p>
+        </div>
+
+        <div class="shipping-policy">
+            <h2>Problemas con el Envío</h2>
+            <p>Si tienes algún problema con tu envío, como retrasos o paquetes perdidos, por favor contacta a nuestro equipo de atención al cliente. Estamos aquí para ayudarte a resolver cualquier inconveniente.</p>
+        </div>
+
+        <div class="shipping-policy">
+            <h2>Contacto</h2>
+            <p>Si tienes alguna pregunta adicional sobre nuestra política de envíos, no dudes en contactarnos a través de nuestro formulario de contacto en la web, por correo electrónico a <a href="mailto:tuemail@ecommerceairsoft.com">tuemail@ecommerceairsoft.com</a>, o llamándonos al número de atención al cliente (+34 123 456 789).</p>
+        </div>
+    </div>
+        <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

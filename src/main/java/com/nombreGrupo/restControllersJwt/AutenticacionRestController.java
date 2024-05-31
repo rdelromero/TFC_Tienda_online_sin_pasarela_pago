@@ -1,6 +1,7 @@
-package com.nombreGrupo.seguridad;
+package com.nombreGrupo.restControllersJwt;
 
 import com.nombreGrupo.modelo.dto.UsuarioDtoLogin;
+import com.nombreGrupo.seguridad.UsuarioAutenticacionService;
 
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.persistence.EntityNotFoundException;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class AutenticacionRestController {
@@ -32,3 +34,4 @@ public class AutenticacionRestController {
         }
     }
 }
+

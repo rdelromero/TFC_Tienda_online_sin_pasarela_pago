@@ -50,7 +50,7 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
     
     @Override
     public List<Usuario> encontrarPorActiveTrue() {
-        return usuarioRepository.findByActiveTrue();
+        return usuarioRepository.findByEnabledTrue();
     }
     
     @Override
@@ -87,7 +87,7 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
         Usuario usuario = new Usuario();
         usuarioDtoRegistro.setPassword(passwordEncoder.encode(usuarioDtoRegistro.getPassword()));
         modeloMapper.map(usuarioDtoRegistro, usuario);
-        usuario.setActive(false);
+        usuario.setEnabled(false);
         usuario.setRole(Usuario.Role.ROLE_USER);
 
         usuarioRepository.save(usuario);
@@ -107,7 +107,7 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
                 .orElseThrow(() -> new IllegalArgumentException("Token inválido"));
 
         Usuario usuario = verificacionUuid.getUsuario();
-        usuario.setActive(true);
+        usuario.setEnabled(true);
         usuarioRepository.save(usuario);
 
         return "Cuenta verificada exitosamente.";
@@ -120,7 +120,7 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
     	Usuario usuarioAntiguo = usuarioRepository.findById(idUsuario)
     	        .orElseThrow(() -> new EntityNotFoundException("No existe usuario de idUsuario "+idUsuario+":"));
     	
-    	if (usuarioAntiguo.getActive()==false) {
+    	if (usuarioAntiguo.isEnabled()==false) {
     		throw new IllegalStateException("La cuenta de usuario de idUsuario "+idUsuario+" no ha sido verificada, luego no puede actualizarse.");
     	}
     	
@@ -133,10 +133,11 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
 		usuarioAntiguo.setNombre(usuarioDtoRegistro.getNombre());
 		usuarioAntiguo.setApellido1(usuarioDtoRegistro.getApellido1());
 		usuarioAntiguo.setApellido2(usuarioDtoRegistro.getApellido2());
-		usuarioAntiguo.setPassword(usuarioDtoRegistro.getPassword());
+		usuarioAntiguo.setPassword(passwordEncoder.encode(usuarioDtoRegistro.getPassword()));
+		
     	if (!usuarioDtoRegistro.getUsername().equals(usuarioAntiguo.getUsername())) {
         	usuarioAntiguo.setUsername(usuarioDtoRegistro.getUsername());
-        	usuarioAntiguo.setActive(false);
+        	usuarioAntiguo.setEnabled(false);
         	
         	VerificacionUuid verificacionUuid = verificacionUuidRepository.findByUsuario_IdUsuario(idUsuario)
                     .orElseThrow(() -> new EntityNotFoundException("Verificación UUID no encontrada"));
@@ -163,7 +164,7 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new EntityNotFoundException("No existe usuario de idUsuario "+idUsuario+"."));
 
-        if (!usuario.getActive()) {
+        if (!usuario.isEnabled()) {
             VerificacionUuid verificacionUuid = verificacionUuidRepository.findByUsuario_IdUsuario(idUsuario)
                     .orElseThrow(() -> new EntityNotFoundException("Verificación UUID no encontrada"));
 
@@ -180,4 +181,22 @@ public class UsuarioServiceImplMy8 implements UsuarioService{
         }
     }
     
+    @Override
+    public Usuario crearAdmin(UsuarioDtoRegistro usuarioDto) {
+        if (usuarioRepository.findByUsername(usuarioDto.getUsername()).isPresent()) {
+            throw new DataIntegrityViolationException("Ya existe un usuario con la dirección de correo electrónico " + usuarioDto.getUsername() + ".");
+        }
+
+        if (usuarioDto.getPassword().length() < 8) {
+            throw new IllegalArgumentException("La contraseña debe tener al menos 8 caracteres.");
+        }
+
+        Usuario usuario = new Usuario();
+        usuarioDto.setPassword(passwordEncoder.encode(usuarioDto.getPassword()));
+        modeloMapper.map(usuarioDto, usuario);
+        usuario.setEnabled(true); // Activa la cuenta directamente
+        usuario.setRole(Usuario.Role.ROLE_ADMIN);
+
+        return usuarioRepository.save(usuario);
+    }
 }

@@ -22,7 +22,6 @@ import com.nombreGrupo.modelo.entities.Fabricante;
 
 import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.services.FabricanteService;
-import com.nombreGrupo.services.ProductoService;
 
 import jakarta.persistence.EntityNotFoundException;
 

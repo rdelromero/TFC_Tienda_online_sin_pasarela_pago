@@ -42,11 +42,11 @@ public class EmailUtil {
   public void enviarEmailConNuevoUuidParaVerificarEmail(String nombreDestinatario, String direccionEmail, String UUIDString) {
       SimpleMailMessage mensaje = new SimpleMailMessage();
       mensaje.setTo(direccionEmail);
-      mensaje.setSubject("[nombrePagina.com] Verificación de Cuenta");
+      mensaje.setSubject("[nombrePagina.com] Verificación de la nueva dirección de email");
 
       // Personalizar el mensaje para saludar al usuario por su nombre
       String text = String.format(
-              "Hola de nuevo %s,\n\nPara verificar tu cuenta, haz clic en el siguiente enlace: %s\n\nSaludos,\nEl Equipo",
+              "Hola de nuevo %s,\n\nPara verificar tu nueva dirección de email, haz clic en el siguiente enlace: %s\n\nSaludos,\nEl Equipo",
               nombreDestinatario, "http://localhost:8080/api/usuarios/verificar?uuid=" + UUIDString
       );
       mensaje.setText(text);

@@ -1,14 +1,10 @@
 package com.nombreGrupo.restControllers;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -79,8 +75,6 @@ public class PedidoRestController {
     	} catch (EntityNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensaje", "No existe un pedido de idPedido "+idPedido+"."));
         }
-    	
-
     }
     
     @PostMapping
@@ -126,7 +120,7 @@ public class PedidoRestController {
 	
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<?> getPedidosPorUsuario(@PathVariable int idUsuario) {
-        List<Pedido> pedidos = pedidoService.encontrarPorUsuarioIdUsuario(idUsuario);
+        List<Pedido> pedidos = pedidoService.encontrarPorUsuario_IdUsuario(idUsuario);
         if (pedidos.isEmpty()) {
         	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("mensaje", "El usuario de idUsuario "+idUsuario+" no tiene pedidos a su nombre."));
         }

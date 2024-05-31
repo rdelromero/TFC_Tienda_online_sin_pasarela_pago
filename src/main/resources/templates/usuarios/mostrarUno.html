@@ -22,6 +22,10 @@
                 <td th:text="${usuario.password}"></td>
             </tr>
             <tr>
+                <th>Enabled</th>
+                <td th:text="${usuario.enabled}"></td>
+            </tr>
+            <tr>
                 <th>Nombre</th>
                 <td th:text="${usuario.nombre}"></td>
             </tr>
@@ -32,10 +36,6 @@
             <tr>
                 <th>Segundo apellido</th>
                 <td th:text="${usuario.apellido2 != null ? usuario.apellido2 : '-'}"></td>
-            </tr>
-            <tr>
-                <th>Active</th>
-                <td th:text="${usuario.active}"></td>
             </tr>
             <tr>
                 <th>N.º pedidos</th>

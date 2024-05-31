@@ -6,7 +6,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import com.nombreGrupo.modelo.dto.UsuarioDtoRegistro;
 import com.nombreGrupo.modelo.entities.Usuario;
 import com.nombreGrupo.services.UsuarioService;
 
@@ -55,10 +58,23 @@ public class UsuarioController {
 	
     @GetMapping("/{id}/pedidos")
     public String getPedidosPorIdUsuario(@PathVariable("id") int idUsuario, Model model) {
+    	model.addAttribute("idUsuarioHtml", idUsuario);
     	model.addAttribute("pedidosPorIdUsuarioHtml", usuarioService.encontrarPedidosPorUsuario_IdUsuario(idUsuario));
         return "usuarios/pedidosPorIdUsuario";
     }
 	
+    @GetMapping("/crearadmin")
+    public String showCreateAdminForm(Model model) {
+        model.addAttribute("usuarioDto", new UsuarioDtoRegistro());
+        return "usuarios/crearadmin";
+    }
+
+    @PostMapping("/crearadmin")
+    public String createAdmin(@ModelAttribute("usuarioDto") UsuarioDtoRegistro usuarioDto) {
+        usuarioService.crearAdmin(usuarioDto);
+        return "redirect:/usuarios";  // Redirige a la lista de usuarios o donde sea necesario
+    }
+    
     //Se podrá borrar el usuario si NO tiene ni pedidos ni reseñas a su nombre
     @GetMapping("/borrar/{id}")
     public String getDestroy(@PathVariable("id") int idUsuario) {

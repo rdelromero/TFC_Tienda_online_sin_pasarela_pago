@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/titulo :: head (title='Nuevo Producto')"></head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legislación sobre Airsoft - Ecommerce de Airsoft</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .legislation-section {
+            background: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .legislation-section h3 {
+            color: #333;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 10px;
+        }
+        .legislation-section p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+    <div class="container">
+        <h1>Legislación sobre Airsoft</h1>
+
+        <div class="legislation-section">
+            <h2>Información General</h2>
+            <p>El airsoft es un deporte regulado por diversas leyes y normativas que varían según el país. A continuación, te ofrecemos una guía general sobre la legislación aplicable al airsoft en diferentes regiones. Recomendamos siempre verificar las leyes locales antes de adquirir y usar réplicas de airsoft.</p>
+        </div>
+
+        <div class="legislation-section">
+            <h2>Legislación en España</h2>
+            <h3>Clasificación</h3>
+            <p>En España, las réplicas de airsoft están clasificadas como armas de cuarta categoría. Esto significa que su uso y tenencia están sujetos a ciertas restricciones y requisitos legales.</p>
+            <h3>Registro y Permisos</h3>
+            <p>Los propietarios de réplicas de airsoft deben registrar sus armas en la intervención de armas de la Guardia Civil. Además, se debe obtener una tarjeta de armas de cuarta categoría.</p>
+            <h3>Lugares de Uso</h3>
+            <p>Las réplicas de airsoft solo pueden ser usadas en terrenos privados con el permiso adecuado o en campos de juego autorizados para la práctica del airsoft. Está prohibido llevar réplicas de airsoft en lugares públicos sin la debida autorización.</p>
+        </div>
+
+        <div class="legislation-section">
+            <h2>Legislación en Estados Unidos</h2>
+            <h3>Clasificación y Marcado</h3>
+            <p>En Estados Unidos, las réplicas de airsoft deben tener un marcado distintivo de color naranja en el cañón para diferenciarlas de las armas de fuego reales. Las leyes pueden variar según el estado y la ciudad.</p>
+            <h3>Edad Mínima</h3>
+            <p>La compra y posesión de réplicas de airsoft está generalmente restringida a mayores de 18 años, aunque algunos estados permiten la compra a menores con el consentimiento de los padres.</p>
+            <h3>Lugares de Uso</h3>
+            <p>El uso de réplicas de airsoft está restringido a propiedades privadas con permiso, campos de airsoft oficiales y eventos organizados. El transporte en público debe realizarse con las réplicas descargadas y en un estuche adecuado.</p>
+        </div>
+
+        <div class="legislation-section">
+            <h2>Legislación en otros países</h2>
+            <p>Las leyes sobre airsoft varían considerablemente de un país a otro. A continuación, se ofrece una visión general de las regulaciones en algunos países:</p>
+            <h3>Reino Unido</h3>
+            <p>En el Reino Unido, las réplicas de airsoft deben cumplir con la ley VCRA (Violent Crime Reduction Act). Esto incluye restricciones sobre la compra y venta de réplicas realistas (RIFs) y el uso de armas de imitación (IFs).</p>
+            <h3>Francia</h3>
+            <p>En Francia, las réplicas de airsoft están reguladas por el Código de Seguridad Interna. Los menores de 18 años no pueden comprar ni poseer réplicas de airsoft con una energía superior a 0.08 julios.</p>
+            <h3>Alemania</h3>
+            <p>En Alemania, las réplicas de airsoft con una energía superior a 0.5 julios se consideran armas de aire comprimido y están sujetas a la ley de armas. Los usuarios deben tener al menos 18 años para comprar y poseer estas réplicas.</p>
+        </div>
+
+        <div class="legislation-section">
+            <h2>Contacto para Más Información</h2>
+            <p>Si tienes alguna pregunta sobre la legislación aplicable al airsoft en tu país, no dudes en contactarnos. Puedes enviarnos un correo electrónico a <a href="mailto:tuemail@ecommerceairsoft.com">tuemail@ecommerceairsoft.com</a> o llamarnos al número de atención al cliente (+34 123 456 789). Nuestro equipo estará encantado de ayudarte.</p>
+        </div>
+    </div>
+    <a th:href="@{/}"><button >volver al inicio</button></a>
+        <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

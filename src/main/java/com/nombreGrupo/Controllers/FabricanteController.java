@@ -1,7 +1,5 @@
 package com.nombreGrupo.Controllers;
 
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,9 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.nombreGrupo.modelo.dto.FabricanteDtoCreacion;
-import com.nombreGrupo.modelo.dto.ProductoDtoCreacion;
 import com.nombreGrupo.modelo.entities.Fabricante;
-import com.nombreGrupo.modelo.entities.Subcategoria;
 import com.nombreGrupo.services.FabricanteService;
 
 

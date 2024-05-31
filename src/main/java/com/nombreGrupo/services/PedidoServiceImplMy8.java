@@ -1,10 +1,6 @@
 package com.nombreGrupo.services;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,12 +75,11 @@ public class PedidoServiceImplMy8 implements PedidoService {
     public Pedido crearYGuardarConLF(PedidoDtoCreacionConLineasFacturacion pedidoDtoCreacionConLF) {
         
         // Si no existe usuario con ese idUsuario lanzar excepción advirtiendo de ello.
-    	;
     	Usuario usuario = usuarioRepository.findById(pedidoDtoCreacionConLF.getIdUsuario())
                 .orElseThrow(() -> new EntityNotFoundException("No existe usuario con IdUsuario: " + pedidoDtoCreacionConLF.getIdUsuario() + "."));
         
         // Si el usuario existe pero no está activo (no ha verificado correo electrónico) lanzar excepción advirtiendo de ello.
-        if (!usuario.getActive()) {
+        if (!usuario.isEnabled()) {
             throw new IllegalStateException("El usuario con IdUsuario: " + usuario.getIdUsuario() + " no está activo, luego no puede hacer pedidos.");
         }
         
@@ -130,6 +125,7 @@ public class PedidoServiceImplMy8 implements PedidoService {
             lineaFacturacionRepository.save(lineaFacturacion);
         }
         
+        System.out.println("jajaja"+pedido);
         return pedido;
     }
     
@@ -172,6 +168,45 @@ public class PedidoServiceImplMy8 implements PedidoService {
 	}
 
 	@Override
+	public Pedido actualizarSinCambiarLFUsuario(int idUsuarioDelJwt, int idPedido, PedidoDtoActualizacionSinCambiarLineasFacturacion pedidoDtoActualizacion) {
+		
+		usuarioRepository.findById(idUsuarioDelJwt)
+    	        .orElseThrow(() -> new EntityNotFoundException("No existe usuario de idUsuario "+idUsuarioDelJwt+"."));
+		
+		Pedido pedidoExistente = pedidoRepository.findById(idPedido)
+    	        .orElseThrow(() -> new EntityNotFoundException("No existe pedido de idPedido "+idPedido+"."));
+		
+        if (idUsuarioDelJwt!=pedidoExistente.getUsuario().getIdUsuario()) {
+            throw new IllegalStateException("El usuario del pedido que quieres actualizar no coincide con el usuario del JWT.");
+        }
+		
+        if (pedidoExistente.getEstado()!=Pedido.EstadoPedido.pendiente) {
+            throw new IllegalStateException("El pedido con IdPedido: "+idPedido+" no está pendiente de tramitar. No puede realizar cambios. Contacte con la tienda para reportar posibles cambios.");
+        }
+		
+		Pedido pedido = new Pedido();
+		modeloMapper.map(pedidoDtoActualizacion, pedido);
+		pedido.setIdPedido(idPedido);
+		pedido.setUsuario(pedidoExistente.getUsuario());
+		pedido.setMetodoEnvio(pedidoExistente.getMetodoEnvio());
+		
+		if (pedidoExistente.getEstado().equals(Pedido.EstadoPedido.pendiente) && pedidoDtoActualizacion.getEstado().equals(Pedido.EstadoPedido.cancelado)) {
+  
+		     // Actualizar las líneas de facturación asociadas a este pedido
+		     List<LineaFacturacion> lineasFacturacion = lineaFacturacionRepository.findByPedido_IdPedido(idPedido);
+		     for (LineaFacturacion lf : lineasFacturacion) {
+		         lf.setEstado(LineaFacturacion.Estado.cancelado);
+		         Producto productoDeLalinea = lf.getProducto();
+		         productoDeLalinea.setStock(productoDeLalinea.getStock()+lf.getCantidad());
+		         productoRepository.save(productoDeLalinea);
+		         lineaFacturacionRepository.save(lf);
+		     }
+		 }
+		
+		return pedidoRepository.save(pedido);
+	}
+	
+	@Override
     public boolean borrarPorId(int id) {
 		//Maneja el hecho de que no se pueda borrar por ser clave ajena
         if (pedidoRepository.existsById(id)) {
@@ -182,7 +217,7 @@ public class PedidoServiceImplMy8 implements PedidoService {
     }
 	
 	@Override
-    public List<Pedido> encontrarPorUsuarioIdUsuario(int idUsuario) {
+    public List<Pedido> encontrarPorUsuario_IdUsuario(int idUsuario) {
         return pedidoRepository.findByUsuario_IdUsuario(idUsuario);
     }
     

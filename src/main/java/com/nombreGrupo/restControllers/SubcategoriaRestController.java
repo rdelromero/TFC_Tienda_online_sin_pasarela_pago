@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nombreGrupo.modelo.entities.Producto;
 import com.nombreGrupo.modelo.entities.Subcategoria;
-import com.nombreGrupo.services.ProductoService;
 import com.nombreGrupo.services.SubcategoriaService;
 
 import jakarta.persistence.EntityNotFoundException;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/subcategorias")
 public class SubcategoriaRestController {

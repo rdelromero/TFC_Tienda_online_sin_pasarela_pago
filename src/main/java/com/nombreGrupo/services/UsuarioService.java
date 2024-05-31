@@ -21,10 +21,14 @@ public interface UsuarioService {
 	Usuario crearYGuardar(UsuarioDtoRegistro usuarioDtoRegistro);
 	String verificarCuentaPorDireccionEmailYUuid(String uuid);
 	Usuario regenerarUuidParaUsuarioNoVerificado(int idUsuario);
+	Usuario crearAdmin(UsuarioDtoRegistro usuarioDto);
+	
 	//Actualización
 	Usuario actualizar(int idUsuario, UsuarioDtoRegistro usuarioDtoRegistro);
+	
 	//Borrado
 	boolean borrarPorId(int id);
+	
 	
 	
 }

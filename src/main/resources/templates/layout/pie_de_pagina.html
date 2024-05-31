@@ -2,11 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
     <footer th:fragment="footer">
-        <p>
-            © 2024
-            <a href="https://github.com/rdelromero/TFC_Tienda_online_sin_pasarela_pago">Nombre del Grupo</a>
-            Todos los derechos reservados.
-        </p>
+    
+         <nav>
+            <div><a th:href="@{/contenido/faq}">Preguntas frecuentes</a></div>
+                    <div><a th:href="@{/contenido/legislacion}">Legislación del airsoft</a></div>
+                    <div><a th:href="@{/contenido/politicaenvios}">Política de envíos</a></div>
+                     <div><a th:href="@{/contenido/politicadevoluciones}">Política de devoluciones</a></div>
+         </nav>
+    
+        <nav>
+            <div>
+                © 2024
+                <a href="https://github.com/rdelromero/TFC_Tienda_online_sin_pasarela_pago">Nombre del Grupo</a>
+                Todos los derechos reservados.
+            </div>
+        </nav>
+        
     </footer>
 </body>
 </html>

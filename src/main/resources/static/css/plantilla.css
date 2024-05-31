@@ -32,6 +32,25 @@ header nav div div {
     border: none;
 }
 
+header nav #navdiv3 div {
+	background-color:#0069D9;
+    border-radius: 15px; /* Añadido border-radius */
+}
+
+.logout-button {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+    outline: inherit;
+}
+
+.logout-button:hover {
+    text-shadow: 1px 1px 2px #000; /* Añade un sombreado al texto */
+}
+
 #navdiv1 {
 	text-align: left;
 	width: 25%;
@@ -48,11 +67,16 @@ header nav div div {
 	width: 25%;
 }
 
+.nav-item-registro {
+	text-size:12px;
+	padding: 5px 5px;
+}
+
 header nav div div a {
 	color: white;
 }
 
-header nav .nav-item:hover {
+header nav .nav-item:hover, header nav .nav-item-registro:hover {
     transform: scale(1.1); /*Aumenta el tamaño al hacer hover*/
 }
 
@@ -92,8 +116,19 @@ header nav .nav-item:hover {
 
 footer {
     background-color: gray;
-    padding: 1px;
+    padding: 4px;
     text-align: center;
+}
+
+footer nav {
+	display: flex;
+	justify-content: center;
+	padding: 6px;
+}
+
+footer nav div {
+	display: inline-block;
+	padding:0px 20px;
 }
 
 footer a{

@@ -44,6 +44,7 @@ public class Categoria implements Serializable{
     @Column(nullable = false, length = 30)
     private String nombre;
 
+    @JsonIgnore
     @Column
     private String descripcion;
 

@@ -18,11 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nombreGrupo.modelo.dto.PedidoDtoActualizacionSinCambiarLineasFacturacion;
-import com.nombreGrupo.modelo.dto.ProductoDtoCreacion;
-import com.nombreGrupo.modelo.entities.Fabricante;
 import com.nombreGrupo.modelo.entities.Pedido;
-import com.nombreGrupo.modelo.entities.Producto;
-import com.nombreGrupo.modelo.entities.Subcategoria;
+import com.nombreGrupo.modelo.entities.Pedido.EstadoPedido;
 import com.nombreGrupo.services.PedidoService;
 
 
@@ -65,6 +62,14 @@ public class PedidoController {
         List<String> paises = Arrays.asList("España", "Alemania", "Austria", "España", "Francia", "Irlanda", "Italia", "Portugal", "Reino Unido GBIN", "Suiza");
         model.addAttribute("paises", paises);
         return "pedidos/editarUno";
+    }
+    
+    @GetMapping("/filtrar")
+    public String getIndexPorEstado(@RequestParam("estado") EstadoPedido estado, Model model) {
+        List<Pedido> pedidos = pedidoService.encontrarPorEstado(estado);
+        model.addAttribute("pedidosHtml", pedidos);
+        model.addAttribute("estadoSeleccionadoHtml", estado.toString());
+        return "pedidos/listaPorEstado"; // Nombre de la plantilla (ej. index.html)
     }
     
     @PostMapping("/editar/{id}")

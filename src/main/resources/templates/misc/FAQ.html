@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Nuevo Producto')"></head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Ecommerce de Airsoft</title>
+    <link rel="stylesheet" type="text/css" href="/css/lista.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .faq-section {
+            background: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .faq-section h3 {
+            color: #333;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 10px;
+        }
+        .faq-section p {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="layout/encabezado :: header"></div>
+    <div class="container">
+        <h1>Preguntas Frecuentes (FAQ)</h1>
+
+        <div class="faq-section">
+            <h2>General</h2>
+            <h3>¿Qué es el airsoft?</h3>
+            <p>El airsoft es un deporte de estrategia similar al paintball, en el que se utilizan réplicas de armas de fuego que disparan pequeñas bolas de plástico (BBs). Es popular tanto para recreación como para entrenamiento militar y policial.</p>
+        </div>
+
+        <div class="faq-section">
+            <h2>Productos</h2>
+            <h3>¿Qué tipos de productos de airsoft ofrecen?</h3>
+            <p>Ofrecemos una amplia variedad de productos de airsoft, incluyendo réplicas de armas (eléctricas, de gas y de muelle), munición, equipos de protección, accesorios tácticos y ropa.</p>
+            <h3>¿Son seguras las réplicas de airsoft?</h3>
+            <p>Sí, nuestras réplicas están diseñadas para ser seguras siempre que se usen correctamente y con el equipo de protección adecuado, como gafas y máscaras.</p>
+        </div>
+
+        <div class="faq-section">
+            <h2>Compras y Envíos</h2>
+            <h3>¿Cómo puedo realizar una compra?</h3>
+            <p>Para realizar una compra, simplemente navega por nuestra tienda online, añade los productos que deseas al carrito, y sigue el proceso de pago. Aceptamos varias formas de pago seguras, como tarjetas de crédito, PayPal y transferencias bancarias.</p>
+            <h3>¿Hacen envíos internacionales?</h3>
+            <p>Sí, hacemos envíos a varios países. Puedes consultar la lista de países disponibles y los costos de envío en nuestra página de <a th:href="@{/politicaenvios}">Políticas de Envío</a>.</p>
+            <h3>¿Cuánto tiempo tarda el envío?</h3>
+            <p>El tiempo de entrega varía según la ubicación y el método de envío seleccionado. Generalmente, los envíos nacionales tardan entre 3-7 días hábiles, mientras que los internacionales pueden tardar entre 7-21 días hábiles.</p>
+        </div>
+
+        <div class="faq-section">
+            <h2>Devoluciones y Garantías</h2>
+            <h3>¿Cuál es su política de devoluciones?</h3>
+            <p>Aceptamos devoluciones dentro de los 30 días posteriores a la compra, siempre y cuando los productos estén en su estado original y sin usar. Para iniciar una devolución, contacta a nuestro equipo de atención al cliente.</p>
+            <h3>¿Ofrecen garantías en sus productos?</h3>
+            <p>Sí, todos nuestros productos vienen con una garantía mínima de 6 meses. Algunos productos específicos pueden tener garantías más largas, detalladas en sus respectivas páginas. <a th:href="@{/politicadevoluciones}">Consulte nuestra política de devolución aquí.</a></p>
+        </div>
+
+        <div class="faq-section">
+            <h2>Usar Réplicas de Airsoft</h2>
+            <h3>¿Necesito una licencia para comprar una réplica de airsoft?</h3>
+            <p>La necesidad de una licencia varía según el país y las leyes locales. En algunos lugares, no se requiere una licencia, mientras que en otros se pueden requerir permisos o registros específicos.</p>
+            <h3>¿Dónde puedo jugar airsoft?</h3>
+            <p>El airsoft se puede jugar en campos de airsoft oficiales, propiedades privadas con el permiso adecuado, y en eventos organizados. Siempre asegúrate de seguir las leyes locales y las normas de seguridad del campo de juego.</p>
+        </div>
+
+        <div class="faq-section">
+            <h2>Seguridad y Regulaciones</h2>
+            <h3>¿Es legal el airsoft en mi país?</h3>
+            <p>Las leyes sobre airsoft varían según el país. Recomendamos verificar las regulaciones locales antes de realizar una compra. Puedes encontrar información detallada sobre las regulaciones en nuestra página de <a th:href="@{/legislacion}">legislación</a>.</p>
+            <h3>¿Qué equipo de protección necesito?</h3>
+            <p>Recomendamos siempre usar gafas de protección aprobadas para airsoft, máscara facial, y ropa adecuada que cubra la piel. Otros equipos de protección pueden incluir guantes, casco y chaleco táctico.</p>
+        </div>
+
+        <div class="faq-section">
+            <h2>Contacto y Soporte</h2>
+            <h3>¿Cómo puedo contactar con el servicio de atención al cliente?</h3>
+            <p>Puedes contactar con nosotros a través de nuestro formulario de contacto en la web, por correo electrónico a <a href="mailto:tuemail@ecommerceairsoft.com">tuemail@ecommerceairsoft.com</a>, o llamándonos al número de atención al cliente (+34 123 456 789).</p>
+            <h3>¿Ofrecen soporte técnico para las réplicas?</h3>
+            <p>Sí, nuestro equipo técnico está disponible para ayudarte con cualquier problema que puedas tener con tu réplica de airsoft. Ofrecemos servicios de mantenimiento y reparación para asegurar que tus productos funcionen correctamente.</p>
+        </div>
+    </div>
+    <a th:href="@{/}"><button>volver al inicio</button></a>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

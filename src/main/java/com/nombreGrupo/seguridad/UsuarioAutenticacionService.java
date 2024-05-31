@@ -33,7 +33,7 @@ public class UsuarioAutenticacionService {
         Usuario usuario = usuarioRepository.findByUsername(usuarioDtoLogin.getUsername())
                 .orElseThrow(() -> new EntityNotFoundException("No existe un usuario de username " + usuarioDtoLogin.getUsername() + "."));
 
-        if (!usuario.getActive()) {
+        if (!usuario.isEnabled()) {
         	throw new IllegalStateException("La cuenta no está verificada.");
         }
 
@@ -48,5 +48,6 @@ public class UsuarioAutenticacionService {
         final UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(usuarioDtoLogin.getUsername());
         return jwtUtil.crearJWTConMapaVacioDeClaims(userDetails);
     }
+    
     
 }

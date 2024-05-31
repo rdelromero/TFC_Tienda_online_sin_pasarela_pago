@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+table {
+    border-collapse: collapse;
+    font-size: 16px;
+}
+a {
+    text-decoration: none;
+}
+
+thead {
+    background-color: #f4f4f4;
+}
+
+th, td {
+	border: 1px solid #ccc;
+}
+
+header {
+    background-color: black;
+    text-align:center
+}
+
+header a{
+    color: #ffffff;
+}
+
+footer {
+    background-color: gray;
+    padding: 1px;
+    text-align: center
+}
+
+footer a{
+	color: #ffffff;
+}

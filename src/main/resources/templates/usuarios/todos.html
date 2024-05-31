@@ -8,21 +8,22 @@
     <div th:replace="layout/encabezado :: header"></div>
 
     <main>
-      <h2>Usuarios</h2>
-      
-        <div>
-          <a class="btn btn-primary" th:href="@{/usuarios/crear}">Crear Usuario</a>
+      <div style="display:flex;">
+         <div style="width:10%"><h2>Usuarios</h2>
+         </div>
+         <div style="position: relative; top: -45px;">
+          <a class="btn btn-primary" th:href="@{/usuarios/crearadmin}">Crear administrador</a>
         </div>
-        <br>
+      </div>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Username</th>
+                    <th>Enabled</th>
                     <th>Nombre </th>
                     <th>Primer apellido </th>
                     <th>Segundo apellido </th>
-                    <th>Active</th>
                     <th>Pedidos</th>
                     <th>Acciones</th>
                 </tr>
@@ -31,11 +32,10 @@
                 <tr th:each="usuario : ${paginausuarios}">
                     <td th:text="${usuario.idUsuario}"></td>
                     <td th:text="${usuario.username}"></td>
+                    <td th:text="${usuario.enabled}" style="text-align:center"></td>
                     <td th:text="${usuario.nombre}"></td>
                     <td th:text="${usuario.apellido1}"></td>
                     <td th:text="${usuario.apellido2 != null ? usuario.apellido2 : '-'}"></td>
-                    <td th:text="${usuario.active}"></td>
-
                     <td style="text-align: center">
                       <a class="btn btn-link" 
                         th:if="${numeroPedidosPorIdUsuarioMap[usuario.idUsuario] != 0}"

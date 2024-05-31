@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	Optional<Usuario> findByUsername(String username); 
-	List<Usuario> findByActiveTrue();
+	List<Usuario> findByEnabledTrue();
 }

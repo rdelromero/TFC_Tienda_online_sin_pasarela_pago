@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/titulo :: head (title='Detalles del usuario')"></head>
+
+<body>
+<div th:replace="layout/encabezado :: header"></div>
+    <h2>Crear usuario con rol administrador</h2>
+    <form action="#" th:action="@{/usuarios/crearadmin}" th:object="${usuarioDto}" method="post">
+        <div>
+            <label for="username">Nombre de Usuario:</label>
+            <input type="text" id="username" th:field="*{username}" required />
+        </div>
+        <div>
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" th:field="*{password}" required />
+        </div>
+        <div>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" th:field="*{nombre}" required />
+        </div>
+        <div>
+            <label for="apellido1">Primer Apellido:</label>
+            <input type="text" id="apellido1" th:field="*{apellido1}" required />
+        </div>
+        <div>
+            <label for="apellido2">Segundo Apellido:</label>
+            <input type="text" id="apellido2" th:field="*{apellido2}" />
+        </div>
+        <br>
+            <button type="submit">Crear Administrador</button>
+    </form>
+    <br>
+    <div th:replace="layout/pie_de_pagina :: footer"></div>
+</body>
+</html>

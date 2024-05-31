@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -31,13 +30,13 @@ public class SecurityConfig {
     @Bean
     public UserDetailsManager usersCustom(DataSource dataSource) {
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-        users.setUsersByUsernameQuery("select username,password,active from Usuarios where username=?");
+        users.setUsersByUsernameQuery("select username,password,enabled from Usuarios where username=?");
         users.setAuthoritiesByUsernameQuery("select username, role from Usuarios where username=?");
         return users;
     }
 	
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+	public SecurityFilterChain filtroCadena(HttpSecurity http) throws Exception{
 		http
 		.csrf(csrf -> csrf
 			.disable());
@@ -49,7 +48,7 @@ public class SecurityConfig {
 			.requestMatchers("/static/**", "/css/**", "/js/**", "/imagenes/**").permitAll()
 			// Todas las demás URLs de la Aplicación requieren autenticación
 			// Asignar permisos a URLs por ROLES
-			.requestMatchers("/fabricantes", "/logout").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+			.requestMatchers("/fabricantes", "/logout", "/contenido").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
 			.requestMatchers("/categorias/**", "/subcategorias/**", "/productos/**", "/pedidos/**", "/usuarios/**").hasAnyAuthority("ROLE_ADMIN")
 			//Todo lo que está permitido lo permito, el resto no
 			.anyRequest().authenticated()
@@ -66,7 +65,7 @@ public class SecurityConfig {
 		.logout(logout -> logout.logoutSuccessUrl("/").permitAll()
 		)
 		.authenticationProvider(authProvider)
-        .addFilterBefore(filtroQueExtiendeOncePerRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        .addFilterBefore(filtroQueExtiendeOncePerRequestFilter, UsernamePasswordAuthenticationFilter.class); //Maneja la autenticación basada en token JWT
 		return http.build();
 	}
     

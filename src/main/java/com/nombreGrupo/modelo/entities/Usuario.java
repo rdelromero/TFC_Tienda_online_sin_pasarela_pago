@@ -13,8 +13,6 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.UniqueConstraint;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -30,7 +28,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -49,11 +46,17 @@ public class Usuario implements UserDetails{
     @JsonIgnoreProperties // Evita que salga las lineas_Facturacion. Lo hacemos porque de mostrarlo saldría un ciclo infinito
     private int idUsuario;
 
+    //Campo username impuesto por UserDetails
     @Column(name = "username", nullable = false, unique = true, length = 100)
     private String username;
     
+    //Campo password impuesto por UserDetails
     @Column(length = 100)
     private String password;
+    
+  //Campo enabled impuesto por UserDetails
+    @Column
+    private boolean enabled = false; // Inicialmente deshabilitado
     
     @Column(nullable = false, length = 30)
     private String nombre;
@@ -69,9 +72,6 @@ public class Usuario implements UserDetails{
     private Role role;
     
     //Campos ni insertables ni actualizables directamente ---------------------------*/
-    @Column
-    private Boolean active;
-    
     @Column(name = "fecha_creacion", nullable = false, updatable = false, insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaCreacion;
@@ -107,6 +107,6 @@ public class Usuario implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
     }
 }

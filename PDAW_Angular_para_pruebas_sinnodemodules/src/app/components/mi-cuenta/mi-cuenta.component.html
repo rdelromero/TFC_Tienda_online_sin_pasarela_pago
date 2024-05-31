@@ -1,0 +1,18 @@
+<div *ngIf="usuario">
+    <p>Hola {{ usuario.nombre }}</p>
+    <p>Estos son tus datos</p>
+    <table>
+      <tr>
+        <td>ID usuario:</td><td>{{ usuario.idUsuario }}</td>
+      </tr>
+      <tr>
+        <td>Dirección email:</td><td>{{ usuario.username }}</td>
+      </tr>
+      <tr>
+        <td>Apellido 1:</td><td>{{ usuario.apellido1 }}</td>
+      </tr>
+      <tr>
+        <td>Apellido 2:</td><td>{{ usuario.apellido2 }}</td>
+      </tr>
+    </table>
+</div>

@@ -46,7 +46,7 @@ public class ProductoController {
 	@Autowired
 	private ModelMapper modeloMapper;
 	
-    private static final String UPLOADED_FOLDER = "src/main/resources/static/imagenes/productos/";
+    //private static final String UPLOADED_FOLDER = "src/main/resources/static/imagenes/productos/";
 	
     @GetMapping
     public String getIndex(Model model, 

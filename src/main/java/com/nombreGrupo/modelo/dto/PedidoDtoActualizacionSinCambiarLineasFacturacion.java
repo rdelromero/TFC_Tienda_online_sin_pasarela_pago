@@ -10,11 +10,6 @@ import lombok.Setter;
 @Setter
 public class PedidoDtoActualizacionSinCambiarLineasFacturacion {
 
-	private int idPedido;
-	
-	//@NotNull(message = "El ID del usuario es obligatorio")
-    //private int idUsuario;
-
     //@NotBlank(message = "El nombre no puede estar vacío")
     //@Size(max = 30, message = "El nombre no puede tener más de 50 caracteres")
     private String nombre;
